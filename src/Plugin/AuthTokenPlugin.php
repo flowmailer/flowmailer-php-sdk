@@ -21,37 +21,14 @@ use Psr\SimpleCache\CacheInterface;
 
 class AuthTokenPlugin implements Plugin
 {
-    /**
-     * @var int
-     */
-    private $retriesLeft = 3;
+    private int $retriesLeft = 3;
 
-    /**
-     * @var int
-     */
-    private $maxRetries;
-
-    /**
-     * @var Client
-     */
-    private $client;
-
-    /**
-     * @var Options
-     */
-    private $options;
-
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-
-    public function __construct(Flowmailer $client, Options $options, ?CacheInterface $cache = null, int $maxRetries = 3)
-    {
-        $this->client      = $client;
-        $this->options     = $options;
-        $this->cache       = $cache ?? new ArrayCachePool();
-        $this->maxRetries  = $maxRetries;
+    public function __construct(
+        private readonly Flowmailer $client,
+        private readonly Options $options,
+        private readonly CacheInterface $cache = new ArrayCachePool(),
+        private readonly int $maxRetries = 3
+    ) {
         $this->retriesLeft = $maxRetries;
     }
 
@@ -79,8 +56,6 @@ class AuthTokenPlugin implements Plugin
         $cacheKey = 'flowmailer_token_'.$this->options->getAccountId().'_'.$this->options->getClientId();
 
         if ($this->cache->has($cacheKey) === false || $refresh === true) {
-            // scope
-
             /** @var OAuthTokenResponse $tokenData */
             $tokenData = $this->client->createOAuthToken($this->options->getClientId(), $this->options->getClientSecret(), 'client_credentials');
             $this->cache->set($cacheKey, $tokenData->getAccessToken(), $tokenData->getExpiresIn());

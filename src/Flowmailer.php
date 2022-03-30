@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Flowmailer\API;
 
-use Composer\InstalledVersions;
 use Flowmailer\API\Logger\Journal;
 use Flowmailer\API\Model\Errors;
 use Flowmailer\API\Model\OAuthErrorResponse;
@@ -17,9 +16,11 @@ use Flowmailer\API\Plugin\AuthTokenPlugin;
 use Flowmailer\API\Serializer\SerializerFactory;
 use Flowmailer\API\Utility\SubmitMessageCreatorIterator;
 use Http\Client\Common\Exception\ClientErrorException;
+use Http\Client\Common\Plugin;
 use Http\Client\Common\Plugin\ErrorPlugin;
 use Http\Client\Common\Plugin\HeaderSetPlugin;
 use Http\Client\Common\Plugin\HistoryPlugin;
+use Http\Client\Common\Plugin\LoggerPlugin;
 use Http\Client\Common\Plugin\RetryPlugin;
 use Http\Client\Common\PluginClient;
 use Http\Client\HttpAsyncClient;
@@ -39,95 +40,43 @@ use Symfony\Component\String\UnicodeString;
 
 class Flowmailer extends Endpoints
 {
-    public const API_VERSION = 'v1.12';
+    final public const API_VERSION = 'v1.12';
+
+    private readonly string $accountId;
+
+    private readonly string $clientId;
+
+    private readonly string $clientSecret;
+
+    private ?ClientInterface $httpClient = null;
+
+    private ?ClientInterface $authClient = null;
+
+    private readonly RequestFactoryInterface $requestFactory;
+
+    private readonly UriFactory $uriFactory;
+
+    private ?StreamFactory $streamFactory = null;
 
     /**
-     * @var Options
+     * @var array|Plugin[]
      */
-    private $options;
-
-    /**
-     * @var string
-     */
-    private $accountId;
-
-    /**
-     * @var string
-     */
-    private $clientId;
-
-    /**
-     * @var string
-     */
-    private $clientSecret;
-
-    /**
-     * @var CacheInterface|null
-     */
-    private $cache;
-
-    /**
-     * @var LoggerInterface|null
-     */
-    private $journalLogger;
-
-    /**
-     * @var ClientInterface
-     */
-    private $httpClient;
-
-    /**
-     * @var ClientInterface
-     */
-    private $innerHttpClient;
-
-    /**
-     * @var ClientInterface
-     */
-    private $authClient;
-
-    /**
-     * @var ClientInterface
-     */
-    private $innerAuthClient;
-
-    /**
-     * @var RequestFactoryInterface
-     */
-    private $requestFactory;
-
-    /**
-     * @var UriFactory
-     */
-    private $uriFactory;
-
-    /**
-     * @var StreamFactory|null
-     */
-    private $streamFactory;
+    private ?array $plugins = null;
 
     public function __construct(
-        Options $options,
-        CacheInterface $cache = null,
-        LoggerInterface $journalLogger = null,
-        ClientInterface $httpClient = null,
-        ClientInterface $authClient = null,
+        private readonly Options $options,
+        private ?LoggerInterface $logger = null,
+        private readonly ?CacheInterface $cache = null,
+        private ?ClientInterface $innerHttpClient = null,
+        private readonly ?ClientInterface $innerAuthClient = null,
         RequestFactoryInterface $requestFactory = null,
         UriFactory $uriFactory = null,
         StreamFactory $streamFactory = null,
         SerializerInterface $serializer = null
     ) {
-        $this->options = $options;
-
         $this->accountId    = $options->getAccountId();
         $this->clientId     = $options->getClientId();
         $this->clientSecret = $options->getClientSecret();
-
-        $this->cache         = $cache;
-        $this->journalLogger = $journalLogger;
-
-        $this->innerHttpClient = $httpClient;
-        $this->innerAuthClient = $authClient;
 
         $this->requestFactory = $requestFactory ?? Psr17FactoryDiscovery::findRequestFactory();
         $this->uriFactory     = $uriFactory ?? Psr17FactoryDiscovery::findUriFactory();
@@ -138,9 +87,9 @@ class Flowmailer extends Endpoints
 
     public static function init(string $accountId, string $clientId, string $clientSecret, array $options = [], ...$additionalArgs): self
     {
-        $options['account_id']     = $accountId;
-        $options['client_id']      = $clientId;
-        $options['client_secret']  = $clientSecret;
+        $options['account_id']    = $accountId;
+        $options['client_id']     = $clientId;
+        $options['client_secret'] = $clientSecret;
 
         return new self(new Options($options), ...$additionalArgs);
     }
@@ -174,21 +123,7 @@ class Flowmailer extends Endpoints
 
         $this->httpClient = new PluginClient(
             $this->innerHttpClient,
-            [
-                new HistoryPlugin(new Journal($this->journalLogger)),
-                new HeaderSetPlugin([
-                    'Accept'       => sprintf('application/vnd.flowmailer.%s+json', self::API_VERSION),
-                    'Content-Type' => sprintf('application/vnd.flowmailer.%s+json', self::API_VERSION),
-                    'Connection'   => 'Keep-Alive',
-                    'Keep-Alive'   => '300',
-                    'User-Agent'   => sprintf('FlowMailer PHP SDK %s for API %s', InstalledVersions::getVersion('flowmailer/flowmailer-php-sdk'), self::API_VERSION),
-                ]),
-                new RetryPlugin([
-                    'retries' => 3,
-                ]),
-                new ErrorPlugin(),
-                new AuthTokenPlugin($this, $this->options, $this->cache),
-            ]
+            $this->getPlugins()
         );
 
         return $this;
@@ -203,16 +138,16 @@ class Flowmailer extends Endpoints
         return $this->httpClient;
     }
 
-    public function setLogger(LoggerInterface $journalLogger = null): self
+    public function setLogger(LoggerInterface $logger = null): self
     {
-        $this->journalLogger = $journalLogger;
+        $this->logger = $logger;
 
         return $this;
     }
 
     public function getLogger(): LoggerInterface
     {
-        return $this->journalLogger;
+        return $this->logger;
     }
 
     protected function getOptions(): Options
@@ -266,7 +201,7 @@ class Flowmailer extends Endpoints
             /* @var OAuthErrorResponse $oAuthError */
             try {
                 $oAuthError = $this->serializer->deserialize($responseBody, OAuthErrorResponse::class, 'json');
-            } catch (NotEncodableValueException $exception) {
+            } catch (NotEncodableValueException) {
                 return new \Exception('Internal Server Error');
             }
 
@@ -349,7 +284,7 @@ class Flowmailer extends Endpoints
 
     protected function getResponse(RequestInterface $request, ClientInterface $client = null): ResponseInterface
     {
-        $client = $client ?? $this->getHttpClient();
+        $client ??= $this->getHttpClient();
 
         try {
             $response = $client->sendRequest($request);
@@ -358,5 +293,55 @@ class Flowmailer extends Endpoints
         }
 
         return $response;
+    }
+
+    /**
+     * @return array|Plugin[]
+     */
+    protected function getPlugins(): array
+    {
+        if (is_null($this->plugins)) {
+            $this->plugins = [
+                'history'    => new HistoryPlugin(new Journal($this->logger)),
+                'header_set' => new HeaderSetPlugin($this->options->getPlugin('header_set')),
+                'retry'      => new RetryPlugin($this->options->getPlugin('retry')),
+                'error'      => new ErrorPlugin($this->options->getPlugin('error')),
+                'auth_token' => new AuthTokenPlugin($this, $this->options, $this->cache),
+            ];
+
+            if (class_exists(LoggerPlugin::class)) {
+                $this->plugins['logger'] = new LoggerPlugin($this->logger);
+            }
+        }
+
+        return $this->plugins;
+    }
+
+    /**
+     * @param array|Plugin[] $plugins
+     */
+    protected function setPlugins(array $plugins): self
+    {
+        $this->plugins = $plugins;
+
+        return $this;
+    }
+
+    protected function addPlugin(string $key, Plugin $plugin): self
+    {
+        $this->plugins = $this->getPlugins();
+
+        $this->plugins[$key] = $plugin;
+
+        return $this;
+    }
+
+    protected function removePlugin(string $key)
+    {
+        $this->plugins = $this->getPlugins();
+
+        unset($this->plugins[$key]);
+
+        return $this;
     }
 }

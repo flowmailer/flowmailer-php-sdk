@@ -18,10 +18,7 @@ use Psr\Log\NullLogger;
 
 class Journal implements JournalInterface
 {
-    /**
-     * @var LoggerInterface|null
-     */
-    private $journalLogger;
+    private ?\Psr\Log\LoggerInterface $journalLogger = null;
 
     public function __construct(LoggerInterface $journalLogger = null)
     {

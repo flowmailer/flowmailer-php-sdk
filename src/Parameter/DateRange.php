@@ -12,18 +12,13 @@ namespace Flowmailer\API\Parameter;
 /**
  * Start and end date in ISO8601 format (without milliseconds) separated by a comma. Start date is inclusive and end date is exclusive.
  */
-class DateRange
+class DateRange implements \Stringable
 {
-    private \DateTime $startDate;
-    private \DateTime $endDate;
-
-    public function __construct(\DateTime $startDate, \DateTime $endDate)
+    public function __construct(private \DateTime $startDate, private \DateTime $endDate)
     {
-        $this->startDate = $startDate;
-        $this->endDate   = $endDate;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s,%s', rawurlencode($this->getStartDate()->format(DATE_ISO8601)), rawurlencode($this->getEndDate()->format(DATE_ISO8601)));
     }

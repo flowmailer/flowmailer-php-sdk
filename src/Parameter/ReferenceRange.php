@@ -9,32 +9,15 @@ declare(strict_types=1);
 
 namespace Flowmailer\API\Parameter;
 
-class ReferenceRange
+class ReferenceRange implements \Stringable
 {
-    private int $count;
-    private ?string $reference;
-
-    public function __construct(?string $reference = null, int $count)
+    public function __construct(private int $count, private ?string $reference = null)
     {
-        $this->reference = $reference;
-        $this->count     = $count;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('items=%s:%d', $this->getReference(), $this->getCount());
-    }
-
-    public function getReference(): ?string
-    {
-        return $this->reference;
-    }
-
-    public function setReference(?string $reference): ReferenceRange
-    {
-        $this->reference = $reference;
-
-        return $this;
     }
 
     public function getCount(): int
@@ -45,6 +28,18 @@ class ReferenceRange
     public function setCount(int $count): ReferenceRange
     {
         $this->count = $count;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): ReferenceRange
+    {
+        $this->reference = $reference;
 
         return $this;
     }

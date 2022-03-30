@@ -14,20 +14,17 @@ namespace Flowmailer\API\Model;
  */
 final class Address implements ModelInterface
 {
-    /**
-     * Email address or phone number.
-     */
-    private ?string $address = null;
-
-    /**
-     * Display name, only used for email messages.
-     */
-    private ?string $name = null;
-
-    public function __construct(?string $address = null, ?string $name = null)
+    public function __construct(
+        /**
+         * Email address or phone number.
+         */
+        private ?string $address = null,
+        /**
+         * Display name, only used for email messages.
+         */
+        private ?string $name = null
+    )
     {
-        $this->address = $address;
-        $this->name    = $name;
     }
 
     public function setAddress(?string $address = null): self

@@ -20,11 +20,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 abstract class Endpoints
 {
-    public SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(public SerializerInterface $serializer)
     {
-        $this->serializer = $serializer;
     }
 
     /**

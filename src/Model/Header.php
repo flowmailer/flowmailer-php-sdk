@@ -14,20 +14,17 @@ namespace Flowmailer\API\Model;
  */
 final class Header implements ModelInterface
 {
-    /**
-     * Header name.
-     */
-    private string $name;
-
-    /**
-     * Header value.
-     */
-    private ?string $value = null;
-
-    public function __construct(string $name, ?string $value = null)
+    public function __construct(
+        /**
+         * Header name.
+         */
+        private string $name,
+        /**
+         * Header value.
+         */
+        private ?string $value = null
+    )
     {
-        $this->name  = $name;
-        $this->value = $value;
     }
 
     public function setName(string $name): self
