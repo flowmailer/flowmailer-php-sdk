@@ -22,7 +22,7 @@ class Journal implements JournalInterface
 
     public function __construct(LoggerInterface $journalLogger = null)
     {
-        $this->journalLogger = $journalLogger ?: new NullLogger();
+        $this->journalLogger = $journalLogger ?? new NullLogger();
     }
 
     public function addSuccess(RequestInterface $request, ResponseInterface $response)
