@@ -11,8 +11,10 @@ namespace Flowmailer\API\Parameter;
 
 class ReferenceRange implements \Stringable
 {
-    public function __construct(private int $count, private ?string $reference = null)
-    {
+    public function __construct(
+        private int $count,
+        private ?string $reference = null
+    ) {
     }
 
     public function __toString(): string

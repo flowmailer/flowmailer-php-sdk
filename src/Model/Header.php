@@ -23,8 +23,7 @@ final class Header implements ModelInterface
          * Header value.
          */
         private ?string $value = null
-    )
-    {
+    ) {
     }
 
     public function setName(string $name): self

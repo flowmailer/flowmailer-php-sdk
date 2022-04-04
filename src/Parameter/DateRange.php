@@ -14,8 +14,10 @@ namespace Flowmailer\API\Parameter;
  */
 class DateRange implements \Stringable
 {
-    public function __construct(private \DateTime $startDate, private \DateTime $endDate)
-    {
+    public function __construct(
+        private \DateTime $startDate,
+        private \DateTime $endDate
+    ) {
     }
 
     public function __toString(): string

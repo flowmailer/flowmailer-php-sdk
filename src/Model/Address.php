@@ -23,8 +23,7 @@ final class Address implements ModelInterface
          * Display name, only used for email messages.
          */
         private ?string $name = null
-    )
-    {
+    ) {
     }
 
     public function setAddress(?string $address = null): self

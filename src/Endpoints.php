@@ -13,7 +13,6 @@ use Flowmailer\API\Collection\MessageCollection;
 use Flowmailer\API\Model\Message;
 use Flowmailer\API\Model\OAuthTokenResponse;
 use Flowmailer\API\Model\SubmitMessage;
-use Flowmailer\API\Parameter\DateRange;
 use Flowmailer\API\Parameter\ReferenceRange;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -65,7 +64,6 @@ abstract class Endpoints
      * Create the RequestInterface for getMessages.
      *
      * @param ReferenceRange $range         Limits the returned list
-     * @param DateRange      $daterange     Date range the message was submitted in
      * @param array          $flowIds       Filter results on flow ID
      * @param bool           $addevents     Whether to add message events
      * @param bool           $addheaders    Whether to add e-mail headers
@@ -76,7 +74,6 @@ abstract class Endpoints
      */
     public function createRequestForGetMessages(
         ReferenceRange $range = null,
-        ?DateRange $daterange = null,
         ?array $flowIds = null,
         ?bool $addevents = false,
         ?bool $addheaders = false,
@@ -86,8 +83,7 @@ abstract class Endpoints
         ?string $sortorder = null
     ): RequestInterface {
         $matrices = [
-            'daterange' => $daterange,
-            'flow_ids'  => $flowIds,
+            'flow_ids' => $flowIds,
         ];
         $query = [
             'addevents'     => $addevents,
@@ -111,7 +107,6 @@ abstract class Endpoints
      */
     public function getMessages(
         ReferenceRange $range = null,
-        ?DateRange $daterange = null,
         ?array $flowIds = null,
         ?bool $addevents = false,
         ?bool $addheaders = false,
@@ -120,7 +115,7 @@ abstract class Endpoints
         ?string $sortfield = null,
         ?string $sortorder = null
     ): MessageCollection {
-        $request  = $this->createRequestForGetMessages($range, $daterange, $flowIds, $addevents, $addheaders, $addonlinelink, $addtags, $sortfield, $sortorder);
+        $request  = $this->createRequestForGetMessages($range, $flowIds, $addevents, $addheaders, $addonlinelink, $addtags, $sortfield, $sortorder);
         $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
 
         return $this->serializer->deserialize($response, MessageCollection::class, 'json');
