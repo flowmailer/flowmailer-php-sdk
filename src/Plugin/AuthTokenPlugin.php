@@ -60,7 +60,7 @@ class AuthTokenPlugin implements Plugin
 
         if ($this->cache->has($cacheKey) === false || $refresh === true) {
             /** @var OAuthTokenResponse $tokenData */
-            $tokenData = $this->client->createOAuthToken($this->options->getClientId(), $this->options->getClientSecret(), 'client_credentials');
+            $tokenData = $this->client->createOAuthToken($this->options->getClientId(), $this->options->getClientSecret(), 'client_credentials', $this->options->getOAuthScope());
             $this->cache->set($cacheKey, $tokenData->getAccessToken(), $tokenData->getExpiresIn());
         }
 
