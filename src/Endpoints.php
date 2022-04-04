@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Flowmailer\API;
 
 use Flowmailer\API\Collection\MessageCollection;
+use Flowmailer\API\Collection\MessageEventCollection;
 use Flowmailer\API\Model\Message;
 use Flowmailer\API\Model\OAuthTokenResponse;
 use Flowmailer\API\Model\SubmitMessage;
@@ -58,6 +59,55 @@ abstract class Endpoints
         $response = $this->handleResponse($this->getResponse($request, $this->getAuthClient()), (string) $request->getBody(), $request->getMethod());
 
         return $this->serializer->deserialize($response, OAuthTokenResponse::class, 'json');
+    }
+
+    /**
+     * Create the RequestInterface for getMessageEvents.
+     *
+     * @param ReferenceRange $range          Limits the returned list
+     * @param array          $flowIds        Filter results on message flow ID
+     * @param array          $sourceIds      Filter results on message source ID
+     * @param bool           $addmessagetags Message tags will be included with each event if this parameter is true
+     * @param string         $sortorder
+     */
+    public function createRequestForGetMessageEvents(
+        ReferenceRange $range = null,
+        ?array $flowIds = null,
+        ?array $sourceIds = null,
+        ?bool $addmessagetags = false,
+        ?string $sortorder = null
+    ): RequestInterface {
+        $matrices = [
+            'flow_ids'   => $flowIds,
+            'source_ids' => $sourceIds,
+        ];
+        $query = [
+            'addmessagetags' => $addmessagetags,
+            'sortorder'      => $sortorder,
+        ];
+        $headers = [
+            'Range' => $range,
+        ];
+
+        return $this->createRequest('GET', sprintf('/%1$s/message_events', $this->getOptions()->getAccountId()), null, $matrices, $query, $headers);
+    }
+
+    /**
+     * List message events.
+     *
+     *  Ordered by received, new events first.
+     */
+    public function getMessageEvents(
+        ReferenceRange $range = null,
+        ?array $flowIds = null,
+        ?array $sourceIds = null,
+        ?bool $addmessagetags = false,
+        ?string $sortorder = null
+    ): MessageEventCollection {
+        $request  = $this->createRequestForGetMessageEvents($range, $flowIds, $sourceIds, $addmessagetags, $sortorder);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->serializer->deserialize($response, MessageEventCollection::class, 'json');
     }
 
     /**
