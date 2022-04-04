@@ -23,13 +23,16 @@ class AuthTokenPlugin implements Plugin
 {
     private int $retriesLeft = 3;
 
+    private readonly CacheInterface $cache;
+
     public function __construct(
         private readonly Flowmailer $client,
         private readonly Options $options,
-        private readonly CacheInterface $cache = new ArrayCachePool(),
+        ?CacheInterface $cache = null,
         private readonly int $maxRetries = 3
     ) {
         $this->retriesLeft = $maxRetries;
+        $this->cache       = $cache ?? new ArrayCachePool();
     }
 
     public function handleRequest(RequestInterface $request, callable $next, callable $first): Promise

@@ -11,8 +11,9 @@ namespace Flowmailer\API\Utility;
 
 class PdoGeneratorFactory
 {
-    public function __construct(private readonly \PDO $pdo)
-    {
+    public function __construct(
+        private readonly \PDO $pdo
+    ) {
     }
 
     public function createGenerator($select): \Generator
