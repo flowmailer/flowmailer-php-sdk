@@ -51,6 +51,9 @@
     "symfony/cache": "^5.4",
     "symfony/var-dumper": "^5.4"
   },
+  "provide": {
+    "flowmailer/flowmailer-php-sdk-implementation": "^1.0"
+  },
   "suggest": {
     "php-http/logger-plugin": "The LoggerPlugin converts requests, responses and exceptions to strings and logs them with a PSR3 compliant logger"
   },
@@ -87,5 +90,8 @@
     "test": [
       "XDEBUG_MODE=off php -dmemory_limit=1G -dpcov.enabled=1 -dpcov.directory=. -dpcov.exclude=\"~vendor~\" ./vendor/bin/phpunit --coverage-html=coverage"
     ]
+  },
+  "replace": {
+    "flowmailer/flowmailer-php-sdk": "self.version"
   }
 }
