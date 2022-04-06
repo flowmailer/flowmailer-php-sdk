@@ -90,8 +90,5 @@
     "test": [
       "XDEBUG_MODE=off php -dmemory_limit=1G -dpcov.enabled=1 -dpcov.directory=. -dpcov.exclude=\"~vendor~\" ./vendor/bin/phpunit --coverage-html=coverage"
     ]
-  },
-  "replace": {
-    "flowmailer/flowmailer-php-sdk": "self.version"
   }
 }
