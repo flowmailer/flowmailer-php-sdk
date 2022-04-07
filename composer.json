@@ -3,6 +3,10 @@
   "description": "Flowmailers PHP SDK for api.flowmailer.net REST API",
   "license": "MIT",
   "type": "library",
+  "support": {
+    "email": "support@flowmailer.com",
+    "issues": "https://github.com/flowmailer/flowmailer-php-sdk"
+  },
   "authors": [
     {
       "name": "Reyo Stallenberg",
