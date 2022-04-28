@@ -33,6 +33,17 @@ final class Options
         $this->options = $this->resolver->resolve($options);
     }
 
+    public static function getDefaultHeaders(): array
+    {
+        return [
+            'Accept'       => sprintf('application/vnd.flowmailer.%s+json', Flowmailer::API_VERSION),
+            'Content-Type' => sprintf('application/vnd.flowmailer.%s+json', Flowmailer::API_VERSION),
+            'Connection'   => 'Keep-Alive',
+            'Keep-Alive'   => '300',
+            'User-Agent'   => sprintf('FlowMailer PHP SDK %s:%s for API %s', self::PACKAGE_NAME, InstalledVersions::getVersion(self::PACKAGE_NAME), Flowmailer::API_VERSION),
+        ];
+    }
+
     public function getAccountId(): string
     {
         return $this->options['account_id'];
@@ -88,14 +99,8 @@ final class Options
             ->allowedValues(static function (array &$elements): bool {
                 $defaults = [
                     'error'      => [],
-                    'header_set' => [
-                        'Accept'       => sprintf('application/vnd.flowmailer.%s+json', Flowmailer::API_VERSION),
-                        'Content-Type' => sprintf('application/vnd.flowmailer.%s+json', Flowmailer::API_VERSION),
-                        'Connection'   => 'Keep-Alive',
-                        'Keep-Alive'   => '300',
-                        'User-Agent'   => sprintf('FlowMailer PHP SDK %s:%s for API %s', self::PACKAGE_NAME, InstalledVersions::getVersion(self::PACKAGE_NAME), Flowmailer::API_VERSION),
-                    ],
-                    'retry' => [
+                    'header_set' => self::getDefaultHeaders(),
+                    'retry'      => [
                         'retries' => 3,
                     ],
                 ];

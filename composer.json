@@ -3,16 +3,16 @@
   "description": "Flowmailers PHP SDK for api.flowmailer.net REST API",
   "license": "MIT",
   "type": "library",
-  "support": {
-    "email": "support@flowmailer.com",
-    "issues": "https://github.com/flowmailer/flowmailer-php-sdk"
-  },
   "authors": [
     {
       "name": "Reyo Stallenberg",
       "email": "reyo@flowmailer.com"
     }
   ],
+  "support": {
+    "email": "support@flowmailer.com",
+    "issues": "https://github.com/flowmailer/flowmailer-php-sdk/issues"
+  },
   "require": {
     "php": "^8.1",
     "ext-json": "*",
@@ -59,6 +59,7 @@
     "flowmailer/flowmailer-php-sdk-implementation": "^1.0"
   },
   "suggest": {
+    "enqueue/simple-client": "With enqueue you're able to queue sending of messages (on many different implementations). Please see docs.",
     "php-http/logger-plugin": "The LoggerPlugin converts requests, responses and exceptions to strings and logs them with a PSR3 compliant logger"
   },
   "minimum-stability": "dev",
