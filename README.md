@@ -46,5 +46,7 @@ $result = $flowmailer->submitMessage($submitMessage);
 ### Advanced usage
 
 See [advanced usage] for examples on caching, logging and sending multiple messages at once.
+See [queue messages] for info on queueing messages for later consumption.
 
 [advanced usage]: docs/advanced-usage.md "See advanced usage"
+[queue messages]: docs/queue-messages.md "See queue messages"
