@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Flowmailer\API;
 
+use Flowmailer\API\Collection\ErrorCollection;
 use Flowmailer\API\Logger\Journal;
 use Flowmailer\API\Model\Errors;
 use Flowmailer\API\Model\OAuthErrorResponse;
@@ -117,7 +118,7 @@ class Flowmailer extends Endpoints
         return $this->authClient;
     }
 
-    public function setHttpClient(?HttpAsyncClient $httpClient = null): self
+    public function setHttpClient(?ClientInterface $httpClient = null): self
     {
         $this->innerHttpClient = $httpClient ?? $this->innerHttpClient ?? Psr18ClientDiscovery::find();
 
@@ -165,6 +166,21 @@ class Flowmailer extends Endpoints
         return $this->streamFactory;
     }
 
+    public function withAccountId(string $id): self
+    {
+        return new Flowmailer(
+            (clone $this->getOptions())->setAccountId($id),
+            $this->logger,
+            $this->cache,
+            $this->innerHttpClient,
+            $this->innerAuthClient,
+            $this->requestFactory,
+            $this->uriFactory,
+            $this->streamFactory,
+            $this->serializer
+        );
+    }
+
     public function handleResponse(ResponseInterface $response, $body = null, $method = '')
     {
         $responseBody = $response->getBody()->getContents();
@@ -191,6 +207,12 @@ class Flowmailer extends Endpoints
             $errors = $this->serializer->deserialize($responseBody, Errors::class, 'json');
 
             $exception = null;
+            if (is_null($errors->getAllErrors())) {
+                // TODO: handle error responses from oauth module
+                // Example: {"error":"invalid_scope","error_description":"Invalid scope: flowmailer","scope":"api"}
+                $exception = new \Exception($responseBody);
+                $errors->setAllErrors(new ErrorCollection([]));
+            }
             foreach ($errors->getAllErrors() as $error) {
                 $object  = (new UnicodeString($error->getObjectName() ?: ''))->trimPrefix('rest')->toString();
                 $field   = $error->getField() ?: '';

@@ -17,7 +17,7 @@ final class Options
 {
     private const PACKAGE_NAME = 'flowmailer/flowmailer-php-sdk';
 
-    private readonly array $options;
+    private array $options;
 
     private readonly OptionsResolver $resolver;
 
@@ -49,9 +49,23 @@ final class Options
         return $this->options['account_id'];
     }
 
+    public function setAccountId(string $accountId): self
+    {
+        $this->options['account_id'] = $accountId;
+
+        return $this;
+    }
+
     public function getClientId(): string
     {
         return $this->options['client_id'];
+    }
+
+    public function setClientId(string $clientId): self
+    {
+        $this->options['client_id'] = $clientId;
+
+        return $this;
     }
 
     public function getClientSecret(): string
@@ -59,9 +73,23 @@ final class Options
         return $this->options['client_secret'];
     }
 
+    public function setClientSecret(string $clientSecret): self
+    {
+        $this->options['client_secret'] = $clientSecret;
+
+        return $this;
+    }
+
     public function getBaseUrl(): string
     {
         return $this->options['base_url'];
+    }
+
+    public function setBaseUrl(string $baseUrl): self
+    {
+        $this->options['base_url'] = $baseUrl;
+
+        return $this;
     }
 
     public function getAuthBaseUrl(): string
@@ -69,9 +97,23 @@ final class Options
         return $this->options['auth_base_url'];
     }
 
+    public function setAuthBaseUrl(string $authBaseUrl): self
+    {
+        $this->options['auth_base_url'] = $authBaseUrl;
+
+        return $this;
+    }
+
     public function getOAuthScope(): string
     {
         return $this->options['oauth_scope'];
+    }
+
+    public function setOAuthScope(string $oauthScope): self
+    {
+        $this->options['oauth_scope'] = $oauthScope;
+
+        return $this;
     }
 
     public function getPlugin(string $name): array

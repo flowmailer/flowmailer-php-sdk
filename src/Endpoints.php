@@ -11,6 +11,8 @@ namespace Flowmailer\API;
 
 use Flowmailer\API\Collection\MessageCollection;
 use Flowmailer\API\Collection\MessageEventCollection;
+use Flowmailer\API\Model\Account;
+use Flowmailer\API\Model\AccountUser;
 use Flowmailer\API\Model\Message;
 use Flowmailer\API\Model\OAuthTokenResponse;
 use Flowmailer\API\Model\SubmitMessage;
@@ -59,6 +61,25 @@ abstract class Endpoints
         $response = $this->handleResponse($this->getResponse($request, $this->getAuthClient()), (string) $request->getBody(), $request->getMethod());
 
         return $this->serializer->deserialize($response, OAuthTokenResponse::class, 'json');
+    }
+
+    /**
+     * Create the RequestInterface for createAccount.
+     */
+    public function createRequestForCreateAccount(Account $account): RequestInterface
+    {
+        return $this->createRequest('POST', '/accounts', $account, [], [], []);
+    }
+
+    /**
+     * Create an account.
+     */
+    public function createAccount(Account $account)
+    {
+        $request  = $this->createRequestForCreateAccount($account);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $response;
     }
 
     /**
@@ -214,5 +235,24 @@ abstract class Endpoints
         $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
 
         return $this->serializer->deserialize($response, Message::class, 'json');
+    }
+
+    /**
+     * Create the RequestInterface for addUser.
+     */
+    public function createRequestForAddUser(AccountUser $accountUser): RequestInterface
+    {
+        return $this->createRequest('POST', sprintf('/%1$s/users', $this->getOptions()->getAccountId()), $accountUser, [], [], []);
+    }
+
+    /**
+     * Create a user.
+     */
+    public function addUser(AccountUser $accountUser)
+    {
+        $request  = $this->createRequestForAddUser($accountUser);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $response;
     }
 }
