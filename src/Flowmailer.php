@@ -13,7 +13,9 @@ use Flowmailer\API\Collection\ErrorCollection;
 use Flowmailer\API\Logger\Journal;
 use Flowmailer\API\Model\Errors;
 use Flowmailer\API\Model\OAuthErrorResponse;
+use Flowmailer\API\Parameter\ReferenceRange;
 use Flowmailer\API\Plugin\AuthTokenPlugin;
+use Flowmailer\API\Serializer\ResponseData;
 use Flowmailer\API\Serializer\SerializerFactory;
 use Flowmailer\API\Utility\SubmitMessageCreatorIterator;
 use Http\Client\Common\Exception\ClientErrorException;
@@ -198,7 +200,12 @@ class Flowmailer extends Endpoints
             return true;
         }
 
-        return $responseBody;
+        $meta = [];
+        if ($response->hasHeader('next-range')) {
+            $meta['next-range'] = ReferenceRange::fromString(current($response->getHeader('next-range')));
+        }
+
+        return new ResponseData($responseBody, $meta);
     }
 
     private function handleResponseError(ResponseInterface $response)

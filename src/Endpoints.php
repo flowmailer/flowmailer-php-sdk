@@ -136,8 +136,12 @@ abstract class Endpoints
     ): MessageEventCollection {
         $request  = $this->createRequestForGetMessageEvents($range, $flowIds, $sourceIds, $addmessagetags, $sortorder);
         $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $items    = $this->serializer->deserialize($response, MessageEventCollection::class, 'json');
+        if ($response->getMeta('next-range') instanceof ReferenceRange) {
+            $items->setNextRange($response->getMeta('next-range'));
+        }
 
-        return $this->serializer->deserialize($response, MessageEventCollection::class, 'json');
+        return $items;
     }
 
     /**
@@ -200,8 +204,12 @@ abstract class Endpoints
     ): MessageCollection {
         $request  = $this->createRequestForGetMessages($range, $flowIds, $addevents, $addheaders, $addonlinelink, $addtags, $sortfield, $sortorder);
         $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $items    = $this->serializer->deserialize($response, MessageCollection::class, 'json');
+        if ($response->getMeta('next-range') instanceof ReferenceRange) {
+            $items->setNextRange($response->getMeta('next-range'));
+        }
 
-        return $this->serializer->deserialize($response, MessageCollection::class, 'json');
+        return $items;
     }
 
     /**
