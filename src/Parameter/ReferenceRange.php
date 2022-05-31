@@ -22,6 +22,14 @@ class ReferenceRange implements \Stringable
         return sprintf('items=%s:%d', $this->getReference(), $this->getCount());
     }
 
+    public static function fromString(string $string): self
+    {
+        parse_str($string, $data);
+        $values = explode(':', (string) $data['items']);
+
+        return new self((int) $values[1], $values[0]);
+    }
+
     public function getCount(): int
     {
         return $this->count;
