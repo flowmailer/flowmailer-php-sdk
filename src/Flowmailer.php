@@ -204,6 +204,10 @@ class Flowmailer extends Endpoints
         if ($response->hasHeader('next-range')) {
             $meta['next-range'] = ReferenceRange::fromString(current($response->getHeader('next-range')));
         }
+        if ($response->hasHeader('content-range')) {
+//            dump(current($response->getHeader('content-range')));
+            // $meta['content-range'] = ReferenceRange::fromString(current($response->getHeader('content-range')));
+        }
 
         return new ResponseData($responseBody, $meta);
     }

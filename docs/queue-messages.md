@@ -11,6 +11,8 @@ composer require enqueue/simple-client enqueue/fs
 ```
 
 ```php
+<?php
+
 use Flowmailer\API\Flowmailer;
 use Flowmailer\API\SubmitMessageQueue;
 use Monolog\Handler\StreamHandler;
@@ -33,9 +35,11 @@ $flowmailerQueue = SubmitMessageQueue::init($flowmailer, $queueDSN);
 
 ### Producing a message
 ```php
+<?php
+
 use Flowmailer\API\Model\SubmitMessage;
 
-// Code from setup 
+// Code from setup
 
 $submitMessage = (new SubmitMessage())
     ->setMessageType('EMAIL')
@@ -45,12 +49,13 @@ $submitMessage = (new SubmitMessage())
 ;
 
 $flowmailerQueue->submitMessage($submitMessage);
-
 ```
 
 ### Consuming messages
 ```php
-// Code from setup 
+<?php
+
+// Code from setup
 $flowmailerQueue->consume();
 ```
 

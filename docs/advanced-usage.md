@@ -12,12 +12,6 @@ composer require symfony/cache
 ```
 
 ```php
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Psr16Cache;
-
-$cache = new Psr16Cache(new FilesystemAdapter('flowmailer-token', 0, __DIR__.'/cache-dir'));
-
-$flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret, [], null, $cache);
 ```
 
 ## Logging
@@ -29,6 +23,7 @@ composer require monolog/monolog
 ```
 
 ```php
+<?php
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -85,10 +80,9 @@ $callback = function (array $item) use ($sender) {
 
 $result = $flowmailer->submitMessages(new SubmitMessageCreatorIterator($data, $callback));
 
-foreach ($result as $id) { // Need to loop on the result for sending the messaged 
+foreach ($result as $id) { // Need to loop on the result for sending the messages
     // Do additional stuff with the result id
 }
-
 ```
 
 ### ArrayIterator
@@ -105,7 +99,6 @@ $data = new \ArrayIterator([
     ],
     // Add more rows here
 ]);
-
 ```
 
 ### CSV iterator

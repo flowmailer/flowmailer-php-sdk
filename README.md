@@ -16,36 +16,37 @@ $ composer require symfony/http-client nyholm/psr7 flowmailer/flowmailer-php-sdk
 Choose your preferred [client implementations](https://packagist.org/providers/psr/http-client-implementation) on packagist.
 
 ### Basic usage
+
+#### Submit a message
+```php
+```
+
+#### Loop over messages that were submitted earlier
 ```php
 <?php
 
-declare(strict_types=1);
+use Flowmailer\API\Collection\MessageCollection;
 
-require 'vendor/autoload.php';
+$flowmailer           = Flowmailer::init($accountId, $clientId, $clientSecret);
+$pageSize             = 100;
+$savedReferenceOrNull = null; // Get reference from database or cache (null will start from the beginning of the list)
+$referenceRange       = new ReferenceRange($pageSize, $savedReferenceOrNull);
 
-use Flowmailer\API\Flowmailer;
-use Flowmailer\API\Model\SubmitMessage;
+while ($referenceRange instanceof ReferenceRange) {
+    /** @var MessageCollection $result */
+    $result = $flowmailer->getMessages($referenceRange);
 
-// The credentials can be obtained in your Flowmailer account
-$accountId    = '...';
-$clientId     = '...';
-$clientSecret = '...';
+    // Do stuff with the result here
 
-$flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret);
-
-$submitMessage = (new SubmitMessage())
-    ->setMessageType('EMAIL')
-    ->setSubject('An e-mail message')
-    ->setRecipientAddress('your-customer@email.org')
-    ->setSenderAddress('info@your-company.com')
-;
-
-$result = $flowmailer->submitMessage($submitMessage);
+    // Store $referenceRange->getReference() value here in database or cache as input for a future run
+    // Now we set the ReferenceRange for the next loop in memory
+    $referenceRange = $result->getNextRange();
+}
 ```
 
 ### Advanced usage
 
-See [advanced usage] for examples on caching, logging and sending multiple messages at once.
+See [advanced usage] for examples on caching, logging and sending multiple messages at once.  
 See [queue messages] for info on queueing messages for later consumption.
 
 [advanced usage]: docs/advanced-usage.md "See advanced usage"
