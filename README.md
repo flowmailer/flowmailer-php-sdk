@@ -19,6 +19,28 @@ Choose your preferred [client implementations](https://packagist.org/providers/p
 
 #### Submit a message
 ```php
+<?php
+
+declare(strict_types=1);
+
+require 'vendor/autoload.php';
+
+use Flowmailer\API\Flowmailer;
+use Flowmailer\API\Model\SubmitMessage;
+
+// The credentials can be obtained in your Flowmailer account
+$accountId    = '...';
+$clientId     = '...';
+$clientSecret = '...';
+
+$flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret);
+
+$submitMessage = (new SubmitMessage())
+    ->setMessageType('EMAIL')
+    ->setSubject('An e-mail message')
+    ->setRecipientAddress('your-customer@email.org')
+    ->setSenderAddress('info@your-company.com')
+;
 ```
 
 #### Loop over messages that were submitted earlier
