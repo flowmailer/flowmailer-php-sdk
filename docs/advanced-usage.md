@@ -12,7 +12,14 @@ composer require symfony/cache
 ```
 
 ```php
-```
+<?php
+
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Psr16Cache;
+
+$cache = new Psr16Cache(new FilesystemAdapter('flowmailer-token', 0, __DIR__.'/cache-dir'));
+
+$flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret, [], null, $cache);```
 
 ## Logging
 You can use any [PSR-3](https://www.php-fig.org/psr/psr-3/) compatible logger, see [log implementations](https://packagist.org/providers/psr/log-implementation) on packagist.
