@@ -100,6 +100,21 @@ class Flowmailer extends Endpoints
         return new self(new Options($options), ...$additionalArgs);
     }
 
+    public function request($method, $path, array $parameters, ?string $type = null)
+    {
+        $parameters = new CustomRequestOptions($parameters);
+        $path       = sprintf('/%1$s%2$s', $this->getOptions()->getAccountId(), $path);
+        $request    = $this->createRequest($method, $path, $parameters->getBody(), $parameters->getMatrices(), $parameters->getQuery(), $parameters->getHeaders());
+
+        $response   = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        if (is_null($type)) {
+            return $response;
+        }
+
+        return $this->serializer->deserialize($response, $type, 'json');
+    }
+
     public function setAuthClient(?ClientInterface $authClient = null)
     {
         $this->authClient = new PluginClient(
@@ -303,6 +318,12 @@ class Flowmailer extends Endpoints
         }
         if (($matricesString = http_build_query($matrices, '', ';')) !== '') {
             $path = sprintf('%s;%s', $path, rawurldecode($matricesString));
+        }
+
+        foreach ($query as $queryName => $queryValue) {
+            if ($queryValue instanceof \Stringable) {
+                $query[$queryName] = (string) $queryValue;
+            }
         }
 
         $uri = $this->uriFactory->createUri(sprintf('%s%s', $base, $path));
