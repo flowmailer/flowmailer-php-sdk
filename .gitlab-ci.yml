@@ -1,6 +1,11 @@
 stages:
   - deploy
 
+workflow:
+  rules:
+    - if: $CI_COMMIT_REF_NAME =~ /from-src\/.*$/
+      when: never
+
 deploy:
   image: curlimages/curl:latest
   stage: deploy
