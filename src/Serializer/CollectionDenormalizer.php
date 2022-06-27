@@ -20,8 +20,12 @@ class CollectionDenormalizer implements DenormalizerInterface, DenormalizerAware
 
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
-        $modelName      = substr((new \ReflectionClass($type))->getShortName(), 0, -10);
-        $collectionType = sprintf('\\Flowmailer\\API\\Model\\%s[]', $modelName);
+        $modelName = substr((new \ReflectionClass($type))->getShortName(), 0, -10);
+
+        $base = explode('\\', (new \ReflectionClass($type))->getNamespaceName());
+        array_pop($base);
+
+        $collectionType = sprintf('\\%s\\Model\\%s[]', implode('\\', $base), $modelName);
 
         return new $type($this->denormalizer->denormalize($data, $collectionType, $format, $context));
     }
