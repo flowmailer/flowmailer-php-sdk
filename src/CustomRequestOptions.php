@@ -13,6 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CustomRequestOptions
 {
+    private readonly array $options;
+
     private readonly OptionsResolver $resolver;
 
     /**
