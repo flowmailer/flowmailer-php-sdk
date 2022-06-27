@@ -13,7 +13,7 @@ use Composer\InstalledVersions;
 use Symfony\Component\OptionsResolver\Options as SymfonyOptions;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class Options
+final class Options implements OptionsInterface
 {
     private const PACKAGE_NAME = 'flowmailer/flowmailer-php-sdk';
 
@@ -49,7 +49,7 @@ final class Options
         return $this->options['account_id'];
     }
 
-    public function setAccountId(string $accountId): self
+    public function setAccountId(string $accountId): OptionsInterface
     {
         $this->options['account_id'] = $accountId;
 
@@ -61,7 +61,7 @@ final class Options
         return $this->options['client_id'];
     }
 
-    public function setClientId(string $clientId): self
+    public function setClientId(string $clientId): OptionsInterface
     {
         $this->options['client_id'] = $clientId;
 
@@ -73,7 +73,7 @@ final class Options
         return $this->options['client_secret'];
     }
 
-    public function setClientSecret(string $clientSecret): self
+    public function setClientSecret(string $clientSecret): OptionsInterface
     {
         $this->options['client_secret'] = $clientSecret;
 
@@ -85,7 +85,7 @@ final class Options
         return $this->options['base_url'];
     }
 
-    public function setBaseUrl(string $baseUrl): self
+    public function setBaseUrl(string $baseUrl): OptionsInterface
     {
         $this->options['base_url'] = $baseUrl;
 
@@ -97,7 +97,7 @@ final class Options
         return $this->options['auth_base_url'];
     }
 
-    public function setAuthBaseUrl(string $authBaseUrl): self
+    public function setAuthBaseUrl(string $authBaseUrl): OptionsInterface
     {
         $this->options['auth_base_url'] = $authBaseUrl;
 
@@ -109,7 +109,7 @@ final class Options
         return $this->options['oauth_scope'];
     }
 
-    public function setOAuthScope(string $oauthScope): self
+    public function setOAuthScope(string $oauthScope): OptionsInterface
     {
         $this->options['oauth_scope'] = $oauthScope;
 

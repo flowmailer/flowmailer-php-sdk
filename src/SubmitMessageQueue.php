@@ -23,13 +23,13 @@ use Psr\Log\LoggerInterface;
 class SubmitMessageQueue
 {
     public function __construct(
-        private readonly Flowmailer $api,
+        private readonly FlowmailerInterface $api,
         private readonly SimpleClient $client,
         private readonly string $topic = 'flowmailer_messages'
     ) {
     }
 
-    public static function init(Flowmailer $api, $queueClientConfig, $topic = 'flowmailer_messages', ?LoggerInterface $logger = null)
+    public static function init(FlowmailerInterface $api, $queueClientConfig, $topic = 'flowmailer_messages', ?LoggerInterface $logger = null)
     {
         if (InstalledVersions::isInstalled('enqueue/simple-client') === false) {
             throw new \Exception('To be able to queue messages, please install enqueue/simple-client and a suitable provider. Please see the Flowmailer docs.');

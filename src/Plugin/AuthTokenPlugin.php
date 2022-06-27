@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace Flowmailer\API\Plugin;
 
 use Cache\Adapter\PHPArray\ArrayCachePool;
-use Flowmailer\API\Flowmailer;
+use Flowmailer\API\FlowmailerInterface;
 use Flowmailer\API\Model\OAuthTokenResponse;
-use Flowmailer\API\Options;
+use Flowmailer\API\OptionsInterface;
 use Http\Client\Common\Plugin;
 use Http\Promise\Promise;
 use Psr\Http\Message\RequestInterface;
@@ -26,8 +26,8 @@ class AuthTokenPlugin implements Plugin
     private readonly CacheInterface $cache;
 
     public function __construct(
-        private readonly Flowmailer $client,
-        private readonly Options $options,
+        private readonly FlowmailerInterface $client,
+        private readonly OptionsInterface $options,
         ?CacheInterface $cache = null,
         private readonly int $maxRetries = 3
     ) {
