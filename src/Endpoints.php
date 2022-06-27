@@ -17,7 +17,9 @@ use Flowmailer\API\Model\Message;
 use Flowmailer\API\Model\OAuthTokenResponse;
 use Flowmailer\API\Model\SubmitMessage;
 use Flowmailer\API\Parameter\ReferenceRange;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 abstract class Endpoints
@@ -28,6 +30,28 @@ abstract class Endpoints
     public function __construct(public SerializerInterface $serializer)
     {
     }
+
+    abstract protected function createRequest(
+        $method,
+        $path,
+        $body,
+        array $matrices,
+        array $query,
+        array $headers
+    ): RequestInterface;
+
+    abstract protected function createAuthRequest($method, $path, $formData): RequestInterface;
+
+    abstract public function getAuthClient(): ClientInterface;
+
+    abstract public function handleResponse(ResponseInterface $response, $body = null, $method = '');
+
+    abstract public function getResponse(
+        RequestInterface $request,
+        ClientInterface $client = null
+    ): ResponseInterface;
+
+    abstract protected function getOptions(): OptionsInterface;
 
     /**
      * Create the RequestInterface for createOAuthToken.
@@ -71,6 +95,8 @@ abstract class Endpoints
 
     /**
      * Create the RequestInterface for createAccount.
+     *
+     * @codeCoverageIgnore
      */
     public function createRequestForCreateAccount(Account $account): RequestInterface
     {
@@ -79,6 +105,8 @@ abstract class Endpoints
 
     /**
      * Create an account.
+     *
+     * @codeCoverageIgnore
      */
     public function createAccount(Account $account)
     {
@@ -266,6 +294,8 @@ abstract class Endpoints
 
     /**
      * Create the RequestInterface for addUser.
+     *
+     * @codeCoverageIgnore
      */
     public function createRequestForAddUser(AccountUser $accountUser): RequestInterface
     {
@@ -274,6 +304,8 @@ abstract class Endpoints
 
     /**
      * Create a user.
+     *
+     * @codeCoverageIgnore
      */
     public function addUser(AccountUser $accountUser)
     {

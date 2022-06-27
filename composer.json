@@ -40,6 +40,7 @@
     "symfony/string": "^5.4 || ^6.0"
   },
   "require-dev": {
+    "enqueue/simple-client": "^0.10.16",
     "ergebnis/composer-normalize": "^2.6 || ^3.0",
     "friendsofphp/php-cs-fixer": "^3.4",
     "guzzlehttp/psr7": "^1.0",
