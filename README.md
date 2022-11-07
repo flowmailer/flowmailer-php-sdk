@@ -21,8 +21,6 @@ Choose your preferred [client implementations](https://packagist.org/providers/p
 ```php
 <?php
 
-declare(strict_types=1);
-
 require 'vendor/autoload.php';
 
 use Flowmailer\API\Flowmailer;
