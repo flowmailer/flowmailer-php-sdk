@@ -28,6 +28,6 @@ class SerializerFactory
         $propertyTypeExtractor = new PropertyInfoExtractor([$reflectionExtractor], [$phpDocExtractor, $reflectionExtractor], [$phpDocExtractor], [$reflectionExtractor], [$reflectionExtractor]);
         $normalizer            = new ObjectNormalizer(null, null, null, $propertyTypeExtractor);
 
-        return new Serializer([new DateTimeNormalizer(), new CollectionDenormalizer(), new ArrayDenormalizer(), $normalizer], [new JsonEncoder()]);
+        return new Serializer([new DateTimeNormalizer([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:sP', DateTimeNormalizer::TIMEZONE_KEY => 'Z']), new CollectionDenormalizer(), new ArrayDenormalizer(), $normalizer], [new JsonEncoder()]);
     }
 }
