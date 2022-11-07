@@ -19,7 +19,8 @@ use Symfony\Component\Cache\Psr16Cache;
 
 $cache = new Psr16Cache(new FilesystemAdapter('flowmailer-token', 0, __DIR__.'/cache-dir'));
 
-$flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret, [], null, $cache);```
+$flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret, [], null, $cache);
+```
 
 ## Logging
 You can use any [PSR-3](https://www.php-fig.org/psr/psr-3/) compatible logger, see [log implementations](https://packagist.org/providers/psr/log-implementation) on packagist.
@@ -32,14 +33,14 @@ composer require monolog/monolog
 ```php
 <?php
 
-use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 /** init code from 'Basic usage' */
 $flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret);
 $flowmailer->setLogger((new Logger('flowmailer'))->pushHandler(new StreamHandler(__DIR__.'/journal.log', Logger::INFO)));
 
-/** rest of code from 'Basic usage' */
+/* rest of code from 'Basic usage' */
 ```
 
 This will log creation of objects in Flowmailer, like:
@@ -52,8 +53,6 @@ This will log creation of objects in Flowmailer, like:
 ## Multiple messages
 ```php
 <?php
-
-declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
@@ -74,7 +73,7 @@ $data = new \ArrayIterator([
         'name'    => 'Full Name',
         'subject' => 'An e-mail message',
         'email'   => 'your-customer@email.org',
-    ]
+    ],
 ]);
 $sender   = 'info@your-company.com';
 $callback = function (array $item) use ($sender) {
@@ -141,9 +140,9 @@ Create a sqlite database named data.sqlite3 with a table 'data' in it.
 <?php
 
 $pdo = new PDO('sqlite:data.sqlite3');
-$pdo->exec("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY, name TEXT, subject TEXT, email TEXT)");
+$pdo->exec('CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY, name TEXT, subject TEXT, email TEXT)');
 
-$statement = $pdo->prepare("INSERT INTO data (name, subject, email) VALUES (:name, :subject, :email)");
+$statement = $pdo->prepare('INSERT INTO data (name, subject, email) VALUES (:name, :subject, :email)');
 $statement->bindParam(':name', $name);
 $statement->bindParam(':subject', $subject);
 $statement->bindParam(':email', $email);

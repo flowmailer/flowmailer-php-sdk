@@ -106,7 +106,7 @@ final class SubmitMessage implements ModelInterface
      */
     private string $recipientAddress;
 
-    private ?\DateTime $scheduleAt = null;
+    private ?\DateTimeInterface $scheduleAt = null;
 
     /**
      * Sender email address or phone number.
@@ -288,14 +288,14 @@ final class SubmitMessage implements ModelInterface
         return $this->recipientAddress;
     }
 
-    public function setScheduleAt(?\DateTime $scheduleAt = null): self
+    public function setScheduleAt(?\DateTimeInterface $scheduleAt = null): self
     {
         $this->scheduleAt = $scheduleAt;
 
         return $this;
     }
 
-    public function getScheduleAt(): ?\DateTime
+    public function getScheduleAt(): ?\DateTimeInterface
     {
         return $this->scheduleAt;
     }

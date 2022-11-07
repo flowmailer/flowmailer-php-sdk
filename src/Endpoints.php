@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Flowmailer\API;
 
+use Flowmailer\API\Collection\AccountUserCollection;
 use Flowmailer\API\Collection\MessageCollection;
 use Flowmailer\API\Collection\MessageEventCollection;
 use Flowmailer\API\Model\Account;
@@ -60,6 +61,7 @@ abstract class Endpoints
      * @param $clientSecret The API client secret provided by Flowmailer
      * @param $grantType    must be `client_credentials`
      * @param $scope        Must be absent or `api`
+     *
      * @codeCoverageIgnore
      */
     public function createRequestForCreateOAuthToken(
@@ -124,6 +126,7 @@ abstract class Endpoints
      * @param array          $sourceIds      Filter results on message source ID
      * @param bool           $addmessagetags Message tags will be included with each event if this parameter is true
      * @param string         $sortorder
+     *
      * @codeCoverageIgnore
      */
     public function createRequestForGetMessageEvents(
@@ -183,6 +186,7 @@ abstract class Endpoints
      * @param bool           $addtags
      * @param string         $sortfield     Sort by INSERTED or SUBMITTED (default INSERTED)
      * @param string         $sortorder
+     *
      * @codeCoverageIgnore
      */
     public function createRequestForGetMessages(
@@ -268,6 +272,7 @@ abstract class Endpoints
      *
      * @param      $messageId Message ID
      * @param bool $addtags
+     *
      * @codeCoverageIgnore
      */
     public function createRequestForGetMessage($messageId, ?bool $addtags = false): RequestInterface
@@ -290,6 +295,27 @@ abstract class Endpoints
         $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
 
         return $this->serializer->deserialize($response, Message::class, 'json');
+    }
+
+    /**
+     * Create the RequestInterface for getUsers.
+     *
+     * @codeCoverageIgnore
+     */
+    public function createRequestForGetUsers(): RequestInterface
+    {
+        return $this->createRequest('GET', sprintf('/%1$s/users', $this->getOptions()->getAccountId()), null, [], [], []);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getUsers(): AccountUserCollection
+    {
+        $request  = $this->createRequestForGetUsers();
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->serializer->deserialize($response, AccountUserCollection::class, 'json');
     }
 
     /**

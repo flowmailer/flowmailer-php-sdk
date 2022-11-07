@@ -100,13 +100,15 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         return new self(new Options($options), ...$additionalArgs);
     }
 
-    public function request($method, $path, array $parameters, ?string $type = null)
+    public function request($method, $path, array $parameters = [], ?string $type = null, bool $autoAddAccountId = true)
     {
         $parameters = new CustomRequestOptions($parameters);
-        $path       = sprintf('/%1$s%2$s', $this->getOptions()->getAccountId(), $path);
-        $request    = $this->createRequest($method, $path, $parameters->getBody(), $parameters->getMatrices(), $parameters->getQuery(), $parameters->getHeaders());
+        if ($autoAddAccountId) {
+            $path = sprintf('/%1$s%2$s', $this->getOptions()->getAccountId(), $path);
+        }
 
-        $response   = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request  = $this->createRequest($method, $path, $parameters->getBody(), $parameters->getMatrices(), $parameters->getQuery(), $parameters->getHeaders());
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
 
         if (is_null($type)) {
             return $response;
@@ -314,7 +316,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
 
         $matrices = array_filter($matrices);
         foreach ($matrices as $matrixName => $matrixValue) {
-            $matrices[$matrixName] = (string) $matrixValue;
+            $matrices[$matrixName] = implode(',', (array) $matrixValue);
         }
         if (($matricesString = http_build_query($matrices, '', ';')) !== '') {
             $path = sprintf('%s;%s', $path, rawurldecode($matricesString));
