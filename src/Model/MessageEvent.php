@@ -72,7 +72,7 @@ final class MessageEvent implements ModelInterface
     /**
      * Event date.
      */
-    private ?\DateTime $received = null;
+    private ?\DateTimeInterface $received = null;
 
     private ?string $referer = null;
 
@@ -256,14 +256,14 @@ final class MessageEvent implements ModelInterface
         return $this->operatingSystemVersion;
     }
 
-    public function setReceived(?\DateTime $received = null): self
+    public function setReceived(?\DateTimeInterface $received = null): self
     {
         $this->received = $received;
 
         return $this;
     }
 
-    public function getReceived(): ?\DateTime
+    public function getReceived(): ?\DateTimeInterface
     {
         return $this->received;
     }
