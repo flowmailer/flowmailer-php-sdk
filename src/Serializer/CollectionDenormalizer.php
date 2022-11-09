@@ -25,7 +25,14 @@ class CollectionDenormalizer implements DenormalizerInterface, DenormalizerAware
         $base = explode('\\', (new \ReflectionClass($type))->getNamespaceName());
         array_pop($base);
 
-        $collectionType = sprintf('\\%s\\Model\\%s[]', implode('\\', $base), $modelName);
+        $collectionType = sprintf('\\%s\\Model\\%s', implode('\\', $base), $modelName);
+        if (class_exists($collectionType) === false) {
+            $base = explode('\\', __NAMESPACE__);
+            array_pop($base);
+
+            $collectionType = sprintf('\\%s\\Model\\%s', implode('\\', $base), $modelName);
+        }
+        $collectionType .= '[]';
 
         return new $type($this->denormalizer->denormalize($data, $collectionType, $format, $context));
     }
