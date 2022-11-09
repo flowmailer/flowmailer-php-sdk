@@ -107,6 +107,11 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
             $path = sprintf('/%1$s%2$s', $this->getOptions()->getAccountId(), $path);
         }
 
+        preg_match_all('#{(.*?)}#s', $path,$matches);
+        foreach($matches[0] as $index => $value){
+            $path = str_replace($value, $parameters->getPath()[$matches[1][$index]], $path);
+        }
+
         $request  = $this->createRequest($method, $path, $parameters->getBody(), $parameters->getMatrices(), $parameters->getQuery(), $parameters->getHeaders());
         $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
 
