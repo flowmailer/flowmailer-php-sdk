@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Flowmailer\API;
 
 use Flowmailer\API\Collection\ErrorCollection;
+use Flowmailer\API\Collection\NextRangeHolderCollection;
 use Flowmailer\API\Logger\Journal;
 use Flowmailer\API\Model\Errors;
 use Flowmailer\API\Model\OAuthErrorResponse;
@@ -119,7 +120,12 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
             return $response;
         }
 
-        return $this->serializer->deserialize($response, $type, 'json');
+        $items = $this->serializer->deserialize($response, $type, 'json');
+        if ($response->getMeta('next-range') instanceof ReferenceRange && is_subclass_of($type, NextRangeHolderCollection::class)) {
+            $items->setNextRange($response->getMeta('next-range'));
+        }
+
+        return $items;
     }
 
     public function setAuthClient(?ClientInterface $authClient = null)
@@ -321,6 +327,9 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
 
         $matrices = array_filter($matrices);
         foreach ($matrices as $matrixName => $matrixValue) {
+            if ($matrixValue instanceof \Stringable) {
+                $matrixValue = (string) $matrixValue;
+            }
             $matrices[$matrixName] = implode(',', (array) $matrixValue);
         }
         if (($matricesString = http_build_query($matrices, '', ';')) !== '') {
