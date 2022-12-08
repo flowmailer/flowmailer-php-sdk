@@ -21,7 +21,7 @@ interface FlowmailerInterface
 {
     public static function init(string $accountId, string $clientId, string $clientSecret, array $options = [], ...$additionalArgs): FlowmailerInterface;
 
-    public function request($method, $path, array $parameters, ?string $type = null);
+    public function request($method, $path, array $parameters = [], ?string $type = null, bool $autoAddAccountId = true);
 
     public function setAuthClient(?ClientInterface $authClient = null);
 
