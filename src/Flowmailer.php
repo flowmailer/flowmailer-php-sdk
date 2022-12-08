@@ -271,18 +271,18 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
             /* @var OAuthErrorResponse $oAuthError */
             try {
                 $oAuthError = $this->serializer->deserialize($responseBody, OAuthErrorResponse::class, 'json');
-            } catch (NotEncodableValueException) {
-                return new \Exception('Internal Server Error');
+            } catch (NotEncodableValueException $exception) {
+                return new \Exception(sprintf('Unable to authenticate: %s', str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode(), $exception);
             }
 
             if (is_null($oAuthError) === false) {
                 return new \Exception($oAuthError->getErrorDescription());
             }
         } elseif ($response->getStatusCode() == 500) {
-            return new \Exception('Internal Server Error');
+            return new \Exception(sprintf('Internal Server Error: %s', str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode());
         }
 
-        return new \Exception('Internal Server Error');
+        return new \Exception(sprintf('Something went wrong with status (%s): %s', $response->getStatusCode(), str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode());
     }
 
     /**
