@@ -10,13 +10,25 @@ declare(strict_types=1);
 namespace Flowmailer\API;
 
 use Flowmailer\API\Collection\AccountUserCollection;
+use Flowmailer\API\Collection\BouncedMessageCollection;
+use Flowmailer\API\Collection\MessageArchiveCollection;
 use Flowmailer\API\Collection\MessageCollection;
 use Flowmailer\API\Collection\MessageEventCollection;
+use Flowmailer\API\Collection\MessageHoldCollection;
 use Flowmailer\API\Model\Account;
 use Flowmailer\API\Model\AccountUser;
+use Flowmailer\API\Model\DataSets;
 use Flowmailer\API\Model\Message;
+use Flowmailer\API\Model\MessageArchive;
+use Flowmailer\API\Model\MessageHold;
 use Flowmailer\API\Model\OAuthTokenResponse;
+use Flowmailer\API\Model\ResendMessage;
+use Flowmailer\API\Model\SimulateMessage;
+use Flowmailer\API\Model\SimulateMessageResult;
 use Flowmailer\API\Model\SubmitMessage;
+use Flowmailer\API\Parameter\ContentRange;
+use Flowmailer\API\Parameter\DateRange;
+use Flowmailer\API\Parameter\ItemsRange;
 use Flowmailer\API\Parameter\ReferenceRange;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -61,7 +73,6 @@ abstract class Endpoints
      * @param $clientSecret The API client secret provided by Flowmailer
      * @param $grantType    must be `client_credentials`
      * @param $scope        Must be absent or `api`
-     *
      * @codeCoverageIgnore
      */
     public function createRequestForCreateOAuthToken(
@@ -126,7 +137,6 @@ abstract class Endpoints
      * @param array          $sourceIds      Filter results on message source ID
      * @param bool           $addmessagetags Message tags will be included with each event if this parameter is true
      * @param string         $sortorder
-     *
      * @codeCoverageIgnore
      */
     public function createRequestForGetMessageEvents(
@@ -171,8 +181,76 @@ abstract class Endpoints
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
+        if ($response->getMeta('content-range') instanceof ContentRange) {
+            $items->setContentRange($response->getMeta('content-range'));
+        }
 
         return $items;
+    }
+
+    /**
+     * Create the RequestInterface for getMessageHolds.
+     *
+     * @param ItemsRange $range     Limits the returned list
+     * @param DateRange  $daterange Date range the message was submitted in
+     * @codeCoverageIgnore
+     */
+    public function createRequestForGetMessageHolds(
+        ItemsRange $range = null,
+        ?DateRange $daterange = null
+    ): RequestInterface {
+        $matrices = [
+            'daterange' => $daterange,
+        ];
+        $headers = [
+            'Range' => $range,
+        ];
+
+        return $this->createRequest('GET', sprintf('/%1$s/message_hold', $this->getOptions()->getAccountId()), null, $matrices, [], $headers);
+    }
+
+    /**
+     * List messages which could not be processed.
+     *
+     * @codeCoverageIgnore
+     */
+    public function getMessageHolds(ItemsRange $range = null, ?DateRange $daterange = null): MessageHoldCollection
+    {
+        $request  = $this->createRequestForGetMessageHolds($range, $daterange);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $items    = $this->serializer->deserialize($response, MessageHoldCollection::class, 'json');
+        if ($response->getMeta('next-range') instanceof ReferenceRange) {
+            $items->setNextRange($response->getMeta('next-range'));
+        }
+        if ($response->getMeta('content-range') instanceof ContentRange) {
+            $items->setContentRange($response->getMeta('content-range'));
+        }
+
+        return $items;
+    }
+
+    /**
+     * Create the RequestInterface for getMessageHold.
+     *
+     * @param $messageId Message ID
+     * @codeCoverageIgnore
+     */
+    public function createRequestForGetMessageHold($messageId): RequestInterface
+    {
+        return $this->createRequest('GET', sprintf('/%1$s/message_hold/%2$s', $this->getOptions()->getAccountId(), $messageId), null, [], [], []);
+    }
+
+    /**
+     * Get a held message by its id.
+     *
+     * @codeCoverageIgnore
+     */
+    public function getMessageHold($messageId): MessageHold
+    {
+        $request  = $this->createRequestForGetMessageHold($messageId);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->serializer->deserialize($response, MessageHold::class, 'json');
     }
 
     /**
@@ -186,7 +264,6 @@ abstract class Endpoints
      * @param bool           $addtags
      * @param string         $sortfield     Sort by INSERTED or SUBMITTED (default INSERTED)
      * @param string         $sortorder
-     *
      * @codeCoverageIgnore
      */
     public function createRequestForGetMessages(
@@ -240,8 +317,34 @@ abstract class Endpoints
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
+        if ($response->getMeta('content-range') instanceof ContentRange) {
+            $items->setContentRange($response->getMeta('content-range'));
+        }
 
         return $items;
+    }
+
+    /**
+     * Create the RequestInterface for simulateMessage.
+     *
+     * @codeCoverageIgnore
+     */
+    public function createRequestForSimulateMessage(SimulateMessage $simulateMessage): RequestInterface
+    {
+        return $this->createRequest('POST', sprintf('/%1$s/messages/simulate', $this->getOptions()->getAccountId()), $simulateMessage, [], [], []);
+    }
+
+    /**
+     * Simulate an email or sms message.
+     *
+     * @codeCoverageIgnore
+     */
+    public function simulateMessage(SimulateMessage $simulateMessage): SimulateMessageResult
+    {
+        $request  = $this->createRequestForSimulateMessage($simulateMessage);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->serializer->deserialize($response, SimulateMessageResult::class, 'json');
     }
 
     /**
@@ -272,7 +375,6 @@ abstract class Endpoints
      *
      * @param      $messageId Message ID
      * @param bool $addtags
-     *
      * @codeCoverageIgnore
      */
     public function createRequestForGetMessage($messageId, ?bool $addtags = false): RequestInterface
@@ -295,6 +397,213 @@ abstract class Endpoints
         $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
 
         return $this->serializer->deserialize($response, Message::class, 'json');
+    }
+
+    /**
+     * Create the RequestInterface for getMessageArchive.
+     *
+     * @param      $messageId      Message ID
+     * @param bool $addattachments
+     * @param bool $adddata
+     * @codeCoverageIgnore
+     */
+    public function createRequestForGetMessageArchive(
+        $messageId,
+        ?bool $addattachments = false,
+        ?bool $adddata = false
+    ): RequestInterface {
+        $query = [
+            'addattachments' => $addattachments,
+            'adddata'        => $adddata,
+        ];
+
+        return $this->createRequest('GET', sprintf('/%1$s/messages/%2$s/archive', $this->getOptions()->getAccountId(), $messageId), null, [], $query, []);
+    }
+
+    /**
+     * List the message as archived by one or more flow steps.
+     *
+     * @codeCoverageIgnore
+     */
+    public function getMessageArchive(
+        $messageId,
+        ?bool $addattachments = false,
+        ?bool $adddata = false
+    ): MessageArchiveCollection {
+        $request  = $this->createRequestForGetMessageArchive($messageId, $addattachments, $adddata);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->serializer->deserialize($response, MessageArchiveCollection::class, 'json');
+    }
+
+    /**
+     * Create the RequestInterface for getMessageErrorArchive.
+     *
+     * @param      $messageId
+     * @param bool $addattachments
+     * @param bool $adddata
+     * @codeCoverageIgnore
+     */
+    public function createRequestForGetMessageErrorArchive(
+        $messageId,
+        ?bool $addattachments = false,
+        ?bool $adddata = false
+    ): RequestInterface {
+        $query = [
+            'addattachments' => $addattachments,
+            'adddata'        => $adddata,
+        ];
+
+        return $this->createRequest('GET', sprintf('/%1$s/messages/%2$s/error_archive', $this->getOptions()->getAccountId(), $messageId), null, [], $query, []);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getMessageErrorArchive(
+        $messageId,
+        ?bool $addattachments = false,
+        ?bool $adddata = false
+    ): MessageArchive {
+        $request  = $this->createRequestForGetMessageErrorArchive($messageId, $addattachments, $adddata);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->serializer->deserialize($response, MessageArchive::class, 'json');
+    }
+
+    /**
+     * Create the RequestInterface for resendMessage.
+     *
+     * @param $messageId Message ID
+     * @codeCoverageIgnore
+     */
+    public function createRequestForResendMessage($messageId, ResendMessage $resendMessage): RequestInterface
+    {
+        return $this->createRequest('POST', sprintf('/%1$s/messages/%2$s/resend', $this->getOptions()->getAccountId(), $messageId), $resendMessage, [], [], []);
+    }
+
+    /**
+     * Resend message by id.
+     *
+     * @codeCoverageIgnore
+     */
+    public function resendMessage($messageId, ResendMessage $resendMessage)
+    {
+        $request  = $this->createRequestForResendMessage($messageId, $resendMessage);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $response;
+    }
+
+    /**
+     * Create the RequestInterface for getMessageStats.
+     *
+     * @param DateRange $daterange Date range the messages were submitted in
+     * @param array     $flowIds
+     * @param int       $interval  Time difference between samples
+     * @codeCoverageIgnore
+     */
+    public function createRequestForGetMessageStats(
+        DateRange $daterange = null,
+        ?array $flowIds = null,
+        ?int $interval = null
+    ): RequestInterface {
+        $matrices = [
+            'daterange' => $daterange,
+            'flow_ids'  => $flowIds,
+        ];
+        $query = [
+            'interval' => $interval,
+        ];
+
+        return $this->createRequest('GET', sprintf('/%1$s/messagestats', $this->getOptions()->getAccountId()), null, $matrices, $query, []);
+    }
+
+    /**
+     * Get time based message statistics for whole account.
+     *
+     *  The resolution of the returned data may be lower than specified in the `interval` parameter if the data is old or the requested date range is too large.
+     *
+     * @codeCoverageIgnore
+     */
+    public function getMessageStats(
+        DateRange $daterange = null,
+        ?array $flowIds = null,
+        ?int $interval = null
+    ): DataSets {
+        $request  = $this->createRequestForGetMessageStats($daterange, $flowIds, $interval);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->serializer->deserialize($response, DataSets::class, 'json');
+    }
+
+    /**
+     * Create the RequestInterface for getUndeliveredMessages.
+     *
+     * @param ReferenceRange $range         Limits the returned list
+     * @param DateRange      $daterange     Date range the message was submitted in
+     * @param DateRange      $receivedrange Date range the message bounced
+     * @param bool           $addevents     Whether to add message events
+     * @param bool           $addheaders    Whether to add e-mail headers
+     * @param bool           $addonlinelink
+     * @param bool           $addtags
+     * @param string         $sortorder
+     * @codeCoverageIgnore
+     */
+    public function createRequestForGetUndeliveredMessages(
+        ReferenceRange $range = null,
+        ?DateRange $daterange = null,
+        ?DateRange $receivedrange = null,
+        ?bool $addevents = false,
+        ?bool $addheaders = false,
+        ?bool $addonlinelink = false,
+        ?bool $addtags = false,
+        ?string $sortorder = null
+    ): RequestInterface {
+        $matrices = [
+            'daterange'     => $daterange,
+            'receivedrange' => $receivedrange,
+        ];
+        $query = [
+            'addevents'     => $addevents,
+            'addheaders'    => $addheaders,
+            'addonlinelink' => $addonlinelink,
+            'addtags'       => $addtags,
+            'sortorder'     => $sortorder,
+        ];
+        $headers = [
+            'Range' => $range,
+        ];
+
+        return $this->createRequest('GET', sprintf('/%1$s/undeliveredmessages', $this->getOptions()->getAccountId()), null, $matrices, $query, $headers);
+    }
+
+    /**
+     * List undeliverable messages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function getUndeliveredMessages(
+        ReferenceRange $range = null,
+        ?DateRange $daterange = null,
+        ?DateRange $receivedrange = null,
+        ?bool $addevents = false,
+        ?bool $addheaders = false,
+        ?bool $addonlinelink = false,
+        ?bool $addtags = false,
+        ?string $sortorder = null
+    ): BouncedMessageCollection {
+        $request  = $this->createRequestForGetUndeliveredMessages($range, $daterange, $receivedrange, $addevents, $addheaders, $addonlinelink, $addtags, $sortorder);
+        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $items    = $this->serializer->deserialize($response, BouncedMessageCollection::class, 'json');
+        if ($response->getMeta('next-range') instanceof ReferenceRange) {
+            $items->setNextRange($response->getMeta('next-range'));
+        }
+        if ($response->getMeta('content-range') instanceof ContentRange) {
+            $items->setContentRange($response->getMeta('content-range'));
+        }
+
+        return $items;
     }
 
     /**
