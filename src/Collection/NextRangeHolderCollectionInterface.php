@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Flowmailer\API\Collection;
 
+use Flowmailer\API\Parameter\ContentRange;
 use Flowmailer\API\Parameter\ReferenceRange;
 
 interface NextRangeHolderCollectionInterface
@@ -16,4 +17,8 @@ interface NextRangeHolderCollectionInterface
     public function getNextRange(): ?ReferenceRange;
 
     public function setNextRange(?ReferenceRange $nextRange = null): self;
+
+    public function getContentRange(): ?ContentRange;
+
+    public function setContentRange(?ContentRange $contentRange = null): self;
 }

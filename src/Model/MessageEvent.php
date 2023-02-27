@@ -37,10 +37,8 @@ final class MessageEvent implements ModelInterface
 
     /**
      * Database insert date.
-     *
-     * @var |null
      */
-    private $inserted = null;
+    private ?\DateTimeInterface $inserted = null;
 
     private ?string $linkName = null;
 
@@ -160,14 +158,14 @@ final class MessageEvent implements ModelInterface
         return $this->id;
     }
 
-    public function setInserted($inserted = null): self
+    public function setInserted(?\DateTimeInterface $inserted = null): self
     {
         $this->inserted = $inserted;
 
         return $this;
     }
 
-    public function getInserted()
+    public function getInserted(): ?\DateTimeInterface
     {
         return $this->inserted;
     }

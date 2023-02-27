@@ -14,6 +14,7 @@ use Flowmailer\API\Collection\NextRangeHolderCollection;
 use Flowmailer\API\Logger\Journal;
 use Flowmailer\API\Model\Errors;
 use Flowmailer\API\Model\OAuthErrorResponse;
+use Flowmailer\API\Parameter\ContentRange;
 use Flowmailer\API\Parameter\ReferenceRange;
 use Flowmailer\API\Plugin\AuthTokenPlugin;
 use Flowmailer\API\Serializer\ResponseData;
@@ -108,8 +109,8 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
             $path = sprintf('/%1$s%2$s', $this->getOptions()->getAccountId(), $path);
         }
 
-        preg_match_all('#{(.*?)}#s', $path,$matches);
-        foreach($matches[0] as $index => $value){
+        preg_match_all('#{(.*?)}#s', (string) $path, $matches);
+        foreach ($matches[0] as $index => $value) {
             $path = str_replace($value, $parameters->getPath()[$matches[1][$index]], $path);
         }
 
@@ -231,6 +232,9 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         $meta = [];
         if ($response->hasHeader('next-range')) {
             $meta['next-range'] = ReferenceRange::fromString(current($response->getHeader('next-range')));
+        }
+        if ($response->hasHeader('content-range')) {
+            $meta['content-range'] = ContentRange::fromString(current($response->getHeader('content-range')));
         }
 
         return new ResponseData($responseBody, $meta);

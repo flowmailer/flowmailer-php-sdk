@@ -10,11 +10,14 @@ declare(strict_types=1);
 namespace Flowmailer\API\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Flowmailer\API\Parameter\ContentRange;
 use Flowmailer\API\Parameter\ReferenceRange;
 
 class NextRangeHolderCollection extends ArrayCollection implements NextRangeHolderCollectionInterface
 {
     private ?ReferenceRange $nextRange = null;
+
+    private ?ContentRange $contentRange = null;
 
     public function getNextRange(): ?ReferenceRange
     {
@@ -24,6 +27,18 @@ class NextRangeHolderCollection extends ArrayCollection implements NextRangeHold
     public function setNextRange(?ReferenceRange $nextRange = null): self
     {
         $this->nextRange = $nextRange;
+
+        return $this;
+    }
+
+    public function getContentRange(): ?ContentRange
+    {
+        return $this->contentRange;
+    }
+
+    public function setContentRange(?ContentRange $contentRange = null): NextRangeHolderCollectionInterface
+    {
+        $this->contentRange = $contentRange;
 
         return $this;
     }
