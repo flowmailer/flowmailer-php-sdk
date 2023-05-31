@@ -11,6 +11,8 @@ namespace Flowmailer\API\Model;
 
 use Flowmailer\API\Collection\AttachmentCollection;
 use Flowmailer\API\Collection\HeaderCollection;
+use Flowmailer\API\Enum\DeliveryNotificationType;
+use Flowmailer\API\Enum\MessageType;
 
 /**
  * SubmitMessage.
@@ -38,7 +40,7 @@ final class SubmitMessage implements ModelInterface
      *
      *  Only applicable when `messageType` = `SMS`
      */
-    private ?string $deliveryNotificationType = null;
+    private string|DeliveryNotificationType|null $deliveryNotificationType = null;
 
     /**
      * Freely configurable value that can be used to select a flow or one of its variants.
@@ -90,7 +92,7 @@ final class SubmitMessage implements ModelInterface
     /**
      * `EMAIL`, `SMS` or `LETTER`.
      */
-    private string $messageType;
+    private string|MessageType $messageType = MessageType::EMAIL;
 
     /**
      * Complete email MIME message with headers.
@@ -113,7 +115,7 @@ final class SubmitMessage implements ModelInterface
      *
      *  For email messages this cannot contain a display name.
      */
-    private ?string $senderAddress = null;
+    private string $senderAddress;
 
     /**
      * Email subject.
@@ -156,14 +158,14 @@ final class SubmitMessage implements ModelInterface
         return $this->data;
     }
 
-    public function setDeliveryNotificationType(?string $deliveryNotificationType = null): self
+    public function setDeliveryNotificationType(string|DeliveryNotificationType|null $deliveryNotificationType = null): self
     {
         $this->deliveryNotificationType = $deliveryNotificationType;
 
         return $this;
     }
 
-    public function getDeliveryNotificationType(): ?string
+    public function getDeliveryNotificationType(): string|DeliveryNotificationType|null
     {
         return $this->deliveryNotificationType;
     }
@@ -252,14 +254,14 @@ final class SubmitMessage implements ModelInterface
         return $this->html;
     }
 
-    public function setMessageType(string $messageType): self
+    public function setMessageType(string|MessageType $messageType): self
     {
         $this->messageType = $messageType;
 
         return $this;
     }
 
-    public function getMessageType(): string
+    public function getMessageType(): string|MessageType
     {
         return $this->messageType;
     }
@@ -300,14 +302,14 @@ final class SubmitMessage implements ModelInterface
         return $this->scheduleAt;
     }
 
-    public function setSenderAddress(?string $senderAddress = null): self
+    public function setSenderAddress(string $senderAddress): self
     {
         $this->senderAddress = $senderAddress;
 
         return $this;
     }
 
-    public function getSenderAddress(): ?string
+    public function getSenderAddress(): string
     {
         return $this->senderAddress;
     }

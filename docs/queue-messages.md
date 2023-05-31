@@ -37,12 +37,13 @@ $flowmailerQueue = SubmitMessageQueue::init($flowmailer, $queueDSN);
 ```php
 <?php
 
+use Flowmailer\API\Enum\MessageType;
 use Flowmailer\API\Model\SubmitMessage;
 
 // Code from setup
 
 $submitMessage = (new SubmitMessage())
-    ->setMessageType('EMAIL')
+    ->setMessageType(MessageType::EMAIL)
     ->setSubject('An e-mail message')
     ->setRecipientAddress('your-customer@email.org')
     ->setSenderAddress('info@your-company.com')

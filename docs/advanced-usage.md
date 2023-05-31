@@ -56,6 +56,7 @@ This will log creation of objects in Flowmailer, like:
 
 require 'vendor/autoload.php';
 
+use Flowmailer\API\Enum\MessageType;
 use Flowmailer\API\Flowmailer;
 use Flowmailer\API\Model\SubmitMessage;
 use Flowmailer\API\Utility\SubmitMessageCreatorIterator;
@@ -78,7 +79,7 @@ $data = new \ArrayIterator([
 $sender   = 'info@your-company.com';
 $callback = function (array $item) use ($sender) {
     return (new SubmitMessage())
-        ->setMessageType('EMAIL')
+        ->setMessageType(MessageType::EMAIL)
         ->setSubject($item['subject'])
         ->setRecipientAddress($item['email'])
         ->setSenderAddress($sender);

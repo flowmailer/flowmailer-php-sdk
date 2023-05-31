@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 
-interface FlowmailerInterface
+interface FlowmailerInterface extends EndpointsInterface
 {
     public static function init(string $accountId, string $clientId, string $clientSecret, array $options = [], ...$additionalArgs): FlowmailerInterface;
 
