@@ -12,6 +12,7 @@ namespace Flowmailer\API\Model;
 use Flowmailer\API\Collection\AddressCollection;
 use Flowmailer\API\Collection\HeaderCollection;
 use Flowmailer\API\Collection\MessageEventCollection;
+use Flowmailer\API\Enum\MessageType;
 
 /**
  * BouncedMessage.
@@ -95,7 +96,7 @@ final class BouncedMessage implements ModelInterface
     /**
      * Message type: `EMAIL`, `SMS` or `LETTER`.
      */
-    private ?string $messageType = null;
+    private string|MessageType|null $messageType = null;
 
     /**
      * Last online link.
@@ -331,14 +332,14 @@ final class BouncedMessage implements ModelInterface
         return $this->messageIdHeader;
     }
 
-    public function setMessageType(?string $messageType = null): self
+    public function setMessageType(string|MessageType|null $messageType = null): self
     {
         $this->messageType = $messageType;
 
         return $this;
     }
 
-    public function getMessageType(): ?string
+    public function getMessageType(): string|MessageType|null
     {
         return $this->messageType;
     }

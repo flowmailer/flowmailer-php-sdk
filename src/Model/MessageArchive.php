@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Flowmailer\API\Model;
 
 use Flowmailer\API\Collection\AttachmentCollection;
+use Flowmailer\API\Enum\MessageType;
 
 /**
  * MessageArchive.
@@ -47,7 +48,7 @@ final class MessageArchive implements ModelInterface
     /**
      * `EMAIL`, `SMS` or `LETTER`.
      */
-    private ?string $messageType = null;
+    private string|MessageType|null $messageType = null;
 
     /**
      * Online link.
@@ -131,14 +132,14 @@ final class MessageArchive implements ModelInterface
         return $this->messageDetailsLink;
     }
 
-    public function setMessageType(?string $messageType = null): self
+    public function setMessageType(string|MessageType|null $messageType = null): self
     {
         $this->messageType = $messageType;
 
         return $this;
     }
 
-    public function getMessageType(): ?string
+    public function getMessageType(): string|MessageType|null
     {
         return $this->messageType;
     }

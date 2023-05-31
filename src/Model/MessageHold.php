@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Flowmailer\API\Model;
 
+use Flowmailer\API\Enum\MessageType;
+
 /**
  * MessageHold.
  *
@@ -29,7 +31,7 @@ final class MessageHold implements ModelInterface
     /**
      * Only for SMS messages.
      */
-    private ?byte $dataCoding = null;
+    private ?int $dataCoding = null;
 
     /**
      * Message error text.
@@ -51,7 +53,7 @@ final class MessageHold implements ModelInterface
     /**
      * Message type: `EMAIL`, `SMS` or `LETTER`.
      */
-    private ?string $messageType = null;
+    private string|MessageType|null $messageType = null;
 
     /**
      * Message processing failure reason.
@@ -112,14 +114,14 @@ final class MessageHold implements ModelInterface
         return $this->data;
     }
 
-    public function setDataCoding(?byte $dataCoding = null): self
+    public function setDataCoding(?int $dataCoding = null): self
     {
         $this->dataCoding = $dataCoding;
 
         return $this;
     }
 
-    public function getDataCoding(): ?byte
+    public function getDataCoding(): ?int
     {
         return $this->dataCoding;
     }
@@ -172,14 +174,14 @@ final class MessageHold implements ModelInterface
         return $this->messageId;
     }
 
-    public function setMessageType(?string $messageType = null): self
+    public function setMessageType(string|MessageType|null $messageType = null): self
     {
         $this->messageType = $messageType;
 
         return $this;
     }
 
-    public function getMessageType(): ?string
+    public function getMessageType(): string|MessageType|null
     {
         return $this->messageType;
     }

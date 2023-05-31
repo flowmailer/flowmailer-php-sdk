@@ -11,6 +11,11 @@ namespace Flowmailer\API;
 
 use Flowmailer\API\Collection\ErrorCollection;
 use Flowmailer\API\Collection\NextRangeHolderCollection;
+use Flowmailer\API\Exception\BadRequestException;
+use Flowmailer\API\Exception\ForbiddenException;
+use Flowmailer\API\Exception\NotFoundException;
+use Flowmailer\API\Exception\ServerException;
+use Flowmailer\API\Exception\UnauthorizedException;
 use Flowmailer\API\Logger\Journal;
 use Flowmailer\API\Model\Errors;
 use Flowmailer\API\Model\OAuthErrorResponse;
@@ -111,7 +116,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
 
         preg_match_all('#{(.*?)}#s', (string) $path, $matches);
         foreach ($matches[0] as $index => $value) {
-            $path = str_replace($value, $parameters->getPath()[$matches[1][$index]], $path);
+            $path = str_replace($value, $parameters->getPath()[$matches[1][$index]], (string) $path);
         }
 
         $request  = $this->createRequest($method, $path, $parameters->getBody(), $parameters->getMatrices(), $parameters->getQuery(), $parameters->getHeaders());
@@ -124,6 +129,9 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         $items = $this->serializer->deserialize($response, $type, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange && is_subclass_of($type, NextRangeHolderCollection::class)) {
             $items->setNextRange($response->getMeta('next-range'));
+        }
+        if ($response->getMeta('content-range') instanceof ContentRange && is_subclass_of($type, NextRangeHolderCollection::class)) {
+            $items->setContentRange($response->getMeta('content-range'));
         }
 
         return $items;
@@ -225,7 +233,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
                 $responseBody  = (string) end($locationParts);
             }
         }
-        if ($method === 'DELETE' && $response->getStatusCode() === 200) {
+        if (($method === 'DELETE' || ($method === 'PUT' && $responseBody == '')) && $response->getStatusCode() === 200) {
             return true;
         }
 
@@ -244,7 +252,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
     {
         $responseBody = $response->getBody()->getContents();
 
-        if ($response->getStatusCode() == 400 || $response->getStatusCode() == 403) {
+        if ($response->getStatusCode() == 400 || $response->getStatusCode() == 403 || $response->getStatusCode() == 404) {
             /** @var Errors $errors */
             $errors = $this->serializer->deserialize($responseBody, Errors::class, 'json');
 
@@ -267,8 +275,17 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
 
                 $code = $error->getCode();
 
-                $exception = new \Exception(implode(' ', [implode('.', array_filter([$object, $field])), $message, $code]), 0, $exception);
+                $exception = new \Exception(trim(implode(' ', [implode('.', array_filter([$object, $field])), $message, $code])), 0, $exception);
             }
+
+            if ($response->getStatusCode() == 400) {
+                $exception = new BadRequestException($exception->getMessage(), $exception->getCode());
+            } elseif ($response->getStatusCode() == 403) {
+                $exception = new ForbiddenException($exception->getMessage(), $exception->getCode());
+            } else {
+                $exception = new NotFoundException($exception->getMessage(), $exception->getCode());
+            }
+            $exception->setErrors($errors->getAllErrors());
 
             return $exception;
         } elseif ($response->getStatusCode() == 401) {
@@ -276,17 +293,17 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
             try {
                 $oAuthError = $this->serializer->deserialize($responseBody, OAuthErrorResponse::class, 'json');
             } catch (NotEncodableValueException $exception) {
-                return new \Exception(sprintf('Unable to authenticate: %s', str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode(), $exception);
+                return new UnauthorizedException(sprintf('Unable to authenticate: %s', str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode(), $exception);
             }
 
             if (is_null($oAuthError) === false) {
-                return new \Exception($oAuthError->getErrorDescription());
+                return new UnauthorizedException($oAuthError->getErrorDescription());
             }
         } elseif ($response->getStatusCode() == 500) {
-            return new \Exception(sprintf('Internal Server Error: %s', str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode());
+            return new ServerException(sprintf('Internal Server Error: %s', str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode());
         }
 
-        return new \Exception(sprintf('Something went wrong with status (%s): %s', $response->getStatusCode(), str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode());
+        return new ServerException(sprintf('Something went wrong with status (%s): %s', $response->getStatusCode(), str_replace([PHP_EOL], '', strip_tags($responseBody))), $response->getStatusCode());
     }
 
     /**
@@ -329,11 +346,15 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
     {
         $base = $this->options->getBaseUrl();
 
-        $matrices = array_filter($matrices);
+        $matrices = array_filter($matrices, fn ($value) => is_null($value) === false && $value !== '');
+
         foreach ($matrices as $matrixName => $matrixValue) {
             if ($matrixValue instanceof \Stringable) {
                 $matrixValue = (string) $matrixValue;
+            } elseif (is_bool($matrixValue)) {
+                $matrixValue = ($matrixValue === false) ? 'false' : 'true';
             }
+
             $matrices[$matrixName] = implode(',', (array) $matrixValue);
         }
         if (($matricesString = http_build_query($matrices, '', ';')) !== '') {

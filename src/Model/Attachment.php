@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Flowmailer\API\Model;
 
+use Flowmailer\API\Enum\ContentDisposition;
+
 /**
  * Attachment.
  */
@@ -35,7 +37,7 @@ final class Attachment implements ModelInterface
      *
      *  Special value `related` should be used for images referenced in the HTML.
      */
-    private ?string $disposition = null;
+    private string|ContentDisposition|null $disposition = null;
 
     private ?string $filename = null;
 
@@ -75,14 +77,14 @@ final class Attachment implements ModelInterface
         return $this->contentType;
     }
 
-    public function setDisposition(?string $disposition = null): self
+    public function setDisposition(string|ContentDisposition|null $disposition = null): self
     {
         $this->disposition = $disposition;
 
         return $this;
     }
 
-    public function getDisposition(): ?string
+    public function getDisposition(): string|ContentDisposition|null
     {
         return $this->disposition;
     }

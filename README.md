@@ -23,6 +23,7 @@ Choose your preferred [client implementations](https://packagist.org/providers/p
 
 require 'vendor/autoload.php';
 
+use Flowmailer\API\Enum\MessageType;
 use Flowmailer\API\Flowmailer;
 use Flowmailer\API\Model\SubmitMessage;
 
@@ -34,7 +35,7 @@ $clientSecret = '...';
 $flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret);
 
 $submitMessage = (new SubmitMessage())
-    ->setMessageType('EMAIL')
+    ->setMessageType(MessageType::EMAIL)
     ->setSubject('An e-mail message')
     ->setRecipientAddress('your-customer@email.org')
     ->setSenderAddress('info@your-company.com')
