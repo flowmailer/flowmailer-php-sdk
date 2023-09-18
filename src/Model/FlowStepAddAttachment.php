@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepAddAttachment.
  */
-final class FlowStepAddAttachment implements ModelInterface
+class FlowStepAddAttachment implements ModelInterface
 {
     /**
      * URL to load the external content from.

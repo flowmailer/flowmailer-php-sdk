@@ -16,7 +16,7 @@ use Flowmailer\API\Enum\DnsRecordStatus;
  *
  * DNS record that should be configured
  */
-final class DnsRecord implements ModelInterface
+class DnsRecord implements ModelInterface
 {
     /**
      * Error messages for this DNS record.
@@ -63,7 +63,7 @@ final class DnsRecord implements ModelInterface
     /**
      * @var null
      */
-    private $warnings = null;
+    private $warnings;
 
     public function setErrorMessages(?array $errorMessages = null): self
     {

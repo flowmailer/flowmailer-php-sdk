@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepExtractData.
  */
-final class FlowStepExtractData implements ModelInterface
+class FlowStepExtractData implements ModelInterface
 {
     private ?string $dataType = null;
 

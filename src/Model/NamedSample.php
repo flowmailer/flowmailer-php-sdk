@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * NamedSample.
  */
-final class NamedSample implements ModelInterface
+class NamedSample implements ModelInterface
 {
     private string $name;
 

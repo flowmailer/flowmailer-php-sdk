@@ -16,7 +16,7 @@ use Flowmailer\API\Collection\DataSetCollection;
  *
  * Multiple data sets
  */
-final class DataSets implements ModelInterface
+class DataSets implements ModelInterface
 {
     /**
      * List of data sets.

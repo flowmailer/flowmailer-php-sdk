@@ -16,7 +16,7 @@ use Flowmailer\API\Collection\FilterCollection;
  *
  * Statistics for a single recipient
  */
-final class Recipient implements ModelInterface
+class Recipient implements ModelInterface
 {
     /**
      * Recipient email address or phone number.

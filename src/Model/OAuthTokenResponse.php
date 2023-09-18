@@ -14,7 +14,7 @@ namespace Flowmailer\API\Model;
  *
  * Response object which contains the requested access token
  */
-final class OAuthTokenResponse implements ModelInterface
+class OAuthTokenResponse implements ModelInterface
 {
     /**
      * The requested access token.

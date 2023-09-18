@@ -14,7 +14,7 @@ namespace Flowmailer\API\Model;
  *
  * Generic resource model with an ID and description.
  */
-final class ObjectDescription implements ModelInterface
+class ObjectDescription implements ModelInterface
 {
     /**
      * Resource description.

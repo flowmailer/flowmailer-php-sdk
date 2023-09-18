@@ -16,7 +16,7 @@ use Flowmailer\API\Enum\EventType;
  *
  * Message event
  */
-final class MessageEvent implements ModelInterface
+class MessageEvent implements ModelInterface
 {
     /**
      * Event data.

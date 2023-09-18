@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * Error.
  */
-final class Error implements ModelInterface
+class Error implements ModelInterface
 {
     private ?array $arguments = null;
 

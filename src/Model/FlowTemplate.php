@@ -16,7 +16,7 @@ use Flowmailer\API\Collection\FlowStepCollection;
  *
  * Message flow template
  */
-final class FlowTemplate implements ModelInterface
+class FlowTemplate implements ModelInterface
 {
     /**
      * Flow description.

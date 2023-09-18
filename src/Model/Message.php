@@ -17,7 +17,7 @@ use Flowmailer\API\Enum\MessageType;
 /**
  * Message.
  */
-final class Message implements ModelInterface
+class Message implements ModelInterface
 {
     /**
      * The time flowmailer was done processing this message.

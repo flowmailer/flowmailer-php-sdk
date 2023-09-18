@@ -16,7 +16,7 @@ use Flowmailer\API\Enum\FlowStepType;
  *
  * A processing step in a flow
  */
-final class FlowStep implements ModelInterface
+class FlowStep implements ModelInterface
 {
     /**
      * Only applicable and required when `type` = `addAttachment`.

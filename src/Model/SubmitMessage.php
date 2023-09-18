@@ -19,7 +19,7 @@ use Flowmailer\API\Enum\MessageType;
  *
  * An email or sms message that can be submitted to Flowmailer.
  */
-final class SubmitMessage implements ModelInterface
+class SubmitMessage implements ModelInterface
 {
     /**
      * Attachments.

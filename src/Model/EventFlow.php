@@ -16,7 +16,7 @@ use Flowmailer\API\Collection\FlowStepCollection;
  *
  * Event flow
  */
-final class EventFlow implements ModelInterface
+class EventFlow implements ModelInterface
 {
     /**
      * Flow description.

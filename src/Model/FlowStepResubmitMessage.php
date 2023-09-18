@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepResubmitMessage.
  */
-final class FlowStepResubmitMessage implements ModelInterface
+class FlowStepResubmitMessage implements ModelInterface
 {
     /**
      * Account to submit the message to.

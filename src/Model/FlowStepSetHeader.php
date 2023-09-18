@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepSetHeader.
  */
-final class FlowStepSetHeader implements ModelInterface
+class FlowStepSetHeader implements ModelInterface
 {
     /**
      * Name of the header to add to the email.

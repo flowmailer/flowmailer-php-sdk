@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * Header.
  */
-final class Header implements ModelInterface
+class Header implements ModelInterface
 {
     public function __construct(
         /**

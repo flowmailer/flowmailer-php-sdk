@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepAggregate.
  */
-final class FlowStepAggregate implements ModelInterface
+class FlowStepAggregate implements ModelInterface
 {
     private ?bool $alwaysSendFirst = null;
 

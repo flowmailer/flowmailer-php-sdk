@@ -29,7 +29,7 @@ use Flowmailer\API\Collection\ErrorCollection;
  *  2. `GET /{account_id}/sender_domains/{domain_id}` when `validate` parameter is `true`
  *  3. `GET /{account_id}/sender_domains/by_domain/{domain}` when `validate` parameter is `true`
  */
-final class SenderDomain implements ModelInterface
+class SenderDomain implements ModelInterface
 {
     /**
      * List of DNS records that should exist.

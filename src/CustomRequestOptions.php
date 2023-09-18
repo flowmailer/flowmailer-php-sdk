@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Flowmailer\API\Model\ModelInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class CustomRequestOptions
+class CustomRequestOptions
 {
     private readonly array $options;
 

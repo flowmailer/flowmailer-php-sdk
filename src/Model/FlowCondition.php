@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowCondition.
  */
-final class FlowCondition implements ModelInterface
+class FlowCondition implements ModelInterface
 {
     private ?string $expression = null;
 

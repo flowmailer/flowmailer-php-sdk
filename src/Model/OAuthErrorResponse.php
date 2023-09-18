@@ -14,7 +14,7 @@ namespace Flowmailer\API\Model;
  *
  * Described in http://tools.ietf.org/html/rfc6749
  */
-final class OAuthErrorResponse implements ModelInterface
+class OAuthErrorResponse implements ModelInterface
 {
     private string $error;
 

@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * TlsInfo.
  */
-final class TlsInfo implements ModelInterface
+class TlsInfo implements ModelInterface
 {
     private ?string $cipher = null;
 

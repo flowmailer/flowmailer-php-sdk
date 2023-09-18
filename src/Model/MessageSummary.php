@@ -14,7 +14,7 @@ namespace Flowmailer\API\Model;
  *
  * Message statistics summary
  */
-final class MessageSummary implements ModelInterface
+class MessageSummary implements ModelInterface
 {
     /**
      * Average delivery time in milliseconds.

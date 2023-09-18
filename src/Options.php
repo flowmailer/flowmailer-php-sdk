@@ -13,7 +13,7 @@ use Composer\InstalledVersions;
 use Symfony\Component\OptionsResolver\Options as SymfonyOptions;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class Options implements OptionsInterface
+class Options implements OptionsInterface
 {
     private const PACKAGE_NAME = 'flowmailer/flowmailer-php-sdk';
 

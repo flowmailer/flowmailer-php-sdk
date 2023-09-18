@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * InboundRecipient.
  */
-final class InboundRecipient implements ModelInterface
+class InboundRecipient implements ModelInterface
 {
     private string $destinationRecipient;
 
