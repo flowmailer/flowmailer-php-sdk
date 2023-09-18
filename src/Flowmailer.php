@@ -104,7 +104,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         $options['client_id']     = $clientId;
         $options['client_secret'] = $clientSecret;
 
-        return new self(new Options($options), ...$additionalArgs);
+        return new static(new Options($options), ...$additionalArgs);
     }
 
     public function request($method, $path, array $parameters = [], ?string $type = null, bool $autoAddAccountId = true)
