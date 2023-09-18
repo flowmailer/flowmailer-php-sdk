@@ -16,7 +16,7 @@ use Flowmailer\API\Collection\SampleCollection;
  *
  * Data set with statistics
  */
-final class DataSet implements ModelInterface
+class DataSet implements ModelInterface
 {
     /**
      * Data set name.

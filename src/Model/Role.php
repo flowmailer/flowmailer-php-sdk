@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * Role.
  */
-final class Role implements ModelInterface, \Stringable
+class Role implements ModelInterface, \Stringable
 {
     /**
      * @param string[]|null $roles

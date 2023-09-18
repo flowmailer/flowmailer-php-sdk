@@ -14,7 +14,7 @@ use Flowmailer\API\Collection\ErrorCollection;
 /**
  * Errors.
  */
-final class Errors implements ModelInterface
+class Errors implements ModelInterface
 {
     /**
      * List of errors.

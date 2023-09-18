@@ -14,7 +14,7 @@ use Flowmailer\API\Enum\MessageType;
 /**
  * FlowStepRewriteRecipient.
  */
-final class FlowStepRewriteRecipient implements ModelInterface
+class FlowStepRewriteRecipient implements ModelInterface
 {
     private string|MessageType|null $messageType = null;
 

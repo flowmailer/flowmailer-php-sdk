@@ -14,7 +14,7 @@ use Flowmailer\API\Enum\ContentDisposition;
 /**
  * Attachment.
  */
-final class Attachment implements ModelInterface
+class Attachment implements ModelInterface
 {
     private ?string $content = null;
 

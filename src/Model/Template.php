@@ -17,7 +17,7 @@ use Flowmailer\API\Enum\TemplateMimeType;
  *
  * A flowmailer content template
  */
-final class Template implements ModelInterface, \Stringable
+class Template implements ModelInterface, \Stringable
 {
     /**
      * Content-ID header (required for disposition `related`).

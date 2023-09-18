@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * TemplatePreview.
  */
-final class TemplatePreview implements ModelInterface
+class TemplatePreview implements ModelInterface
 {
     private ?string $error = null;
 

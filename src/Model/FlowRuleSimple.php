@@ -17,7 +17,7 @@ use Flowmailer\API\Collection\HeaderCollection;
  *
  * Conditions which must be true for a message to use a flow
  */
-final class FlowRuleSimple implements ModelInterface
+class FlowRuleSimple implements ModelInterface
 {
     /**
      * Data expressions which must be present in the message.

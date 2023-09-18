@@ -14,7 +14,7 @@ namespace Flowmailer\API\Model;
  *
  * Spotler API credentials
  */
-final class MailPlusAPICredentials implements ModelInterface
+class MailPlusAPICredentials implements ModelInterface
 {
     /**
      * Consumer key.

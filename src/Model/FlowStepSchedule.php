@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepSchedule.
  */
-final class FlowStepSchedule implements ModelInterface
+class FlowStepSchedule implements ModelInterface
 {
     private ?int $maxMessagesPerHour = null;
 

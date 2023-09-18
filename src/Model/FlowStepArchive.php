@@ -14,7 +14,7 @@ use Flowmailer\API\Enum\FlowStepArchiveRetention;
 /**
  * FlowStepArchive.
  */
-final class FlowStepArchive implements ModelInterface
+class FlowStepArchive implements ModelInterface
 {
     /**
      * Indicates whether this archive is available for online version link.

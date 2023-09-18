@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepLdapSearch.
  */
-final class FlowStepLdapSearch implements ModelInterface
+class FlowStepLdapSearch implements ModelInterface
 {
     /**
      * @var string[]|null

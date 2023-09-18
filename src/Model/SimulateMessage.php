@@ -17,7 +17,7 @@ use Flowmailer\API\Enum\MessageType;
 /**
  * SimulateMessage.
  */
-final class SimulateMessage implements ModelInterface
+class SimulateMessage implements ModelInterface
 {
     /**
      * Attachments.
