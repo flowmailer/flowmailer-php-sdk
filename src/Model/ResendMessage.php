@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * ResendMessage.
  */
-final class ResendMessage implements ModelInterface
+class ResendMessage implements ModelInterface
 {
     /**
      * Override recipient email address or phone number.

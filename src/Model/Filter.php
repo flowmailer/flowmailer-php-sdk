@@ -16,7 +16,7 @@ use Flowmailer\API\Enum\MessageType;
  *
  * Filtered recipient address
  */
-final class Filter implements ModelInterface
+class Filter implements ModelInterface
 {
     /**
      * Account ID.

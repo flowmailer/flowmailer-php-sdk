@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * AccountUser.
  */
-final class AccountUser implements ModelInterface
+class AccountUser implements ModelInterface
 {
     /**
      * The username.

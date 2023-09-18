@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepSetSender.
  */
-final class FlowStepSetSender implements ModelInterface
+class FlowStepSetSender implements ModelInterface
 {
     private ?string $senderNameTemplate = null;
 

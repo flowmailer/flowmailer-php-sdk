@@ -17,7 +17,7 @@ use Flowmailer\API\Collection\HeaderCollection;
  *
  * Conditions which must be true for a event to use a flow
  */
-final class EventFlowRuleSimple implements ModelInterface
+class EventFlowRuleSimple implements ModelInterface
 {
     /**
      * Data expressions which must be present in the message.

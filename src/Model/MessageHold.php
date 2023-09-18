@@ -16,7 +16,7 @@ use Flowmailer\API\Enum\MessageType;
  *
  * Messages that could not be processed
  */
-final class MessageHold implements ModelInterface
+class MessageHold implements ModelInterface
 {
     /**
      * The time flowmailer was done processing this message.

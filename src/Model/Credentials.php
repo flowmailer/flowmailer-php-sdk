@@ -17,7 +17,7 @@ use Flowmailer\API\Enum\Protocol;
  *
  * Source system credentials
  */
-final class Credentials implements ModelInterface, \Stringable
+class Credentials implements ModelInterface, \Stringable
 {
     /**
      * Allowed IP addresses that can connect to Flowmailer using these credentials.

@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepDiscard.
  */
-final class FlowStepDiscard implements ModelInterface
+class FlowStepDiscard implements ModelInterface
 {
     private ?string $reason = null;
 

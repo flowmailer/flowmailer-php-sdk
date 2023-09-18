@@ -19,7 +19,7 @@ use Flowmailer\API\Enum\MessageType;
  *
  * Undeliverable message
  */
-final class BouncedMessage implements ModelInterface
+class BouncedMessage implements ModelInterface
 {
     /**
      * The time flowmailer was done processing this message.

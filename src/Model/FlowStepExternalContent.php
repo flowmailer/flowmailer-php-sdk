@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepExternalContent.
  */
-final class FlowStepExternalContent implements ModelInterface
+class FlowStepExternalContent implements ModelInterface
 {
     /**
      * Variable to store the external content in.

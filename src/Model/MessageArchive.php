@@ -17,7 +17,7 @@ use Flowmailer\API\Enum\MessageType;
  *
  * Archived message text and/or html
  */
-final class MessageArchive implements ModelInterface
+class MessageArchive implements ModelInterface
 {
     /**
      * Attachments, without the content.

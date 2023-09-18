@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * SourceConnectionInfo.
  */
-final class SourceConnectionInfo implements ModelInterface
+class SourceConnectionInfo implements ModelInterface
 {
     private ?string $authMethod = null;
 

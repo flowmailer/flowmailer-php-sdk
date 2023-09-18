@@ -19,7 +19,7 @@ use Flowmailer\API\Enum\SourceType;
  *
  *  A source system can submit messages to flowmailer.
  */
-final class Source implements ModelInterface, \Stringable
+class Source implements ModelInterface, \Stringable
 {
     /**
      * Source description.

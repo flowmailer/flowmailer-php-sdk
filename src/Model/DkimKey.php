@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * DkimKey.
  */
-final class DkimKey implements ModelInterface
+class DkimKey implements ModelInterface
 {
     private ?string $cnameTarget = null;
 

@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * DataExpression.
  */
-final class DataExpression implements ModelInterface
+class DataExpression implements ModelInterface
 {
     /**
      * Expression.

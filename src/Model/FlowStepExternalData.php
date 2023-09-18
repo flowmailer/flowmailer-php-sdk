@@ -15,7 +15,7 @@ use Flowmailer\API\Enum\FlowStepExternalDataRequestMethod;
 /**
  * FlowStepExternalData.
  */
-final class FlowStepExternalData implements ModelInterface
+class FlowStepExternalData implements ModelInterface
 {
     /**
      * When true the result variable will be filled with a structure that also contains the response headers. When false the result variable will be filled with just the response body.

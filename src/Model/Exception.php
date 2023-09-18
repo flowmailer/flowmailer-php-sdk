@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * Exception.
  */
-final class Exception implements ModelInterface
+class Exception implements ModelInterface
 {
     private ?string $message = null;
 

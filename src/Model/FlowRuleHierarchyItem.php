@@ -15,7 +15,7 @@ use Flowmailer\API\Collection\FlowRuleHierarchyItemCollection;
 /**
  * FlowRuleHierarchyItem.
  */
-final class FlowRuleHierarchyItem implements ModelInterface
+class FlowRuleHierarchyItem implements ModelInterface
 {
     private ?FlowConditionCollection $conditions = null;
 

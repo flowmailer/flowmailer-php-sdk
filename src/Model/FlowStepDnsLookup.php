@@ -12,7 +12,7 @@ namespace Flowmailer\API\Model;
 /**
  * FlowStepDnsLookup.
  */
-final class FlowStepDnsLookup implements ModelInterface
+class FlowStepDnsLookup implements ModelInterface
 {
     private string $domainNameTemplate;
 
