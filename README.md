@@ -13,9 +13,7 @@ A normal installation would be something equal to:
 $ composer require symfony/http-client nyholm/psr7 flowmailer/flowmailer-php-sdk
 ```
 
-Choose your preferred [client implementations](https://packagist.org/providers/psr/http-client-implementation) on packagist.  
-
-See how to force the usage of a specific implementation when many are available in your project on [github.com/php-http/discovery](https://github.com/php-http/discovery#usage-as-a-library-user).
+Choose your preferred [client implementations](https://packagist.org/providers/psr/http-client-implementation) on packagist.
 
 ### Basic usage
 
