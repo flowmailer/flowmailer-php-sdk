@@ -18,7 +18,7 @@
     "ext-json": "*",
     "composer-runtime-api": "^2.0",
     "cache/array-adapter": "^1.1",
-    "doctrine/collections": "^1.6|^2.0",
+    "doctrine/collections": "^1.6 || ^2.0",
     "php-http/client-common": "^2.5",
     "php-http/discovery": "^1.0",
     "php-http/httplug": "^2.0",

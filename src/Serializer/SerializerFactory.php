@@ -48,7 +48,11 @@ class SerializerFactory
                 ]
             ),
         ];
-        $encoders              = [
+        if (PHP_VERSION_ID < 80100) {
+            array_unshift($normalizers, new EnumDenormalizer());
+        }
+
+        $encoders = [
             new JsonEncoder(),
         ];
 
