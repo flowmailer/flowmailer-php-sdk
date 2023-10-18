@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Flowmailer\API;
 
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use Flowmailer\API\Collection\ErrorCollection;
 use Flowmailer\API\Collection\NextRangeHolderCollection;
 use Flowmailer\API\Exception\BadRequestException;
@@ -25,6 +27,7 @@ use Flowmailer\API\Plugin\AuthTokenPlugin;
 use Flowmailer\API\Serializer\ResponseData;
 use Flowmailer\API\Serializer\SerializerFactory;
 use Flowmailer\API\Utility\SubmitMessageCreatorIterator;
+use GuzzleHttp\Promise\Promise;
 use Http\Client\Common\Exception\ClientErrorException;
 use Http\Client\Common\Plugin;
 use Http\Client\Common\Plugin\ErrorPlugin;
@@ -313,15 +316,70 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
      */
     public function submitMessages(SubmitMessageCreatorIterator $submitMessages): \Generator
     {
+        if (InstalledVersions::isInstalled('guzzlehttp/promises') === false || InstalledVersions::satisfies(new VersionParser(), 'guzzlehttp/promises', '^2.0') === false) {
+            throw new \Exception('To use Flowmailer::submitMessages you should install the guzzlehttp/promises library (composer require guzzlehttp/promises:^2.0)');
+        }
+
         $client = $this->getHttpClient();
 
         if ($client instanceof HttpAsyncClient === false) {
             throw new \Exception(sprintf('The client used for calling submitMessages should be an %s. Choose one of this clients: https://packagist.org/providers/php-http/async-client-implementation', HttpAsyncClient::class));
         }
 
-        foreach ($submitMessages as $submitMessage) {
+        foreach ($submitMessages as $key => $submitMessage) {
             $request = $this->createRequestForSubmitMessage($submitMessage);
-            yield $client->sendAsyncRequest($request);
+
+            $promiseHolder = new \stdClass();
+            try {
+                $promiseHolder->promise = $client->sendAsyncRequest($request);
+            } catch (\Exception $exception) {
+                $guzzlePromise = new Promise();
+                $guzzlePromise->reject($exception);
+
+                yield $key => $guzzlePromise;
+
+                continue;
+            }
+
+            $guzzlePromise = new Promise(function () use ($promiseHolder) {
+                try {
+                    $promiseHolder->promise->wait();
+                } catch (\Exception $exception) {
+                    // Exception should already be propagated to $guzzlePromise via the ->then callbacks
+                }
+            });
+
+            $promiseHolder->promise = $promiseHolder->promise->then(
+                function ($response) use ($guzzlePromise, $request) {
+                    try {
+                        $responseData = $this->handleResponse($response, (string) $request->getBody(), $request->getMethod());
+                        $guzzlePromise->resolve($responseData);
+                    } catch (\Exception $exception) {
+                        $guzzlePromise->reject($exception);
+                    }
+
+                    return $response;
+                },
+                function ($exception) use ($guzzlePromise) {
+                    try {
+                        if ($exception instanceof ClientErrorException) {
+                            /** @var ApiException $responseError */
+                            $responseError = $this->handleResponseError($exception->getResponse());
+                            $guzzlePromise->reject($responseError);
+
+                            return $exception->getResponse(); // Required to prevent exception on react client
+                        } else {
+                            $guzzlePromise->reject($exception);
+                        }
+                    } catch (\Exception $exception) {
+                        $guzzlePromise->reject($exception);
+                    }
+
+                    throw $exception;
+                }
+            );
+
+            yield $key => $guzzlePromise;
         }
     }
 

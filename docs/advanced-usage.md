@@ -25,7 +25,7 @@ $flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret, [], null, $
 ## Logging
 You can use any [PSR-3](https://www.php-fig.org/psr/psr-3/) compatible logger, see [log implementations](https://packagist.org/providers/psr/log-implementation) on packagist.
 
-In this example we use Monolog:
+In this example we use [Monolog](https://github.com/Seldaek/monolog):
 ```bash
 composer require monolog/monolog
 ```
@@ -51,6 +51,12 @@ This will log creation of objects in Flowmailer, like:
 ```
 
 ## Multiple messages
+
+To use this you have to install [Guzzle Promises](https://github.com/guzzle/promises) library.
+```bash
+composer require guzzlehttp/promises:^2.0
+```
+
 ```php
 <?php
 
@@ -60,6 +66,7 @@ use Flowmailer\API\Enum\MessageType;
 use Flowmailer\API\Flowmailer;
 use Flowmailer\API\Model\SubmitMessage;
 use Flowmailer\API\Utility\SubmitMessageCreatorIterator;
+use GuzzleHttp\Promise\Each;
 
 // The credentials can be obtained in your Flowmailer account
 $accountId    = '...';
@@ -70,7 +77,7 @@ $flowmailer = Flowmailer::init($accountId, $clientId, $clientSecret);
 
 // $data is an Iterator containing data for the messages (see below)
 $data = new \ArrayIterator([
-    [
+    'key' => [
         'name'    => 'Full Name',
         'subject' => 'An e-mail message',
         'email'   => 'your-customer@email.org',
@@ -85,11 +92,42 @@ $callback = function (array $item) use ($sender) {
         ->setSenderAddress($sender);
 };
 
-$result = $flowmailer->submitMessages(new SubmitMessageCreatorIterator($data, $callback));
+$results = $flowmailer->submitMessages(new SubmitMessageCreatorIterator($data, $callback));
 
-foreach ($result as $id) { // Need to loop on the result for sending the messages
-    // Do additional stuff with the result id
-}
+Each::ofLimit($results, 10,
+    function ($result, $key) {
+        // The result of a successful API call and the key given by the iterator
+    },
+    function ($exception, $key) {
+        // The exception during an unsuccessful API call and the key given by the iterator
+    }
+)->wait();
+```
+
+For real async handling of responses it is recommended to use [Guzzle 7 HTTP Adapter](https://github.com/php-http/guzzle7-adapter)
+```bash
+composer require php-http/guzzle7-adapter
+```
+Or to use [Symfony Curl HttpClient](https://github.com/symfony/http-client)
+```bash
+composer require symfony/http-client
+```
+
+```php
+<?php
+
+// Code from setup
+use Http\Adapter\Guzzle7\Client;
+
+$guzzle7HttpClient = new Client();
+$flowmailer->setHttpClient($guzzle7HttpClient);
+
+// Or
+use Symfony\Component\HttpClient\HttplugClient;
+use Symfony\Component\HttpClient\CurlHttpClient;
+
+$symfonyCurlHttpClient = new HttplugClient(new CurlHttpClient());
+$flowmailer->setHttpClient($symfonyCurlHttpClient);
 ```
 
 ### ArrayIterator

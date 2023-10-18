@@ -18,6 +18,7 @@
     "ext-json": "*",
     "composer-runtime-api": "^2.0",
     "cache/array-adapter": "^1.1",
+    "composer/semver": "^3.4",
     "doctrine/collections": "^1.6 || ^2.0",
     "php-http/client-common": "^2.5",
     "php-http/discovery": "^1.0",
@@ -62,6 +63,7 @@
   },
   "suggest": {
     "enqueue/simple-client": "With enqueue you're able to queue sending of messages (on many different implementations). Please see docs.",
+    "guzzlehttp/promises": "To use Flowmailer::submitMessages (for sending multiple messages to Flowmailer in an async manner), require version ^2.0.",
     "php-http/logger-plugin": "The LoggerPlugin converts requests, responses and exceptions to strings and logs them with a PSR3 compliant logger"
   },
   "minimum-stability": "dev",
