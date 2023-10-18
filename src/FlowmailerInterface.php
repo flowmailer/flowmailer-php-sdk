@@ -31,7 +31,7 @@ interface FlowmailerInterface extends EndpointsInterface
 
     public function getHttpClient(): ClientInterface;
 
-    public function setLogger(LoggerInterface $logger = null): FlowmailerInterface;
+    public function setLogger(?LoggerInterface $logger = null): FlowmailerInterface;
 
     public function getLogger(): LoggerInterface;
 
@@ -45,5 +45,5 @@ interface FlowmailerInterface extends EndpointsInterface
 
     public function submitMessages(SubmitMessageCreatorIterator $submitMessages): \Generator;
 
-    public function getResponse(RequestInterface $request, ClientInterface $client = null): ResponseInterface;
+    public function getResponse(RequestInterface $request, ?ClientInterface $client = null): ResponseInterface;
 }

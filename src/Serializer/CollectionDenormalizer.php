@@ -18,7 +18,7 @@ class CollectionDenormalizer implements DenormalizerInterface, DenormalizerAware
 {
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, string $type, string $format = null, array $context = []): mixed
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): mixed
     {
         $modelName = substr((new \ReflectionClass($type))->getShortName(), 0, -10);
 
@@ -37,7 +37,7 @@ class CollectionDenormalizer implements DenormalizerInterface, DenormalizerAware
         return new $type($this->denormalizer->denormalize($data, $collectionType, $format, $context));
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
         return is_subclass_of($type, ArrayCollection::class);
     }

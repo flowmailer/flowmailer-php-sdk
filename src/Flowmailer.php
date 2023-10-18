@@ -83,10 +83,10 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         private readonly ?CacheInterface $cache = null,
         private ?ClientInterface $innerHttpClient = null,
         private readonly ?ClientInterface $innerAuthClient = null,
-        RequestFactoryInterface $requestFactory = null,
-        UriFactoryInterface $uriFactory = null,
-        StreamFactoryInterface $streamFactory = null,
-        SerializerInterface $serializer = null
+        ?RequestFactoryInterface $requestFactory = null,
+        ?UriFactoryInterface $uriFactory = null,
+        ?StreamFactoryInterface $streamFactory = null,
+        ?SerializerInterface $serializer = null
     ) {
         $this->logger ??= new NullLogger();
 
@@ -184,7 +184,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         return $this->httpClient;
     }
 
-    public function setLogger(LoggerInterface $logger = null): FlowmailerInterface
+    public function setLogger(?LoggerInterface $logger = null): FlowmailerInterface
     {
         $this->logger = $logger ?? new NullLogger();
 
@@ -444,7 +444,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         return $request;
     }
 
-    public function getResponse(RequestInterface $request, ClientInterface $client = null): ResponseInterface
+    public function getResponse(RequestInterface $request, ?ClientInterface $client = null): ResponseInterface
     {
         $client ??= $this->getHttpClient();
 

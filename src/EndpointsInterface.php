@@ -88,8 +88,6 @@ interface EndpointsInterface
 
     /**
      * Create the RequestInterface for getApiCredentials.
-     *
-     * @param int $sourceId
      */
     public function createRequestForGetApiCredentials(?int $sourceId): RequestInterface;
 
@@ -235,7 +233,6 @@ interface EndpointsInterface
      *
      * @param ReferenceRange $range     Limits the returned list
      * @param DateRange      $daterange Date range the filter was added in
-     * @param string         $sortorder
      */
     public function createRequestForGetFilters(
         ReferenceRange $range,
@@ -344,12 +341,10 @@ interface EndpointsInterface
     /**
      * Create the RequestInterface for getFlowMessages.
      *
-     * @param            $flowId        Flow ID
-     * @param DateRange  $daterange     Date range the message was submitted in
-     * @param ItemsRange $range         Limits the returned list
-     * @param bool       $addheaders    Whether to add e-mail headers
-     * @param bool       $addonlinelink
-     * @param bool       $addtags
+     * @param            $flowId     Flow ID
+     * @param DateRange  $daterange  Date range the message was submitted in
+     * @param ItemsRange $range      Limits the returned list
+     * @param bool       $addheaders Whether to add e-mail headers
      */
     public function createRequestForGetFlowMessages(
         $flowId,
@@ -420,7 +415,6 @@ interface EndpointsInterface
      * @param array          $flowIds        Filter results on message flow ID
      * @param array          $sourceIds      Filter results on message source ID
      * @param bool           $addmessagetags Message tags will be included with each event if this parameter is true
-     * @param string         $sortorder
      */
     public function createRequestForGetMessageEvents(
         ReferenceRange $range,
@@ -471,14 +465,11 @@ interface EndpointsInterface
     /**
      * Create the RequestInterface for getMessages.
      *
-     * @param ReferenceRange $range         Limits the returned list
-     * @param array          $flowIds       Filter results on flow ID
-     * @param bool           $addevents     Whether to add message events
-     * @param bool           $addheaders    Whether to add e-mail headers
-     * @param bool           $addonlinelink
-     * @param bool           $addtags
-     * @param string         $sortfield     Sort by INSERTED or SUBMITTED (default INSERTED)
-     * @param string         $sortorder
+     * @param ReferenceRange $range      Limits the returned list
+     * @param array          $flowIds    Filter results on flow ID
+     * @param bool           $addevents  Whether to add message events
+     * @param bool           $addheaders Whether to add e-mail headers
+     * @param string         $sortfield  Sort by INSERTED or SUBMITTED (default INSERTED)
      */
     public function createRequestForGetMessages(
         ReferenceRange $range,
@@ -530,8 +521,7 @@ interface EndpointsInterface
     /**
      * Create the RequestInterface for getMessage.
      *
-     * @param      $messageId Message ID
-     * @param bool $addtags
+     * @param $messageId Message ID
      */
     public function createRequestForGetMessage($messageId, ?bool $addtags = false): RequestInterface;
 
@@ -543,9 +533,7 @@ interface EndpointsInterface
     /**
      * Create the RequestInterface for getMessageArchive.
      *
-     * @param      $messageId      Message ID
-     * @param bool $addattachments
-     * @param bool $adddata
+     * @param $messageId Message ID
      */
     public function createRequestForGetMessageArchive(
         $messageId,
@@ -578,9 +566,6 @@ interface EndpointsInterface
 
     /**
      * Create the RequestInterface for getMessageErrorArchive.
-     *
-     * @param bool $addattachments
-     * @param bool $adddata
      */
     public function createRequestForGetMessageErrorArchive(
         $messageId,
@@ -610,7 +595,6 @@ interface EndpointsInterface
      * Create the RequestInterface for getMessageStats.
      *
      * @param DateRange $daterange Date range the messages were submitted in
-     * @param array     $flowIds
      * @param int       $interval  Time difference between samples
      */
     public function createRequestForGetMessageStats(
@@ -648,8 +632,6 @@ interface EndpointsInterface
      * @param DateRange      $daterange     Date range the messages were submitted in
      * @param bool           $addheaders    Whether to add e-mail headers
      * @param bool           $addonlinelink Whether to add online link
-     * @param bool           $addtags
-     * @param string         $sortorder
      */
     public function createRequestForGetRecipientMessages(
         $recipient,
@@ -689,8 +671,6 @@ interface EndpointsInterface
      * @param DateRange      $daterange     Date range the messages were submitted in
      * @param bool           $addheaders    Whether to add e-mail headers
      * @param bool           $addonlinelink Whether to add online link
-     * @param bool           $addtags
-     * @param string         $sortorder
      */
     public function createRequestForGetSenderMessages(
         $sender,
@@ -858,12 +838,10 @@ interface EndpointsInterface
     /**
      * Create the RequestInterface for getSourceMessages.
      *
-     * @param            $sourceId      Source ID
-     * @param DateRange  $daterange     Date range the message was submitted in
-     * @param ItemsRange $range         Limits the returned list
-     * @param bool       $addheaders    Whether to add e-mail headers
-     * @param bool       $addonlinelink
-     * @param bool       $addtags
+     * @param            $sourceId   Source ID
+     * @param DateRange  $daterange  Date range the message was submitted in
+     * @param ItemsRange $range      Limits the returned list
+     * @param bool       $addheaders Whether to add e-mail headers
      */
     public function createRequestForGetSourceMessages(
         $sourceId,
@@ -972,8 +950,6 @@ interface EndpointsInterface
      * @param DateRange      $daterange     Date range the messages were submitted in
      * @param bool           $addheaders    Whether to add e-mail headers
      * @param bool           $addonlinelink Whether to add online link
-     * @param bool           $addtags
-     * @param string         $sortorder
      */
     public function createRequestForGetTagMessages(
         $tag,
@@ -1065,9 +1041,6 @@ interface EndpointsInterface
      * @param DateRange      $receivedrange Date range the message bounced
      * @param bool           $addevents     Whether to add message events
      * @param bool           $addheaders    Whether to add e-mail headers
-     * @param bool           $addonlinelink
-     * @param bool           $addtags
-     * @param string         $sortorder
      */
     public function createRequestForGetUndeliveredMessages(
         ReferenceRange $range,

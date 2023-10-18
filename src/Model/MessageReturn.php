@@ -30,7 +30,7 @@ class MessageReturn implements ModelInterface
      *
      * @var null
      */
-    private $extraData = null;
+    private $extraData;
 
     /**
      * Message event ID.
@@ -42,7 +42,7 @@ class MessageReturn implements ModelInterface
      *
      * @var null
      */
-    private $inserted = null;
+    private $inserted;
 
     private ?string $linkName = null;
 
@@ -88,21 +88,21 @@ class MessageReturn implements ModelInterface
     /**
      * @var null
      */
-    private $sourceMta = null;
+    private $sourceMta;
 
     /**
      * Bounce sub type.
      *
      * @var null
      */
-    private $subType = null;
+    private $subType;
 
     /**
      * Custom event type.
      *
      * @var null
      */
-    private $tag = null;
+    private $tag;
 
     /**
      * Event type, must be `CUSTOM`.
