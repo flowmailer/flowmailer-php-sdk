@@ -123,8 +123,8 @@ $guzzle7HttpClient = new Client();
 $flowmailer->setHttpClient($guzzle7HttpClient);
 
 // Or
-use Symfony\Component\HttpClient\HttplugClient;
 use Symfony\Component\HttpClient\CurlHttpClient;
+use Symfony\Component\HttpClient\HttplugClient;
 
 $symfonyCurlHttpClient = new HttplugClient(new CurlHttpClient());
 $flowmailer->setHttpClient($symfonyCurlHttpClient);

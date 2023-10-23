@@ -344,7 +344,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
             $guzzlePromise = new Promise(function () use ($promiseHolder) {
                 try {
                     $promiseHolder->promise->wait();
-                } catch (\Exception $exception) {
+                } catch (\Exception) {
                     // Exception should already be propagated to $guzzlePromise via the ->then callbacks
                 }
             });
