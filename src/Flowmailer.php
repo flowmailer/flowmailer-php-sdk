@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Flowmailer\API;
 
 use Composer\InstalledVersions;
-use Composer\Semver\VersionParser;
 use Flowmailer\API\Collection\ErrorCollection;
 use Flowmailer\API\Collection\NextRangeHolderCollection;
 use Flowmailer\API\Exception\BadRequestException;
@@ -316,8 +315,8 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
      */
     public function submitMessages(SubmitMessageCreatorIterator $submitMessages): \Generator
     {
-        if (InstalledVersions::isInstalled('guzzlehttp/promises') === false || InstalledVersions::satisfies(new VersionParser(), 'guzzlehttp/promises', '^2.0') === false) {
-            throw new \Exception('To use Flowmailer::submitMessages you should install the guzzlehttp/promises library (composer require guzzlehttp/promises:^2.0)');
+        if (InstalledVersions::isInstalled('guzzlehttp/promises') === false) {
+            throw new \Exception('To use Flowmailer::submitMessages you should install the guzzlehttp/promises library (composer require guzzlehttp/promises)');
         }
 
         $client = $this->getHttpClient();
