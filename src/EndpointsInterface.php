@@ -89,9 +89,9 @@ interface EndpointsInterface
     /**
      * Create the RequestInterface for getApiCredentials.
      */
-    public function createRequestForGetApiCredentials(?int $sourceId): RequestInterface;
+    public function createRequestForGetApiCredentials(?int $sourceId = null): RequestInterface;
 
-    public function getApiCredentials(?int $sourceId): CredentialsCollection;
+    public function getApiCredentials(?int $sourceId = null): CredentialsCollection;
 
     /**
      * Create the RequestInterface for createApiCredentials.
@@ -236,14 +236,18 @@ interface EndpointsInterface
      */
     public function createRequestForGetFilters(
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?string $sortorder
+        ?DateRange $daterange = null,
+        ?string $sortorder = null
     ): RequestInterface;
 
     /**
      * List filters per account.
      */
-    public function getFilters(ReferenceRange $range, ?DateRange $daterange, ?string $sortorder): FilterCollection;
+    public function getFilters(
+        ReferenceRange $range,
+        ?DateRange $daterange = null,
+        ?string $sortorder = null
+    ): FilterCollection;
 
     /**
      * Create the RequestInterface for deleteFilter.
@@ -399,14 +403,14 @@ interface EndpointsInterface
      * @param DateRange $daterange Date range the messages were submitted in
      * @param int       $interval  Time difference between samples
      */
-    public function createRequestForGetFlowStats($flowId, DateRange $daterange, ?int $interval): RequestInterface;
+    public function createRequestForGetFlowStats($flowId, DateRange $daterange, ?int $interval = null): RequestInterface;
 
     /**
      * Get time based message statistics for a message flow.
      *
      *  The resolution of the returned data may be lower than specified in the `interval` parameter if the data is old or the requested date range is too large.
      */
-    public function getFlowStats($flowId, DateRange $daterange, ?int $interval): DataSets;
+    public function getFlowStats($flowId, DateRange $daterange, ?int $interval = null): DataSets;
 
     /**
      * Create the RequestInterface for getMessageEvents.
@@ -418,10 +422,12 @@ interface EndpointsInterface
      */
     public function createRequestForGetMessageEvents(
         ReferenceRange $range,
-        ?array $flowIds,
-        ?array $sourceIds,
-        ?string $sortorder,
-        ?bool $addmessagetags = false
+        ?array $flowIds = null,
+        ?array $sourceIds = null,
+        ?string $sortorder = null,
+        ?bool $addmessagetags = false,
+        ?DateRange $daterange = null,
+        ?DateRange $receivedrange = null
     ): RequestInterface;
 
     /**
@@ -431,10 +437,12 @@ interface EndpointsInterface
      */
     public function getMessageEvents(
         ReferenceRange $range,
-        ?array $flowIds,
-        ?array $sourceIds,
-        ?string $sortorder,
-        ?bool $addmessagetags = false
+        ?array $flowIds = null,
+        ?array $sourceIds = null,
+        ?string $sortorder = null,
+        ?bool $addmessagetags = false,
+        ?DateRange $daterange = null,
+        ?DateRange $receivedrange = null
     ): MessageEventCollection;
 
     /**
@@ -443,12 +451,12 @@ interface EndpointsInterface
      * @param ItemsRange $range     Limits the returned list
      * @param DateRange  $daterange Date range the message was submitted in
      */
-    public function createRequestForGetMessageHolds(ItemsRange $range, ?DateRange $daterange): RequestInterface;
+    public function createRequestForGetMessageHolds(ItemsRange $range, ?DateRange $daterange = null): RequestInterface;
 
     /**
      * List messages which could not be processed.
      */
-    public function getMessageHolds(ItemsRange $range, ?DateRange $daterange): MessageHoldCollection;
+    public function getMessageHolds(ItemsRange $range, ?DateRange $daterange = null): MessageHoldCollection;
 
     /**
      * Create the RequestInterface for getMessageHold.
@@ -467,19 +475,21 @@ interface EndpointsInterface
      *
      * @param ReferenceRange $range      Limits the returned list
      * @param array          $flowIds    Filter results on flow ID
+     * @param string         $sortfield  Sort by INSERTED or SUBMITTED (default INSERTED)
      * @param bool           $addevents  Whether to add message events
      * @param bool           $addheaders Whether to add e-mail headers
-     * @param string         $sortfield  Sort by INSERTED or SUBMITTED (default INSERTED)
+     * @param DateRange      $daterange  Date range the message was submitted in
      */
     public function createRequestForGetMessages(
         ReferenceRange $range,
-        ?array $flowIds,
-        ?string $sortfield,
-        ?string $sortorder,
+        ?array $flowIds = null,
+        ?string $sortfield = null,
+        ?string $sortorder = null,
         ?bool $addevents = false,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
+        ?DateRange $daterange = null
     ): RequestInterface;
 
     /**
@@ -489,13 +499,14 @@ interface EndpointsInterface
      */
     public function getMessages(
         ReferenceRange $range,
-        ?array $flowIds,
-        ?string $sortfield,
-        ?string $sortorder,
+        ?array $flowIds = null,
+        ?string $sortfield = null,
+        ?string $sortorder = null,
         ?bool $addevents = false,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
-        ?bool $addtags = false
+        ?bool $addtags = false,
+        ?DateRange $daterange = null
     ): MessageCollection;
 
     /**
@@ -599,8 +610,8 @@ interface EndpointsInterface
      */
     public function createRequestForGetMessageStats(
         DateRange $daterange,
-        ?array $flowIds,
-        ?int $interval
+        ?array $flowIds = null,
+        ?int $interval = null
     ): RequestInterface;
 
     /**
@@ -608,21 +619,22 @@ interface EndpointsInterface
      *
      *  The resolution of the returned data may be lower than specified in the `interval` parameter if the data is old or the requested date range is too large.
      */
-    public function getMessageStats(DateRange $daterange, ?array $flowIds, ?int $interval): DataSets;
+    public function getMessageStats(DateRange $daterange, ?array $flowIds = null, ?int $interval = null): DataSets;
 
     /**
      * Create the RequestInterface for getRecipient.
      *
-     * @param $recipient Recipient email address or phone number
+     * @param           $recipient Recipient email address or phone number
+     * @param DateRange $daterange Specifies the date range for message statistics
      */
-    public function createRequestForGetRecipient($recipient): RequestInterface;
+    public function createRequestForGetRecipient($recipient, ?DateRange $daterange = null): RequestInterface;
 
     /**
      * Get information about a recipient.
      *
      *  Message statistics are only included if a date range is specified.
      */
-    public function getRecipient($recipient): Recipient;
+    public function getRecipient($recipient, ?DateRange $daterange = null): Recipient;
 
     /**
      * Create the RequestInterface for getRecipientMessages.
@@ -636,8 +648,8 @@ interface EndpointsInterface
     public function createRequestForGetRecipientMessages(
         $recipient,
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?string $sortorder,
+        ?DateRange $daterange = null,
+        ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
         ?bool $addtags = false
@@ -649,8 +661,8 @@ interface EndpointsInterface
     public function getRecipientMessages(
         $recipient,
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?string $sortorder,
+        ?DateRange $daterange = null,
+        ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
         ?bool $addtags = false
@@ -675,8 +687,8 @@ interface EndpointsInterface
     public function createRequestForGetSenderMessages(
         $sender,
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?string $sortorder,
+        ?DateRange $daterange = null,
+        ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
         ?bool $addtags = false
@@ -688,8 +700,8 @@ interface EndpointsInterface
     public function getSenderMessages(
         $sender,
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?string $sortorder,
+        ?DateRange $daterange = null,
+        ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
         ?bool $addtags = false
@@ -871,14 +883,18 @@ interface EndpointsInterface
      * @param DateRange $daterange Date range the messages were submitted in
      * @param int       $interval  Time difference between samples
      */
-    public function createRequestForGetSourceStats($sourceId, DateRange $daterange, ?int $interval): RequestInterface;
+    public function createRequestForGetSourceStats(
+        $sourceId,
+        DateRange $daterange,
+        ?int $interval = null
+    ): RequestInterface;
 
     /**
      * Get time based message statistics for a message source.
      *
      *  The resolution of the returned data may be lower than specified in the `interval` parameter if the data is old or the requested date range is too large.
      */
-    public function getSourceStats($sourceId, DateRange $daterange, ?int $interval): DataSets;
+    public function getSourceStats($sourceId, DateRange $daterange, ?int $interval = null): DataSets;
 
     /**
      * Create the RequestInterface for getSourceUsers.
@@ -954,8 +970,8 @@ interface EndpointsInterface
     public function createRequestForGetTagMessages(
         $tag,
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?string $sortorder,
+        ?DateRange $daterange = null,
+        ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
         ?bool $addtags = false
@@ -967,8 +983,8 @@ interface EndpointsInterface
     public function getTagMessages(
         $tag,
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?string $sortorder,
+        ?DateRange $daterange = null,
+        ?string $sortorder = null,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
         ?bool $addtags = false
@@ -1044,9 +1060,9 @@ interface EndpointsInterface
      */
     public function createRequestForGetUndeliveredMessages(
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?DateRange $receivedrange,
-        ?string $sortorder,
+        ?DateRange $daterange = null,
+        ?DateRange $receivedrange = null,
+        ?string $sortorder = null,
         ?bool $addevents = false,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
@@ -1058,9 +1074,9 @@ interface EndpointsInterface
      */
     public function getUndeliveredMessages(
         ReferenceRange $range,
-        ?DateRange $daterange,
-        ?DateRange $receivedrange,
-        ?string $sortorder,
+        ?DateRange $daterange = null,
+        ?DateRange $receivedrange = null,
+        ?string $sortorder = null,
         ?bool $addevents = false,
         ?bool $addheaders = false,
         ?bool $addonlinelink = false,
