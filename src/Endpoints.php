@@ -51,6 +51,7 @@ use Flowmailer\API\Parameter\ContentRange;
 use Flowmailer\API\Parameter\DateRange;
 use Flowmailer\API\Parameter\ItemsRange;
 use Flowmailer\API\Parameter\ReferenceRange;
+use Flowmailer\API\Serializer\ResponseData;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -122,9 +123,30 @@ abstract class Endpoints
      */
     public function createOAuthToken($clientId, $clientSecret, $grantType, $scope = 'api'): OAuthTokenResponse
     {
-        $request  = $this->createRequestForCreateOAuthToken($clientId, $clientSecret, $grantType, $scope);
-        $response = $this->handleResponse($this->getResponse($request, $this->getAuthClient()), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateOAuthToken($clientId, $clientSecret, $grantType, $scope);
 
+        return $this->doRequestForCreateOAuthToken($request);
+    }
+
+    /**
+     * Do the request for createOAuthToken.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateOAuthToken(RequestInterface $request): OAuthTokenResponse
+    {
+        $responseData = $this->handleResponse($this->getResponse($request, $this->getAuthClient()), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForCreateOAuthToken($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for createOAuthToken.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForCreateOAuthToken(ResponseData $response): OAuthTokenResponse
+    {
         return $this->serializer->deserialize($response, OAuthTokenResponse::class, 'json');
     }
 
@@ -145,10 +167,21 @@ abstract class Endpoints
      */
     public function createAccount(Account $account)
     {
-        $request  = $this->createRequestForCreateAccount($account);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateAccount($account);
 
-        return $response;
+        return $this->doRequestForCreateAccount($request);
+    }
+
+    /**
+     * Do the request for createAccount.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateAccount(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -166,13 +199,36 @@ abstract class Endpoints
     }
 
     /**
+     * Get api credentials.
+     *
      * @codeCoverageIgnore
      */
     public function getApiCredentials(?int $sourceId = null): CredentialsCollection
     {
-        $request  = $this->createRequestForGetApiCredentials($sourceId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetApiCredentials($sourceId);
 
+        return $this->doRequestForGetApiCredentials($request);
+    }
+
+    /**
+     * Do the request for getApiCredentials.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetApiCredentials(RequestInterface $request): CredentialsCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetApiCredentials($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getApiCredentials.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetApiCredentials(ResponseData $response): CredentialsCollection
+    {
         return $this->serializer->deserialize($response, CredentialsCollection::class, 'json');
     }
 
@@ -187,13 +243,36 @@ abstract class Endpoints
     }
 
     /**
+     * Create api credentials.
+     *
      * @codeCoverageIgnore
      */
     public function createApiCredentials(Credentials $credentials): Credentials
     {
-        $request  = $this->createRequestForCreateApiCredentials($credentials);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateApiCredentials($credentials);
 
+        return $this->doRequestForCreateApiCredentials($request);
+    }
+
+    /**
+     * Do the request for createApiCredentials.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateApiCredentials(RequestInterface $request): Credentials
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForCreateApiCredentials($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for createApiCredentials.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForCreateApiCredentials(ResponseData $response): Credentials
+    {
         return $this->serializer->deserialize($response, Credentials::class, 'json');
     }
 
@@ -208,14 +287,27 @@ abstract class Endpoints
     }
 
     /**
+     * Delete client api credentials.
+     *
      * @codeCoverageIgnore
      */
     public function deleteClientApiCredentials($clientId)
     {
-        $request  = $this->createRequestForDeleteClientApiCredentials($clientId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForDeleteClientApiCredentials($clientId);
 
-        return $response;
+        return $this->doRequestForDeleteClientApiCredentials($request);
+    }
+
+    /**
+     * Do the request for deleteClientApiCredentials.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForDeleteClientApiCredentials(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -229,13 +321,36 @@ abstract class Endpoints
     }
 
     /**
+     * Get client api credentials.
+     *
      * @codeCoverageIgnore
      */
     public function getClientApiCredentials($clientId): Credentials
     {
-        $request  = $this->createRequestForGetClientApiCredentials($clientId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetClientApiCredentials($clientId);
 
+        return $this->doRequestForGetClientApiCredentials($request);
+    }
+
+    /**
+     * Do the request for getClientApiCredentials.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetClientApiCredentials(RequestInterface $request): Credentials
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetClientApiCredentials($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getClientApiCredentials.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetClientApiCredentials(ResponseData $response): Credentials
+    {
         return $this->serializer->deserialize($response, Credentials::class, 'json');
     }
 
@@ -250,14 +365,27 @@ abstract class Endpoints
     }
 
     /**
+     * Update client api credentials.
+     *
      * @codeCoverageIgnore
      */
     public function updateClientApiCredentials($clientId, Credentials $credentials)
     {
-        $request  = $this->createRequestForUpdateClientApiCredentials($clientId, $credentials);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateClientApiCredentials($clientId, $credentials);
 
-        return $response;
+        return $this->doRequestForUpdateClientApiCredentials($request);
+    }
+
+    /**
+     * Do the request for updateClientApiCredentials.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateClientApiCredentials(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -277,9 +405,30 @@ abstract class Endpoints
      */
     public function getEventFlowRules(): FlowRuleItemCollection
     {
-        $request  = $this->createRequestForGetEventFlowRules();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetEventFlowRules();
 
+        return $this->doRequestForGetEventFlowRules($request);
+    }
+
+    /**
+     * Do the request for getEventFlowRules.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetEventFlowRules(RequestInterface $request): FlowRuleItemCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetEventFlowRules($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getEventFlowRules.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetEventFlowRules(ResponseData $response): FlowRuleItemCollection
+    {
         return $this->serializer->deserialize($response, FlowRuleItemCollection::class, 'json');
     }
 
@@ -300,9 +449,30 @@ abstract class Endpoints
      */
     public function getEventFlowRulesHierarchy(): FlowRuleHierarchyItemCollection
     {
-        $request  = $this->createRequestForGetEventFlowRulesHierarchy();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetEventFlowRulesHierarchy();
 
+        return $this->doRequestForGetEventFlowRulesHierarchy($request);
+    }
+
+    /**
+     * Do the request for getEventFlowRulesHierarchy.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetEventFlowRulesHierarchy(RequestInterface $request): FlowRuleHierarchyItemCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetEventFlowRulesHierarchy($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getEventFlowRulesHierarchy.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetEventFlowRulesHierarchy(ResponseData $response): FlowRuleHierarchyItemCollection
+    {
         return $this->serializer->deserialize($response, FlowRuleHierarchyItemCollection::class, 'json');
     }
 
@@ -323,9 +493,30 @@ abstract class Endpoints
      */
     public function getEventFlows(): EventFlowCollection
     {
-        $request  = $this->createRequestForGetEventFlows();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetEventFlows();
 
+        return $this->doRequestForGetEventFlows($request);
+    }
+
+    /**
+     * Do the request for getEventFlows.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetEventFlows(RequestInterface $request): EventFlowCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetEventFlows($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getEventFlows.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetEventFlows(ResponseData $response): EventFlowCollection
+    {
         return $this->serializer->deserialize($response, EventFlowCollection::class, 'json');
     }
 
@@ -348,10 +539,21 @@ abstract class Endpoints
      */
     public function createEventFlow(EventFlow $eventFlow)
     {
-        $request  = $this->createRequestForCreateEventFlow($eventFlow);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateEventFlow($eventFlow);
 
-        return $response;
+        return $this->doRequestForCreateEventFlow($request);
+    }
+
+    /**
+     * Do the request for createEventFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateEventFlow(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -373,10 +575,21 @@ abstract class Endpoints
      */
     public function deleteEventFlow($eventFlowId)
     {
-        $request  = $this->createRequestForDeleteEventFlow($eventFlowId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForDeleteEventFlow($eventFlowId);
 
-        return $response;
+        return $this->doRequestForDeleteEventFlow($request);
+    }
+
+    /**
+     * Do the request for deleteEventFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForDeleteEventFlow(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -398,9 +611,30 @@ abstract class Endpoints
      */
     public function getEventFlow($eventFlowId): EventFlow
     {
-        $request  = $this->createRequestForGetEventFlow($eventFlowId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetEventFlow($eventFlowId);
 
+        return $this->doRequestForGetEventFlow($request);
+    }
+
+    /**
+     * Do the request for getEventFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetEventFlow(RequestInterface $request): EventFlow
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetEventFlow($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getEventFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetEventFlow(ResponseData $response): EventFlow
+    {
         return $this->serializer->deserialize($response, EventFlow::class, 'json');
     }
 
@@ -424,9 +658,30 @@ abstract class Endpoints
      */
     public function updateEventFlow($eventFlowId, EventFlow $eventFlow): EventFlow
     {
-        $request  = $this->createRequestForUpdateEventFlow($eventFlowId, $eventFlow);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateEventFlow($eventFlowId, $eventFlow);
 
+        return $this->doRequestForUpdateEventFlow($request);
+    }
+
+    /**
+     * Do the request for updateEventFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateEventFlow(RequestInterface $request): EventFlow
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForUpdateEventFlow($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for updateEventFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForUpdateEventFlow(ResponseData $response): EventFlow
+    {
         return $this->serializer->deserialize($response, EventFlow::class, 'json');
     }
 
@@ -449,9 +704,30 @@ abstract class Endpoints
      */
     public function getEventFlowRule($eventFlowId): EventFlowRuleSimple
     {
-        $request  = $this->createRequestForGetEventFlowRule($eventFlowId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetEventFlowRule($eventFlowId);
 
+        return $this->doRequestForGetEventFlowRule($request);
+    }
+
+    /**
+     * Do the request for getEventFlowRule.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetEventFlowRule(RequestInterface $request): EventFlowRuleSimple
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetEventFlowRule($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getEventFlowRule.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetEventFlowRule(ResponseData $response): EventFlowRuleSimple
+    {
         return $this->serializer->deserialize($response, EventFlowRuleSimple::class, 'json');
     }
 
@@ -477,10 +753,21 @@ abstract class Endpoints
      */
     public function updateEventFlowRule($eventFlowId, EventFlowRuleSimple $eventFlowRuleSimple)
     {
-        $request  = $this->createRequestForUpdateEventFlowRule($eventFlowId, $eventFlowRuleSimple);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateEventFlowRule($eventFlowId, $eventFlowRuleSimple);
 
-        return $response;
+        return $this->doRequestForUpdateEventFlowRule($request);
+    }
+
+    /**
+     * Do the request for updateEventFlowRule.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateEventFlowRule(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -519,9 +806,31 @@ abstract class Endpoints
         ?DateRange $daterange = null,
         ?string $sortorder = null
     ): FilterCollection {
-        $request  = $this->createRequestForGetFilters($range, $daterange, $sortorder);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, FilterCollection::class, 'json');
+        $request = $this->createRequestForGetFilters($range, $daterange, $sortorder);
+
+        return $this->doRequestForGetFilters($request);
+    }
+
+    /**
+     * Do the request for getFilters.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetFilters(RequestInterface $request): FilterCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetFilters($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getFilters.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetFilters(ResponseData $response): FilterCollection
+    {
+        $items = $this->serializer->deserialize($response, FilterCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -551,10 +860,21 @@ abstract class Endpoints
      */
     public function deleteFilter($filterId)
     {
-        $request  = $this->createRequestForDeleteFilter($filterId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForDeleteFilter($filterId);
 
-        return $response;
+        return $this->doRequestForDeleteFilter($request);
+    }
+
+    /**
+     * Do the request for deleteFilter.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForDeleteFilter(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -574,9 +894,30 @@ abstract class Endpoints
      */
     public function getFlowRules(): FlowRuleItemCollection
     {
-        $request  = $this->createRequestForGetFlowRules();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetFlowRules();
 
+        return $this->doRequestForGetFlowRules($request);
+    }
+
+    /**
+     * Do the request for getFlowRules.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetFlowRules(RequestInterface $request): FlowRuleItemCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetFlowRules($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getFlowRules.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetFlowRules(ResponseData $response): FlowRuleItemCollection
+    {
         return $this->serializer->deserialize($response, FlowRuleItemCollection::class, 'json');
     }
 
@@ -597,9 +938,30 @@ abstract class Endpoints
      */
     public function getFlowTemplates(): FlowTemplateCollection
     {
-        $request  = $this->createRequestForGetFlowTemplates();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetFlowTemplates();
 
+        return $this->doRequestForGetFlowTemplates($request);
+    }
+
+    /**
+     * Do the request for getFlowTemplates.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetFlowTemplates(RequestInterface $request): FlowTemplateCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetFlowTemplates($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getFlowTemplates.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetFlowTemplates(ResponseData $response): FlowTemplateCollection
+    {
         return $this->serializer->deserialize($response, FlowTemplateCollection::class, 'json');
     }
 
@@ -626,9 +988,30 @@ abstract class Endpoints
      */
     public function getFlows(?bool $statistics = true): FlowCollection
     {
-        $request  = $this->createRequestForGetFlows($statistics);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetFlows($statistics);
 
+        return $this->doRequestForGetFlows($request);
+    }
+
+    /**
+     * Do the request for getFlows.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetFlows(RequestInterface $request): FlowCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetFlows($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getFlows.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetFlows(ResponseData $response): FlowCollection
+    {
         return $this->serializer->deserialize($response, FlowCollection::class, 'json');
     }
 
@@ -651,10 +1034,21 @@ abstract class Endpoints
      */
     public function createFlow(Flow $flow)
     {
-        $request  = $this->createRequestForCreateFlow($flow);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateFlow($flow);
 
-        return $response;
+        return $this->doRequestForCreateFlow($request);
+    }
+
+    /**
+     * Do the request for createFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateFlow(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -676,10 +1070,21 @@ abstract class Endpoints
      */
     public function deleteFlow($flowId)
     {
-        $request  = $this->createRequestForDeleteFlow($flowId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForDeleteFlow($flowId);
 
-        return $response;
+        return $this->doRequestForDeleteFlow($request);
+    }
+
+    /**
+     * Do the request for deleteFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForDeleteFlow(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -701,9 +1106,30 @@ abstract class Endpoints
      */
     public function getFlow($flowId): Flow
     {
-        $request  = $this->createRequestForGetFlow($flowId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetFlow($flowId);
 
+        return $this->doRequestForGetFlow($request);
+    }
+
+    /**
+     * Do the request for getFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetFlow(RequestInterface $request): Flow
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetFlow($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetFlow(ResponseData $response): Flow
+    {
         return $this->serializer->deserialize($response, Flow::class, 'json');
     }
 
@@ -727,9 +1153,30 @@ abstract class Endpoints
      */
     public function updateFlow($flowId, Flow $flow): Flow
     {
-        $request  = $this->createRequestForUpdateFlow($flowId, $flow);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateFlow($flowId, $flow);
 
+        return $this->doRequestForUpdateFlow($request);
+    }
+
+    /**
+     * Do the request for updateFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateFlow(RequestInterface $request): Flow
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForUpdateFlow($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for updateFlow.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForUpdateFlow(ResponseData $response): Flow
+    {
         return $this->serializer->deserialize($response, Flow::class, 'json');
     }
 
@@ -779,9 +1226,31 @@ abstract class Endpoints
         ?bool $addonlinelink = false,
         ?bool $addtags = false
     ): MessageCollection {
-        $request  = $this->createRequestForGetFlowMessages($flowId, $daterange, $range, $addheaders, $addonlinelink, $addtags);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, MessageCollection::class, 'json');
+        $request = $this->createRequestForGetFlowMessages($flowId, $daterange, $range, $addheaders, $addonlinelink, $addtags);
+
+        return $this->doRequestForGetFlowMessages($request);
+    }
+
+    /**
+     * Do the request for getFlowMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetFlowMessages(RequestInterface $request): MessageCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetFlowMessages($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getFlowMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetFlowMessages(ResponseData $response): MessageCollection
+    {
+        $items = $this->serializer->deserialize($response, MessageCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -811,9 +1280,30 @@ abstract class Endpoints
      */
     public function getFlowRule($flowId): FlowRuleSimple
     {
-        $request  = $this->createRequestForGetFlowRule($flowId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetFlowRule($flowId);
 
+        return $this->doRequestForGetFlowRule($request);
+    }
+
+    /**
+     * Do the request for getFlowRule.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetFlowRule(RequestInterface $request): FlowRuleSimple
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetFlowRule($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getFlowRule.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetFlowRule(ResponseData $response): FlowRuleSimple
+    {
         return $this->serializer->deserialize($response, FlowRuleSimple::class, 'json');
     }
 
@@ -837,10 +1327,21 @@ abstract class Endpoints
      */
     public function updateFlowRule($flowId, FlowRuleSimple $flowRuleSimple)
     {
-        $request  = $this->createRequestForUpdateFlowRule($flowId, $flowRuleSimple);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateFlowRule($flowId, $flowRuleSimple);
 
-        return $response;
+        return $this->doRequestForUpdateFlowRule($request);
+    }
+
+    /**
+     * Do the request for updateFlowRule.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateFlowRule(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -871,9 +1372,30 @@ abstract class Endpoints
      */
     public function getFlowStats($flowId, DateRange $daterange, ?int $interval = null): DataSets
     {
-        $request  = $this->createRequestForGetFlowStats($flowId, $daterange, $interval);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetFlowStats($flowId, $daterange, $interval);
 
+        return $this->doRequestForGetFlowStats($request);
+    }
+
+    /**
+     * Do the request for getFlowStats.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetFlowStats(RequestInterface $request): DataSets
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetFlowStats($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getFlowStats.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetFlowStats(ResponseData $response): DataSets
+    {
         return $this->serializer->deserialize($response, DataSets::class, 'json');
     }
 
@@ -929,9 +1451,31 @@ abstract class Endpoints
         ?DateRange $daterange = null,
         ?DateRange $receivedrange = null
     ): MessageEventCollection {
-        $request  = $this->createRequestForGetMessageEvents($range, $flowIds, $sourceIds, $sortorder, $addmessagetags, $daterange, $receivedrange);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, MessageEventCollection::class, 'json');
+        $request = $this->createRequestForGetMessageEvents($range, $flowIds, $sourceIds, $sortorder, $addmessagetags, $daterange, $receivedrange);
+
+        return $this->doRequestForGetMessageEvents($request);
+    }
+
+    /**
+     * Do the request for getMessageEvents.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessageEvents(RequestInterface $request): MessageEventCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessageEvents($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessageEvents.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessageEvents(ResponseData $response): MessageEventCollection
+    {
+        $items = $this->serializer->deserialize($response, MessageEventCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -969,9 +1513,31 @@ abstract class Endpoints
      */
     public function getMessageHolds(ItemsRange $range, ?DateRange $daterange = null): MessageHoldCollection
     {
-        $request  = $this->createRequestForGetMessageHolds($range, $daterange);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, MessageHoldCollection::class, 'json');
+        $request = $this->createRequestForGetMessageHolds($range, $daterange);
+
+        return $this->doRequestForGetMessageHolds($request);
+    }
+
+    /**
+     * Do the request for getMessageHolds.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessageHolds(RequestInterface $request): MessageHoldCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessageHolds($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessageHolds.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessageHolds(ResponseData $response): MessageHoldCollection
+    {
+        $items = $this->serializer->deserialize($response, MessageHoldCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -1001,9 +1567,30 @@ abstract class Endpoints
      */
     public function getMessageHold($messageId): MessageHold
     {
-        $request  = $this->createRequestForGetMessageHold($messageId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetMessageHold($messageId);
 
+        return $this->doRequestForGetMessageHold($request);
+    }
+
+    /**
+     * Do the request for getMessageHold.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessageHold(RequestInterface $request): MessageHold
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessageHold($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessageHold.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessageHold(ResponseData $response): MessageHold
+    {
         return $this->serializer->deserialize($response, MessageHold::class, 'json');
     }
 
@@ -1067,9 +1654,31 @@ abstract class Endpoints
         ?bool $addtags = false,
         ?DateRange $daterange = null
     ): MessageCollection {
-        $request  = $this->createRequestForGetMessages($range, $flowIds, $sortfield, $sortorder, $addevents, $addheaders, $addonlinelink, $addtags, $daterange);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, MessageCollection::class, 'json');
+        $request = $this->createRequestForGetMessages($range, $flowIds, $sortfield, $sortorder, $addevents, $addheaders, $addonlinelink, $addtags, $daterange);
+
+        return $this->doRequestForGetMessages($request);
+    }
+
+    /**
+     * Do the request for getMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessages(RequestInterface $request): MessageCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessages($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessages(ResponseData $response): MessageCollection
+    {
+        $items = $this->serializer->deserialize($response, MessageCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -1097,9 +1706,30 @@ abstract class Endpoints
      */
     public function simulateMessage(SimulateMessage $simulateMessage): SimulateMessageResult
     {
-        $request  = $this->createRequestForSimulateMessage($simulateMessage);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForSimulateMessage($simulateMessage);
 
+        return $this->doRequestForSimulateMessage($request);
+    }
+
+    /**
+     * Do the request for simulateMessage.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForSimulateMessage(RequestInterface $request): SimulateMessageResult
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForSimulateMessage($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for simulateMessage.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForSimulateMessage(ResponseData $response): SimulateMessageResult
+    {
         return $this->serializer->deserialize($response, SimulateMessageResult::class, 'json');
     }
 
@@ -1120,10 +1750,21 @@ abstract class Endpoints
      */
     public function submitMessage(SubmitMessage $submitMessage)
     {
-        $request  = $this->createRequestForSubmitMessage($submitMessage);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForSubmitMessage($submitMessage);
 
-        return $response;
+        return $this->doRequestForSubmitMessage($request);
+    }
+
+    /**
+     * Do the request for submitMessage.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForSubmitMessage(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1149,9 +1790,30 @@ abstract class Endpoints
      */
     public function getMessage($messageId, ?bool $addtags = false): Message
     {
-        $request  = $this->createRequestForGetMessage($messageId, $addtags);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetMessage($messageId, $addtags);
 
+        return $this->doRequestForGetMessage($request);
+    }
+
+    /**
+     * Do the request for getMessage.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessage(RequestInterface $request): Message
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessage($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessage.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessage(ResponseData $response): Message
+    {
         return $this->serializer->deserialize($response, Message::class, 'json');
     }
 
@@ -1185,9 +1847,30 @@ abstract class Endpoints
         ?bool $addattachments = false,
         ?bool $adddata = false
     ): MessageArchiveCollection {
-        $request  = $this->createRequestForGetMessageArchive($messageId, $addattachments, $adddata);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetMessageArchive($messageId, $addattachments, $adddata);
 
+        return $this->doRequestForGetMessageArchive($request);
+    }
+
+    /**
+     * Do the request for getMessageArchive.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessageArchive(RequestInterface $request): MessageArchiveCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessageArchive($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessageArchive.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessageArchive(ResponseData $response): MessageArchiveCollection
+    {
         return $this->serializer->deserialize($response, MessageArchiveCollection::class, 'json');
     }
 
@@ -1212,9 +1895,30 @@ abstract class Endpoints
      */
     public function getMessageArchiveAttachment($messageId, $flowStepId, $contentId): Attachment
     {
-        $request  = $this->createRequestForGetMessageArchiveAttachment($messageId, $flowStepId, $contentId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetMessageArchiveAttachment($messageId, $flowStepId, $contentId);
 
+        return $this->doRequestForGetMessageArchiveAttachment($request);
+    }
+
+    /**
+     * Do the request for getMessageArchiveAttachment.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessageArchiveAttachment(RequestInterface $request): Attachment
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessageArchiveAttachment($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessageArchiveAttachment.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessageArchiveAttachment(ResponseData $response): Attachment
+    {
         return $this->serializer->deserialize($response, Attachment::class, 'json');
     }
 
@@ -1237,6 +1941,8 @@ abstract class Endpoints
     }
 
     /**
+     * Get message error archive.
+     *
      * @codeCoverageIgnore
      */
     public function getMessageErrorArchive(
@@ -1244,9 +1950,30 @@ abstract class Endpoints
         ?bool $addattachments = false,
         ?bool $adddata = false
     ): MessageArchive {
-        $request  = $this->createRequestForGetMessageErrorArchive($messageId, $addattachments, $adddata);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetMessageErrorArchive($messageId, $addattachments, $adddata);
 
+        return $this->doRequestForGetMessageErrorArchive($request);
+    }
+
+    /**
+     * Do the request for getMessageErrorArchive.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessageErrorArchive(RequestInterface $request): MessageArchive
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessageErrorArchive($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessageErrorArchive.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessageErrorArchive(ResponseData $response): MessageArchive
+    {
         return $this->serializer->deserialize($response, MessageArchive::class, 'json');
     }
 
@@ -1269,10 +1996,21 @@ abstract class Endpoints
      */
     public function resendMessage($messageId, ResendMessage $resendMessage)
     {
-        $request  = $this->createRequestForResendMessage($messageId, $resendMessage);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForResendMessage($messageId, $resendMessage);
 
-        return $response;
+        return $this->doRequestForResendMessage($request);
+    }
+
+    /**
+     * Do the request for resendMessage.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForResendMessage(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1308,9 +2046,30 @@ abstract class Endpoints
      */
     public function getMessageStats(DateRange $daterange, ?array $flowIds = null, ?int $interval = null): DataSets
     {
-        $request  = $this->createRequestForGetMessageStats($daterange, $flowIds, $interval);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetMessageStats($daterange, $flowIds, $interval);
 
+        return $this->doRequestForGetMessageStats($request);
+    }
+
+    /**
+     * Do the request for getMessageStats.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetMessageStats(RequestInterface $request): DataSets
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetMessageStats($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getMessageStats.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetMessageStats(ResponseData $response): DataSets
+    {
         return $this->serializer->deserialize($response, DataSets::class, 'json');
     }
 
@@ -1340,9 +2099,30 @@ abstract class Endpoints
      */
     public function getRecipient($recipient, ?DateRange $daterange = null): Recipient
     {
-        $request  = $this->createRequestForGetRecipient($recipient, $daterange);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetRecipient($recipient, $daterange);
 
+        return $this->doRequestForGetRecipient($request);
+    }
+
+    /**
+     * Do the request for getRecipient.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetRecipient(RequestInterface $request): Recipient
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetRecipient($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getRecipient.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetRecipient(ResponseData $response): Recipient
+    {
         return $this->serializer->deserialize($response, Recipient::class, 'json');
     }
 
@@ -1396,9 +2176,31 @@ abstract class Endpoints
         ?bool $addonlinelink = false,
         ?bool $addtags = false
     ): MessageCollection {
-        $request  = $this->createRequestForGetRecipientMessages($recipient, $range, $daterange, $sortorder, $addheaders, $addonlinelink, $addtags);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, MessageCollection::class, 'json');
+        $request = $this->createRequestForGetRecipientMessages($recipient, $range, $daterange, $sortorder, $addheaders, $addonlinelink, $addtags);
+
+        return $this->doRequestForGetRecipientMessages($request);
+    }
+
+    /**
+     * Do the request for getRecipientMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetRecipientMessages(RequestInterface $request): MessageCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetRecipientMessages($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getRecipientMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetRecipientMessages(ResponseData $response): MessageCollection
+    {
+        $items = $this->serializer->deserialize($response, MessageCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -1420,13 +2222,36 @@ abstract class Endpoints
     }
 
     /**
+     * Get roles.
+     *
      * @codeCoverageIgnore
      */
     public function getRoles(): RoleCollection
     {
-        $request  = $this->createRequestForGetRoles();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetRoles();
 
+        return $this->doRequestForGetRoles($request);
+    }
+
+    /**
+     * Do the request for getRoles.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetRoles(RequestInterface $request): RoleCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetRoles($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getRoles.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetRoles(ResponseData $response): RoleCollection
+    {
         return $this->serializer->deserialize($response, RoleCollection::class, 'json');
     }
 
@@ -1480,9 +2305,31 @@ abstract class Endpoints
         ?bool $addonlinelink = false,
         ?bool $addtags = false
     ): MessageCollection {
-        $request  = $this->createRequestForGetSenderMessages($sender, $range, $daterange, $sortorder, $addheaders, $addonlinelink, $addtags);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, MessageCollection::class, 'json');
+        $request = $this->createRequestForGetSenderMessages($sender, $range, $daterange, $sortorder, $addheaders, $addonlinelink, $addtags);
+
+        return $this->doRequestForGetSenderMessages($request);
+    }
+
+    /**
+     * Do the request for getSenderMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSenderMessages(RequestInterface $request): MessageCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSenderMessages($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSenderMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSenderMessages(ResponseData $response): MessageCollection
+    {
+        $items = $this->serializer->deserialize($response, MessageCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -1510,9 +2357,30 @@ abstract class Endpoints
      */
     public function getSenderDomains(): SenderDomainCollection
     {
-        $request  = $this->createRequestForGetSenderDomains();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetSenderDomains();
 
+        return $this->doRequestForGetSenderDomains($request);
+    }
+
+    /**
+     * Do the request for getSenderDomains.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSenderDomains(RequestInterface $request): SenderDomainCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSenderDomains($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSenderDomains.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSenderDomains(ResponseData $response): SenderDomainCollection
+    {
         return $this->serializer->deserialize($response, SenderDomainCollection::class, 'json');
     }
 
@@ -1533,10 +2401,21 @@ abstract class Endpoints
      */
     public function createSenderDomain(SenderDomain $senderDomain)
     {
-        $request  = $this->createRequestForCreateSenderDomain($senderDomain);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateSenderDomain($senderDomain);
 
-        return $response;
+        return $this->doRequestForCreateSenderDomain($request);
+    }
+
+    /**
+     * Do the request for createSenderDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateSenderDomain(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1563,9 +2442,30 @@ abstract class Endpoints
      */
     public function getSenderDomainsByDomain($domain, ?bool $validate = false): SenderDomain
     {
-        $request  = $this->createRequestForGetSenderDomainsByDomain($domain, $validate);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetSenderDomainsByDomain($domain, $validate);
 
+        return $this->doRequestForGetSenderDomainsByDomain($request);
+    }
+
+    /**
+     * Do the request for getSenderDomainsByDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSenderDomainsByDomain(RequestInterface $request): SenderDomain
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSenderDomainsByDomain($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSenderDomainsByDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSenderDomainsByDomain(ResponseData $response): SenderDomain
+    {
         return $this->serializer->deserialize($response, SenderDomain::class, 'json');
     }
 
@@ -1588,9 +2488,30 @@ abstract class Endpoints
      */
     public function validateSenderDomain(SenderDomain $senderDomain): SenderDomain
     {
-        $request  = $this->createRequestForValidateSenderDomain($senderDomain);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForValidateSenderDomain($senderDomain);
 
+        return $this->doRequestForValidateSenderDomain($request);
+    }
+
+    /**
+     * Do the request for validateSenderDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForValidateSenderDomain(RequestInterface $request): SenderDomain
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForValidateSenderDomain($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for validateSenderDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForValidateSenderDomain(ResponseData $response): SenderDomain
+    {
         return $this->serializer->deserialize($response, SenderDomain::class, 'json');
     }
 
@@ -1613,10 +2534,21 @@ abstract class Endpoints
      */
     public function deleteSenderDomain($domainId)
     {
-        $request  = $this->createRequestForDeleteSenderDomain($domainId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForDeleteSenderDomain($domainId);
 
-        return $response;
+        return $this->doRequestForDeleteSenderDomain($request);
+    }
+
+    /**
+     * Do the request for deleteSenderDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForDeleteSenderDomain(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1643,9 +2575,30 @@ abstract class Endpoints
      */
     public function getSenderDomain($domainId, ?bool $validate = false): SenderDomain
     {
-        $request  = $this->createRequestForGetSenderDomain($domainId, $validate);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetSenderDomain($domainId, $validate);
 
+        return $this->doRequestForGetSenderDomain($request);
+    }
+
+    /**
+     * Do the request for getSenderDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSenderDomain(RequestInterface $request): SenderDomain
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSenderDomain($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSenderDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSenderDomain(ResponseData $response): SenderDomain
+    {
         return $this->serializer->deserialize($response, SenderDomain::class, 'json');
     }
 
@@ -1668,10 +2621,21 @@ abstract class Endpoints
      */
     public function updateSenderDomain($domainId, SenderDomain $senderDomain)
     {
-        $request  = $this->createRequestForUpdateSenderDomain($domainId, $senderDomain);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateSenderDomain($domainId, $senderDomain);
 
-        return $response;
+        return $this->doRequestForUpdateSenderDomain($request);
+    }
+
+    /**
+     * Do the request for updateSenderDomain.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateSenderDomain(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1697,9 +2661,30 @@ abstract class Endpoints
      */
     public function getSources(?bool $statistics = true): SourceCollection
     {
-        $request  = $this->createRequestForGetSources($statistics);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetSources($statistics);
 
+        return $this->doRequestForGetSources($request);
+    }
+
+    /**
+     * Do the request for getSources.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSources(RequestInterface $request): SourceCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSources($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSources.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSources(ResponseData $response): SourceCollection
+    {
         return $this->serializer->deserialize($response, SourceCollection::class, 'json');
     }
 
@@ -1720,10 +2705,21 @@ abstract class Endpoints
      */
     public function createSource(Source $source)
     {
-        $request  = $this->createRequestForCreateSource($source);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateSource($source);
 
-        return $response;
+        return $this->doRequestForCreateSource($request);
+    }
+
+    /**
+     * Do the request for createSource.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateSource(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1745,10 +2741,21 @@ abstract class Endpoints
      */
     public function deleteSource($sourceId)
     {
-        $request  = $this->createRequestForDeleteSource($sourceId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForDeleteSource($sourceId);
 
-        return $response;
+        return $this->doRequestForDeleteSource($request);
+    }
+
+    /**
+     * Do the request for deleteSource.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForDeleteSource(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1770,9 +2777,30 @@ abstract class Endpoints
      */
     public function getSource($sourceId): Source
     {
-        $request  = $this->createRequestForGetSource($sourceId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetSource($sourceId);
 
+        return $this->doRequestForGetSource($request);
+    }
+
+    /**
+     * Do the request for getSource.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSource(RequestInterface $request): Source
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSource($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSource.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSource(ResponseData $response): Source
+    {
         return $this->serializer->deserialize($response, Source::class, 'json');
     }
 
@@ -1795,10 +2823,21 @@ abstract class Endpoints
      */
     public function updateSource($sourceId, Source $source)
     {
-        $request  = $this->createRequestForUpdateSource($sourceId, $source);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateSource($sourceId, $source);
 
-        return $response;
+        return $this->doRequestForUpdateSource($request);
+    }
+
+    /**
+     * Do the request for updateSource.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateSource(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1847,9 +2886,31 @@ abstract class Endpoints
         ?bool $addonlinelink = false,
         ?bool $addtags = false
     ): MessageCollection {
-        $request  = $this->createRequestForGetSourceMessages($sourceId, $daterange, $range, $addheaders, $addonlinelink, $addtags);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, MessageCollection::class, 'json');
+        $request = $this->createRequestForGetSourceMessages($sourceId, $daterange, $range, $addheaders, $addonlinelink, $addtags);
+
+        return $this->doRequestForGetSourceMessages($request);
+    }
+
+    /**
+     * Do the request for getSourceMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSourceMessages(RequestInterface $request): MessageCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSourceMessages($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSourceMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSourceMessages(ResponseData $response): MessageCollection
+    {
+        $items = $this->serializer->deserialize($response, MessageCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -1891,9 +2952,30 @@ abstract class Endpoints
      */
     public function getSourceStats($sourceId, DateRange $daterange, ?int $interval = null): DataSets
     {
-        $request  = $this->createRequestForGetSourceStats($sourceId, $daterange, $interval);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetSourceStats($sourceId, $daterange, $interval);
 
+        return $this->doRequestForGetSourceStats($request);
+    }
+
+    /**
+     * Do the request for getSourceStats.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSourceStats(RequestInterface $request): DataSets
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSourceStats($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSourceStats.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSourceStats(ResponseData $response): DataSets
+    {
         return $this->serializer->deserialize($response, DataSets::class, 'json');
     }
 
@@ -1916,9 +2998,30 @@ abstract class Endpoints
      */
     public function getSourceUsers($sourceId): CredentialsCollection
     {
-        $request  = $this->createRequestForGetSourceUsers($sourceId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetSourceUsers($sourceId);
 
+        return $this->doRequestForGetSourceUsers($request);
+    }
+
+    /**
+     * Do the request for getSourceUsers.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSourceUsers(RequestInterface $request): CredentialsCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSourceUsers($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSourceUsers.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSourceUsers(ResponseData $response): CredentialsCollection
+    {
         return $this->serializer->deserialize($response, CredentialsCollection::class, 'json');
     }
 
@@ -1941,9 +3044,30 @@ abstract class Endpoints
      */
     public function createSourceUsers($sourceId, Credentials $credentials): Credentials
     {
-        $request  = $this->createRequestForCreateSourceUsers($sourceId, $credentials);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateSourceUsers($sourceId, $credentials);
 
+        return $this->doRequestForCreateSourceUsers($request);
+    }
+
+    /**
+     * Do the request for createSourceUsers.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateSourceUsers(RequestInterface $request): Credentials
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForCreateSourceUsers($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for createSourceUsers.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForCreateSourceUsers(ResponseData $response): Credentials
+    {
         return $this->serializer->deserialize($response, Credentials::class, 'json');
     }
 
@@ -1967,10 +3091,21 @@ abstract class Endpoints
      */
     public function deleteSourceUser($sourceId, $userId)
     {
-        $request  = $this->createRequestForDeleteSourceUser($sourceId, $userId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForDeleteSourceUser($sourceId, $userId);
 
-        return $response;
+        return $this->doRequestForDeleteSourceUser($request);
+    }
+
+    /**
+     * Do the request for deleteSourceUser.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForDeleteSourceUser(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -1992,9 +3127,30 @@ abstract class Endpoints
      */
     public function getSourceUser($sourceId, $userId): Credentials
     {
-        $request  = $this->createRequestForGetSourceUser($sourceId, $userId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetSourceUser($sourceId, $userId);
 
+        return $this->doRequestForGetSourceUser($request);
+    }
+
+    /**
+     * Do the request for getSourceUser.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetSourceUser(RequestInterface $request): Credentials
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetSourceUser($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getSourceUser.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetSourceUser(ResponseData $response): Credentials
+    {
         return $this->serializer->deserialize($response, Credentials::class, 'json');
     }
 
@@ -2018,9 +3174,30 @@ abstract class Endpoints
      */
     public function updateSourceUser($sourceId, $userId, Credentials $credentials): Credentials
     {
-        $request  = $this->createRequestForUpdateSourceUser($sourceId, $userId, $credentials);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateSourceUser($sourceId, $userId, $credentials);
 
+        return $this->doRequestForUpdateSourceUser($request);
+    }
+
+    /**
+     * Do the request for updateSourceUser.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateSourceUser(RequestInterface $request): Credentials
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForUpdateSourceUser($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for updateSourceUser.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForUpdateSourceUser(ResponseData $response): Credentials
+    {
         return $this->serializer->deserialize($response, Credentials::class, 'json');
     }
 
@@ -2074,9 +3251,31 @@ abstract class Endpoints
         ?bool $addonlinelink = false,
         ?bool $addtags = false
     ): MessageCollection {
-        $request  = $this->createRequestForGetTagMessages($tag, $range, $daterange, $sortorder, $addheaders, $addonlinelink, $addtags);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, MessageCollection::class, 'json');
+        $request = $this->createRequestForGetTagMessages($tag, $range, $daterange, $sortorder, $addheaders, $addonlinelink, $addtags);
+
+        return $this->doRequestForGetTagMessages($request);
+    }
+
+    /**
+     * Do the request for getTagMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetTagMessages(RequestInterface $request): MessageCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetTagMessages($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getTagMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetTagMessages(ResponseData $response): MessageCollection
+    {
+        $items = $this->serializer->deserialize($response, MessageCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -2104,9 +3303,30 @@ abstract class Endpoints
      */
     public function getTemplates(): TemplateCollection
     {
-        $request  = $this->createRequestForGetTemplates();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetTemplates();
 
+        return $this->doRequestForGetTemplates($request);
+    }
+
+    /**
+     * Do the request for getTemplates.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetTemplates(RequestInterface $request): TemplateCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetTemplates($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getTemplates.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetTemplates(ResponseData $response): TemplateCollection
+    {
         return $this->serializer->deserialize($response, TemplateCollection::class, 'json');
     }
 
@@ -2129,10 +3349,21 @@ abstract class Endpoints
      */
     public function createTemplate(Template $template)
     {
-        $request  = $this->createRequestForCreateTemplate($template);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForCreateTemplate($template);
 
-        return $response;
+        return $this->doRequestForCreateTemplate($request);
+    }
+
+    /**
+     * Do the request for createTemplate.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForCreateTemplate(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -2154,10 +3385,21 @@ abstract class Endpoints
      */
     public function deleteTemplate($templateId)
     {
-        $request  = $this->createRequestForDeleteTemplate($templateId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForDeleteTemplate($templateId);
 
-        return $response;
+        return $this->doRequestForDeleteTemplate($request);
+    }
+
+    /**
+     * Do the request for deleteTemplate.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForDeleteTemplate(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -2179,9 +3421,30 @@ abstract class Endpoints
      */
     public function getTemplate($templateId): Template
     {
-        $request  = $this->createRequestForGetTemplate($templateId);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetTemplate($templateId);
 
+        return $this->doRequestForGetTemplate($request);
+    }
+
+    /**
+     * Do the request for getTemplate.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetTemplate(RequestInterface $request): Template
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetTemplate($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getTemplate.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetTemplate(ResponseData $response): Template
+    {
         return $this->serializer->deserialize($response, Template::class, 'json');
     }
 
@@ -2205,10 +3468,21 @@ abstract class Endpoints
      */
     public function updateTemplate($templateId, Template $template)
     {
-        $request  = $this->createRequestForUpdateTemplate($templateId, $template);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForUpdateTemplate($templateId, $template);
 
-        return $response;
+        return $this->doRequestForUpdateTemplate($request);
+    }
+
+    /**
+     * Do the request for updateTemplate.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForUpdateTemplate(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 
     /**
@@ -2265,9 +3539,31 @@ abstract class Endpoints
         ?bool $addonlinelink = false,
         ?bool $addtags = false
     ): BouncedMessageCollection {
-        $request  = $this->createRequestForGetUndeliveredMessages($range, $daterange, $receivedrange, $sortorder, $addevents, $addheaders, $addonlinelink, $addtags);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
-        $items    = $this->serializer->deserialize($response, BouncedMessageCollection::class, 'json');
+        $request = $this->createRequestForGetUndeliveredMessages($range, $daterange, $receivedrange, $sortorder, $addevents, $addheaders, $addonlinelink, $addtags);
+
+        return $this->doRequestForGetUndeliveredMessages($request);
+    }
+
+    /**
+     * Do the request for getUndeliveredMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetUndeliveredMessages(RequestInterface $request): BouncedMessageCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetUndeliveredMessages($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getUndeliveredMessages.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetUndeliveredMessages(ResponseData $response): BouncedMessageCollection
+    {
+        $items = $this->serializer->deserialize($response, BouncedMessageCollection::class, 'json');
         if ($response->getMeta('next-range') instanceof ReferenceRange) {
             $items->setNextRange($response->getMeta('next-range'));
         }
@@ -2289,13 +3585,36 @@ abstract class Endpoints
     }
 
     /**
+     * Get users.
+     *
      * @codeCoverageIgnore
      */
     public function getUsers(): AccountUserCollection
     {
-        $request  = $this->createRequestForGetUsers();
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForGetUsers();
 
+        return $this->doRequestForGetUsers($request);
+    }
+
+    /**
+     * Do the request for getUsers.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForGetUsers(RequestInterface $request): AccountUserCollection
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $this->processResponseDataForGetUsers($responseData);
+    }
+
+    /**
+     * Deserialize the responseData for getUsers.
+     *
+     * @codeCoverageIgnore
+     */
+    public function processResponseDataForGetUsers(ResponseData $response): AccountUserCollection
+    {
         return $this->serializer->deserialize($response, AccountUserCollection::class, 'json');
     }
 
@@ -2316,9 +3635,20 @@ abstract class Endpoints
      */
     public function addUser(AccountUser $accountUser)
     {
-        $request  = $this->createRequestForAddUser($accountUser);
-        $response = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+        $request = $this->createRequestForAddUser($accountUser);
 
-        return $response;
+        return $this->doRequestForAddUser($request);
+    }
+
+    /**
+     * Do the request for addUser.
+     *
+     * @codeCoverageIgnore
+     */
+    public function doRequestForAddUser(RequestInterface $request)
+    {
+        $responseData = $this->handleResponse($this->getResponse($request), (string) $request->getBody(), $request->getMethod());
+
+        return $responseData;
     }
 }

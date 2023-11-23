@@ -50,6 +50,7 @@ use Flowmailer\API\Model\Template;
 use Flowmailer\API\Parameter\DateRange;
 use Flowmailer\API\Parameter\ItemsRange;
 use Flowmailer\API\Parameter\ReferenceRange;
+use Flowmailer\API\Serializer\ResponseData;
 use Psr\Http\Message\RequestInterface;
 
 interface EndpointsInterface
@@ -77,6 +78,16 @@ interface EndpointsInterface
     public function createOAuthToken($clientId, $clientSecret, $grantType, $scope = 'api'): OAuthTokenResponse;
 
     /**
+     * Do the request for createOAuthToken.
+     */
+    public function doRequestForCreateOAuthToken(RequestInterface $request): OAuthTokenResponse;
+
+    /**
+     * Deserialize the responseData for createOAuthToken.
+     */
+    public function processResponseDataForCreateOAuthToken(ResponseData $response): OAuthTokenResponse;
+
+    /**
      * Create the RequestInterface for createAccount.
      */
     public function createRequestForCreateAccount(Account $account): RequestInterface;
@@ -87,39 +98,99 @@ interface EndpointsInterface
     public function createAccount(Account $account);
 
     /**
+     * Do the request for createAccount.
+     */
+    public function doRequestForCreateAccount(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for getApiCredentials.
      */
     public function createRequestForGetApiCredentials(?int $sourceId = null): RequestInterface;
 
+    /**
+     * Get api credentials.
+     */
     public function getApiCredentials(?int $sourceId = null): CredentialsCollection;
+
+    /**
+     * Do the request for getApiCredentials.
+     */
+    public function doRequestForGetApiCredentials(RequestInterface $request): CredentialsCollection;
+
+    /**
+     * Deserialize the responseData for getApiCredentials.
+     */
+    public function processResponseDataForGetApiCredentials(ResponseData $response): CredentialsCollection;
 
     /**
      * Create the RequestInterface for createApiCredentials.
      */
     public function createRequestForCreateApiCredentials(Credentials $credentials): RequestInterface;
 
+    /**
+     * Create api credentials.
+     */
     public function createApiCredentials(Credentials $credentials): Credentials;
+
+    /**
+     * Do the request for createApiCredentials.
+     */
+    public function doRequestForCreateApiCredentials(RequestInterface $request): Credentials;
+
+    /**
+     * Deserialize the responseData for createApiCredentials.
+     */
+    public function processResponseDataForCreateApiCredentials(ResponseData $response): Credentials;
 
     /**
      * Create the RequestInterface for deleteClientApiCredentials.
      */
     public function createRequestForDeleteClientApiCredentials($clientId): RequestInterface;
 
+    /**
+     * Delete client api credentials.
+     */
     public function deleteClientApiCredentials($clientId);
+
+    /**
+     * Do the request for deleteClientApiCredentials.
+     */
+    public function doRequestForDeleteClientApiCredentials(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getClientApiCredentials.
      */
     public function createRequestForGetClientApiCredentials($clientId): RequestInterface;
 
+    /**
+     * Get client api credentials.
+     */
     public function getClientApiCredentials($clientId): Credentials;
+
+    /**
+     * Do the request for getClientApiCredentials.
+     */
+    public function doRequestForGetClientApiCredentials(RequestInterface $request): Credentials;
+
+    /**
+     * Deserialize the responseData for getClientApiCredentials.
+     */
+    public function processResponseDataForGetClientApiCredentials(ResponseData $response): Credentials;
 
     /**
      * Create the RequestInterface for updateClientApiCredentials.
      */
     public function createRequestForUpdateClientApiCredentials($clientId, Credentials $credentials): RequestInterface;
 
+    /**
+     * Update client api credentials.
+     */
     public function updateClientApiCredentials($clientId, Credentials $credentials);
+
+    /**
+     * Do the request for updateClientApiCredentials.
+     */
+    public function doRequestForUpdateClientApiCredentials(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getEventFlowRules.
@@ -132,6 +203,16 @@ interface EndpointsInterface
     public function getEventFlowRules(): FlowRuleItemCollection;
 
     /**
+     * Do the request for getEventFlowRules.
+     */
+    public function doRequestForGetEventFlowRules(RequestInterface $request): FlowRuleItemCollection;
+
+    /**
+     * Deserialize the responseData for getEventFlowRules.
+     */
+    public function processResponseDataForGetEventFlowRules(ResponseData $response): FlowRuleItemCollection;
+
+    /**
      * Create the RequestInterface for getEventFlowRulesHierarchy.
      */
     public function createRequestForGetEventFlowRulesHierarchy(): RequestInterface;
@@ -142,6 +223,16 @@ interface EndpointsInterface
     public function getEventFlowRulesHierarchy(): FlowRuleHierarchyItemCollection;
 
     /**
+     * Do the request for getEventFlowRulesHierarchy.
+     */
+    public function doRequestForGetEventFlowRulesHierarchy(RequestInterface $request): FlowRuleHierarchyItemCollection;
+
+    /**
+     * Deserialize the responseData for getEventFlowRulesHierarchy.
+     */
+    public function processResponseDataForGetEventFlowRulesHierarchy(ResponseData $response): FlowRuleHierarchyItemCollection;
+
+    /**
      * Create the RequestInterface for getEventFlows.
      */
     public function createRequestForGetEventFlows(): RequestInterface;
@@ -150,6 +241,16 @@ interface EndpointsInterface
      * List flows per account.
      */
     public function getEventFlows(): EventFlowCollection;
+
+    /**
+     * Do the request for getEventFlows.
+     */
+    public function doRequestForGetEventFlows(RequestInterface $request): EventFlowCollection;
+
+    /**
+     * Deserialize the responseData for getEventFlows.
+     */
+    public function processResponseDataForGetEventFlows(ResponseData $response): EventFlowCollection;
 
     /**
      * Create the RequestInterface for createEventFlow.
@@ -164,6 +265,11 @@ interface EndpointsInterface
     public function createEventFlow(EventFlow $eventFlow);
 
     /**
+     * Do the request for createEventFlow.
+     */
+    public function doRequestForCreateEventFlow(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for deleteEventFlow.
      *
      * @param $eventFlowId Flow ID
@@ -176,6 +282,11 @@ interface EndpointsInterface
     public function deleteEventFlow($eventFlowId);
 
     /**
+     * Do the request for deleteEventFlow.
+     */
+    public function doRequestForDeleteEventFlow(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for getEventFlow.
      *
      * @param $eventFlowId Flow ID
@@ -186,6 +297,16 @@ interface EndpointsInterface
      * Get flow by id.
      */
     public function getEventFlow($eventFlowId): EventFlow;
+
+    /**
+     * Do the request for getEventFlow.
+     */
+    public function doRequestForGetEventFlow(RequestInterface $request): EventFlow;
+
+    /**
+     * Deserialize the responseData for getEventFlow.
+     */
+    public function processResponseDataForGetEventFlow(ResponseData $response): EventFlow;
 
     /**
      * Create the RequestInterface for updateEventFlow.
@@ -201,6 +322,16 @@ interface EndpointsInterface
     public function updateEventFlow($eventFlowId, EventFlow $eventFlow): EventFlow;
 
     /**
+     * Do the request for updateEventFlow.
+     */
+    public function doRequestForUpdateEventFlow(RequestInterface $request): EventFlow;
+
+    /**
+     * Deserialize the responseData for updateEventFlow.
+     */
+    public function processResponseDataForUpdateEventFlow(ResponseData $response): EventFlow;
+
+    /**
      * Create the RequestInterface for getEventFlowRule.
      *
      * @param $eventFlowId Flow ID
@@ -211,6 +342,16 @@ interface EndpointsInterface
      * Get flow conditions for a flow.
      */
     public function getEventFlowRule($eventFlowId): EventFlowRuleSimple;
+
+    /**
+     * Do the request for getEventFlowRule.
+     */
+    public function doRequestForGetEventFlowRule(RequestInterface $request): EventFlowRuleSimple;
+
+    /**
+     * Deserialize the responseData for getEventFlowRule.
+     */
+    public function processResponseDataForGetEventFlowRule(ResponseData $response): EventFlowRuleSimple;
 
     /**
      * Create the RequestInterface for updateEventFlowRule.
@@ -227,6 +368,11 @@ interface EndpointsInterface
      * Set conditions for a flow.
      */
     public function updateEventFlowRule($eventFlowId, EventFlowRuleSimple $eventFlowRuleSimple);
+
+    /**
+     * Do the request for updateEventFlowRule.
+     */
+    public function doRequestForUpdateEventFlowRule(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getFilters.
@@ -250,6 +396,16 @@ interface EndpointsInterface
     ): FilterCollection;
 
     /**
+     * Do the request for getFilters.
+     */
+    public function doRequestForGetFilters(RequestInterface $request): FilterCollection;
+
+    /**
+     * Deserialize the responseData for getFilters.
+     */
+    public function processResponseDataForGetFilters(ResponseData $response): FilterCollection;
+
+    /**
      * Create the RequestInterface for deleteFilter.
      *
      * @param $filterId Filter ID
@@ -262,6 +418,11 @@ interface EndpointsInterface
     public function deleteFilter($filterId);
 
     /**
+     * Do the request for deleteFilter.
+     */
+    public function doRequestForDeleteFilter(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for getFlowRules.
      */
     public function createRequestForGetFlowRules(): RequestInterface;
@@ -272,6 +433,16 @@ interface EndpointsInterface
     public function getFlowRules(): FlowRuleItemCollection;
 
     /**
+     * Do the request for getFlowRules.
+     */
+    public function doRequestForGetFlowRules(RequestInterface $request): FlowRuleItemCollection;
+
+    /**
+     * Deserialize the responseData for getFlowRules.
+     */
+    public function processResponseDataForGetFlowRules(ResponseData $response): FlowRuleItemCollection;
+
+    /**
      * Create the RequestInterface for getFlowTemplates.
      */
     public function createRequestForGetFlowTemplates(): RequestInterface;
@@ -280,6 +451,16 @@ interface EndpointsInterface
      * List flow templates per account.
      */
     public function getFlowTemplates(): FlowTemplateCollection;
+
+    /**
+     * Do the request for getFlowTemplates.
+     */
+    public function doRequestForGetFlowTemplates(RequestInterface $request): FlowTemplateCollection;
+
+    /**
+     * Deserialize the responseData for getFlowTemplates.
+     */
+    public function processResponseDataForGetFlowTemplates(ResponseData $response): FlowTemplateCollection;
 
     /**
      * Create the RequestInterface for getFlows.
@@ -294,6 +475,16 @@ interface EndpointsInterface
     public function getFlows(?bool $statistics = true): FlowCollection;
 
     /**
+     * Do the request for getFlows.
+     */
+    public function doRequestForGetFlows(RequestInterface $request): FlowCollection;
+
+    /**
+     * Deserialize the responseData for getFlows.
+     */
+    public function processResponseDataForGetFlows(ResponseData $response): FlowCollection;
+
+    /**
      * Create the RequestInterface for createFlow.
      *
      * @param Flow $flow Flow object
@@ -304,6 +495,11 @@ interface EndpointsInterface
      * Create a new flow.
      */
     public function createFlow(Flow $flow);
+
+    /**
+     * Do the request for createFlow.
+     */
+    public function doRequestForCreateFlow(RequestInterface $request);
 
     /**
      * Create the RequestInterface for deleteFlow.
@@ -318,6 +514,11 @@ interface EndpointsInterface
     public function deleteFlow($flowId);
 
     /**
+     * Do the request for deleteFlow.
+     */
+    public function doRequestForDeleteFlow(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for getFlow.
      *
      * @param $flowId Flow ID
@@ -328,6 +529,16 @@ interface EndpointsInterface
      * Get flow by id.
      */
     public function getFlow($flowId): Flow;
+
+    /**
+     * Do the request for getFlow.
+     */
+    public function doRequestForGetFlow(RequestInterface $request): Flow;
+
+    /**
+     * Deserialize the responseData for getFlow.
+     */
+    public function processResponseDataForGetFlow(ResponseData $response): Flow;
 
     /**
      * Create the RequestInterface for updateFlow.
@@ -341,6 +552,16 @@ interface EndpointsInterface
      * Save flow.
      */
     public function updateFlow($flowId, Flow $flow): Flow;
+
+    /**
+     * Do the request for updateFlow.
+     */
+    public function doRequestForUpdateFlow(RequestInterface $request): Flow;
+
+    /**
+     * Deserialize the responseData for updateFlow.
+     */
+    public function processResponseDataForUpdateFlow(ResponseData $response): Flow;
 
     /**
      * Create the RequestInterface for getFlowMessages.
@@ -372,6 +593,16 @@ interface EndpointsInterface
     ): MessageCollection;
 
     /**
+     * Do the request for getFlowMessages.
+     */
+    public function doRequestForGetFlowMessages(RequestInterface $request): MessageCollection;
+
+    /**
+     * Deserialize the responseData for getFlowMessages.
+     */
+    public function processResponseDataForGetFlowMessages(ResponseData $response): MessageCollection;
+
+    /**
      * Create the RequestInterface for getFlowRule.
      *
      * @param $flowId Flow ID
@@ -382,6 +613,16 @@ interface EndpointsInterface
      * Get flow conditions for a flow.
      */
     public function getFlowRule($flowId): FlowRuleSimple;
+
+    /**
+     * Do the request for getFlowRule.
+     */
+    public function doRequestForGetFlowRule(RequestInterface $request): FlowRuleSimple;
+
+    /**
+     * Deserialize the responseData for getFlowRule.
+     */
+    public function processResponseDataForGetFlowRule(ResponseData $response): FlowRuleSimple;
 
     /**
      * Create the RequestInterface for updateFlowRule.
@@ -395,6 +636,11 @@ interface EndpointsInterface
      * Set conditions for a flow.
      */
     public function updateFlowRule($flowId, FlowRuleSimple $flowRuleSimple);
+
+    /**
+     * Do the request for updateFlowRule.
+     */
+    public function doRequestForUpdateFlowRule(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getFlowStats.
@@ -411,6 +657,16 @@ interface EndpointsInterface
      *  The resolution of the returned data may be lower than specified in the `interval` parameter if the data is old or the requested date range is too large.
      */
     public function getFlowStats($flowId, DateRange $daterange, ?int $interval = null): DataSets;
+
+    /**
+     * Do the request for getFlowStats.
+     */
+    public function doRequestForGetFlowStats(RequestInterface $request): DataSets;
+
+    /**
+     * Deserialize the responseData for getFlowStats.
+     */
+    public function processResponseDataForGetFlowStats(ResponseData $response): DataSets;
 
     /**
      * Create the RequestInterface for getMessageEvents.
@@ -446,6 +702,16 @@ interface EndpointsInterface
     ): MessageEventCollection;
 
     /**
+     * Do the request for getMessageEvents.
+     */
+    public function doRequestForGetMessageEvents(RequestInterface $request): MessageEventCollection;
+
+    /**
+     * Deserialize the responseData for getMessageEvents.
+     */
+    public function processResponseDataForGetMessageEvents(ResponseData $response): MessageEventCollection;
+
+    /**
      * Create the RequestInterface for getMessageHolds.
      *
      * @param ItemsRange $range     Limits the returned list
@@ -459,6 +725,16 @@ interface EndpointsInterface
     public function getMessageHolds(ItemsRange $range, ?DateRange $daterange = null): MessageHoldCollection;
 
     /**
+     * Do the request for getMessageHolds.
+     */
+    public function doRequestForGetMessageHolds(RequestInterface $request): MessageHoldCollection;
+
+    /**
+     * Deserialize the responseData for getMessageHolds.
+     */
+    public function processResponseDataForGetMessageHolds(ResponseData $response): MessageHoldCollection;
+
+    /**
      * Create the RequestInterface for getMessageHold.
      *
      * @param $messageId Message ID
@@ -469,6 +745,16 @@ interface EndpointsInterface
      * Get a held message by its id.
      */
     public function getMessageHold($messageId): MessageHold;
+
+    /**
+     * Do the request for getMessageHold.
+     */
+    public function doRequestForGetMessageHold(RequestInterface $request): MessageHold;
+
+    /**
+     * Deserialize the responseData for getMessageHold.
+     */
+    public function processResponseDataForGetMessageHold(ResponseData $response): MessageHold;
 
     /**
      * Create the RequestInterface for getMessages.
@@ -510,6 +796,16 @@ interface EndpointsInterface
     ): MessageCollection;
 
     /**
+     * Do the request for getMessages.
+     */
+    public function doRequestForGetMessages(RequestInterface $request): MessageCollection;
+
+    /**
+     * Deserialize the responseData for getMessages.
+     */
+    public function processResponseDataForGetMessages(ResponseData $response): MessageCollection;
+
+    /**
      * Create the RequestInterface for simulateMessage.
      */
     public function createRequestForSimulateMessage(SimulateMessage $simulateMessage): RequestInterface;
@@ -518,6 +814,16 @@ interface EndpointsInterface
      * Simulate an email or sms message.
      */
     public function simulateMessage(SimulateMessage $simulateMessage): SimulateMessageResult;
+
+    /**
+     * Do the request for simulateMessage.
+     */
+    public function doRequestForSimulateMessage(RequestInterface $request): SimulateMessageResult;
+
+    /**
+     * Deserialize the responseData for simulateMessage.
+     */
+    public function processResponseDataForSimulateMessage(ResponseData $response): SimulateMessageResult;
 
     /**
      * Create the RequestInterface for submitMessage.
@@ -530,6 +836,11 @@ interface EndpointsInterface
     public function submitMessage(SubmitMessage $submitMessage);
 
     /**
+     * Do the request for submitMessage.
+     */
+    public function doRequestForSubmitMessage(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for getMessage.
      *
      * @param $messageId Message ID
@@ -540,6 +851,16 @@ interface EndpointsInterface
      * Get message by id.
      */
     public function getMessage($messageId, ?bool $addtags = false): Message;
+
+    /**
+     * Do the request for getMessage.
+     */
+    public function doRequestForGetMessage(RequestInterface $request): Message;
+
+    /**
+     * Deserialize the responseData for getMessage.
+     */
+    public function processResponseDataForGetMessage(ResponseData $response): Message;
 
     /**
      * Create the RequestInterface for getMessageArchive.
@@ -562,6 +883,16 @@ interface EndpointsInterface
     ): MessageArchiveCollection;
 
     /**
+     * Do the request for getMessageArchive.
+     */
+    public function doRequestForGetMessageArchive(RequestInterface $request): MessageArchiveCollection;
+
+    /**
+     * Deserialize the responseData for getMessageArchive.
+     */
+    public function processResponseDataForGetMessageArchive(ResponseData $response): MessageArchiveCollection;
+
+    /**
      * Create the RequestInterface for getMessageArchiveAttachment.
      *
      * @param $messageId  Message ID
@@ -576,6 +907,16 @@ interface EndpointsInterface
     public function getMessageArchiveAttachment($messageId, $flowStepId, $contentId): Attachment;
 
     /**
+     * Do the request for getMessageArchiveAttachment.
+     */
+    public function doRequestForGetMessageArchiveAttachment(RequestInterface $request): Attachment;
+
+    /**
+     * Deserialize the responseData for getMessageArchiveAttachment.
+     */
+    public function processResponseDataForGetMessageArchiveAttachment(ResponseData $response): Attachment;
+
+    /**
      * Create the RequestInterface for getMessageErrorArchive.
      */
     public function createRequestForGetMessageErrorArchive(
@@ -584,11 +925,24 @@ interface EndpointsInterface
         ?bool $adddata = false
     ): RequestInterface;
 
+    /**
+     * Get message error archive.
+     */
     public function getMessageErrorArchive(
         $messageId,
         ?bool $addattachments = false,
         ?bool $adddata = false
     ): MessageArchive;
+
+    /**
+     * Do the request for getMessageErrorArchive.
+     */
+    public function doRequestForGetMessageErrorArchive(RequestInterface $request): MessageArchive;
+
+    /**
+     * Deserialize the responseData for getMessageErrorArchive.
+     */
+    public function processResponseDataForGetMessageErrorArchive(ResponseData $response): MessageArchive;
 
     /**
      * Create the RequestInterface for resendMessage.
@@ -601,6 +955,11 @@ interface EndpointsInterface
      * Resend message by id.
      */
     public function resendMessage($messageId, ResendMessage $resendMessage);
+
+    /**
+     * Do the request for resendMessage.
+     */
+    public function doRequestForResendMessage(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getMessageStats.
@@ -622,6 +981,16 @@ interface EndpointsInterface
     public function getMessageStats(DateRange $daterange, ?array $flowIds = null, ?int $interval = null): DataSets;
 
     /**
+     * Do the request for getMessageStats.
+     */
+    public function doRequestForGetMessageStats(RequestInterface $request): DataSets;
+
+    /**
+     * Deserialize the responseData for getMessageStats.
+     */
+    public function processResponseDataForGetMessageStats(ResponseData $response): DataSets;
+
+    /**
      * Create the RequestInterface for getRecipient.
      *
      * @param           $recipient Recipient email address or phone number
@@ -635,6 +1004,16 @@ interface EndpointsInterface
      *  Message statistics are only included if a date range is specified.
      */
     public function getRecipient($recipient, ?DateRange $daterange = null): Recipient;
+
+    /**
+     * Do the request for getRecipient.
+     */
+    public function doRequestForGetRecipient(RequestInterface $request): Recipient;
+
+    /**
+     * Deserialize the responseData for getRecipient.
+     */
+    public function processResponseDataForGetRecipient(ResponseData $response): Recipient;
 
     /**
      * Create the RequestInterface for getRecipientMessages.
@@ -669,11 +1048,34 @@ interface EndpointsInterface
     ): MessageCollection;
 
     /**
+     * Do the request for getRecipientMessages.
+     */
+    public function doRequestForGetRecipientMessages(RequestInterface $request): MessageCollection;
+
+    /**
+     * Deserialize the responseData for getRecipientMessages.
+     */
+    public function processResponseDataForGetRecipientMessages(ResponseData $response): MessageCollection;
+
+    /**
      * Create the RequestInterface for getRoles.
      */
     public function createRequestForGetRoles(): RequestInterface;
 
+    /**
+     * Get roles.
+     */
     public function getRoles(): RoleCollection;
+
+    /**
+     * Do the request for getRoles.
+     */
+    public function doRequestForGetRoles(RequestInterface $request): RoleCollection;
+
+    /**
+     * Deserialize the responseData for getRoles.
+     */
+    public function processResponseDataForGetRoles(ResponseData $response): RoleCollection;
 
     /**
      * Create the RequestInterface for getSenderMessages.
@@ -708,6 +1110,16 @@ interface EndpointsInterface
     ): MessageCollection;
 
     /**
+     * Do the request for getSenderMessages.
+     */
+    public function doRequestForGetSenderMessages(RequestInterface $request): MessageCollection;
+
+    /**
+     * Deserialize the responseData for getSenderMessages.
+     */
+    public function processResponseDataForGetSenderMessages(ResponseData $response): MessageCollection;
+
+    /**
      * Create the RequestInterface for getSenderDomains.
      */
     public function createRequestForGetSenderDomains(): RequestInterface;
@@ -718,6 +1130,16 @@ interface EndpointsInterface
     public function getSenderDomains(): SenderDomainCollection;
 
     /**
+     * Do the request for getSenderDomains.
+     */
+    public function doRequestForGetSenderDomains(RequestInterface $request): SenderDomainCollection;
+
+    /**
+     * Deserialize the responseData for getSenderDomains.
+     */
+    public function processResponseDataForGetSenderDomains(ResponseData $response): SenderDomainCollection;
+
+    /**
      * Create the RequestInterface for createSenderDomain.
      */
     public function createRequestForCreateSenderDomain(SenderDomain $senderDomain): RequestInterface;
@@ -726,6 +1148,11 @@ interface EndpointsInterface
      * Create sender domain.
      */
     public function createSenderDomain(SenderDomain $senderDomain);
+
+    /**
+     * Do the request for createSenderDomain.
+     */
+    public function doRequestForCreateSenderDomain(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getSenderDomainsByDomain.
@@ -741,6 +1168,16 @@ interface EndpointsInterface
     public function getSenderDomainsByDomain($domain, ?bool $validate = false): SenderDomain;
 
     /**
+     * Do the request for getSenderDomainsByDomain.
+     */
+    public function doRequestForGetSenderDomainsByDomain(RequestInterface $request): SenderDomain;
+
+    /**
+     * Deserialize the responseData for getSenderDomainsByDomain.
+     */
+    public function processResponseDataForGetSenderDomainsByDomain(ResponseData $response): SenderDomain;
+
+    /**
      * Create the RequestInterface for validateSenderDomain.
      *
      * @param SenderDomain $senderDomain the sender domain to validate
@@ -753,6 +1190,16 @@ interface EndpointsInterface
     public function validateSenderDomain(SenderDomain $senderDomain): SenderDomain;
 
     /**
+     * Do the request for validateSenderDomain.
+     */
+    public function doRequestForValidateSenderDomain(RequestInterface $request): SenderDomain;
+
+    /**
+     * Deserialize the responseData for validateSenderDomain.
+     */
+    public function processResponseDataForValidateSenderDomain(ResponseData $response): SenderDomain;
+
+    /**
      * Create the RequestInterface for deleteSenderDomain.
      *
      * @param $domainId Sender domain ID
@@ -763,6 +1210,11 @@ interface EndpointsInterface
      * Delete sender domain.
      */
     public function deleteSenderDomain($domainId);
+
+    /**
+     * Do the request for deleteSenderDomain.
+     */
+    public function doRequestForDeleteSenderDomain(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getSenderDomain.
@@ -778,6 +1230,16 @@ interface EndpointsInterface
     public function getSenderDomain($domainId, ?bool $validate = false): SenderDomain;
 
     /**
+     * Do the request for getSenderDomain.
+     */
+    public function doRequestForGetSenderDomain(RequestInterface $request): SenderDomain;
+
+    /**
+     * Deserialize the responseData for getSenderDomain.
+     */
+    public function processResponseDataForGetSenderDomain(ResponseData $response): SenderDomain;
+
+    /**
      * Create the RequestInterface for updateSenderDomain.
      *
      * @param $domainId Sender domain ID
@@ -788,6 +1250,11 @@ interface EndpointsInterface
      * Save sender domain.
      */
     public function updateSenderDomain($domainId, SenderDomain $senderDomain);
+
+    /**
+     * Do the request for updateSenderDomain.
+     */
+    public function doRequestForUpdateSenderDomain(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getSources.
@@ -802,6 +1269,16 @@ interface EndpointsInterface
     public function getSources(?bool $statistics = true): SourceCollection;
 
     /**
+     * Do the request for getSources.
+     */
+    public function doRequestForGetSources(RequestInterface $request): SourceCollection;
+
+    /**
+     * Deserialize the responseData for getSources.
+     */
+    public function processResponseDataForGetSources(ResponseData $response): SourceCollection;
+
+    /**
      * Create the RequestInterface for createSource.
      */
     public function createRequestForCreateSource(Source $source): RequestInterface;
@@ -810,6 +1287,11 @@ interface EndpointsInterface
      * Create a new source.
      */
     public function createSource(Source $source);
+
+    /**
+     * Do the request for createSource.
+     */
+    public function doRequestForCreateSource(RequestInterface $request);
 
     /**
      * Create the RequestInterface for deleteSource.
@@ -824,6 +1306,11 @@ interface EndpointsInterface
     public function deleteSource($sourceId);
 
     /**
+     * Do the request for deleteSource.
+     */
+    public function doRequestForDeleteSource(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for getSource.
      *
      * @param $sourceId Source ID
@@ -836,6 +1323,16 @@ interface EndpointsInterface
     public function getSource($sourceId): Source;
 
     /**
+     * Do the request for getSource.
+     */
+    public function doRequestForGetSource(RequestInterface $request): Source;
+
+    /**
+     * Deserialize the responseData for getSource.
+     */
+    public function processResponseDataForGetSource(ResponseData $response): Source;
+
+    /**
      * Create the RequestInterface for updateSource.
      *
      * @param $sourceId Source ID
@@ -846,6 +1343,11 @@ interface EndpointsInterface
      * Update a source.
      */
     public function updateSource($sourceId, Source $source);
+
+    /**
+     * Do the request for updateSource.
+     */
+    public function doRequestForUpdateSource(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getSourceMessages.
@@ -877,6 +1379,16 @@ interface EndpointsInterface
     ): MessageCollection;
 
     /**
+     * Do the request for getSourceMessages.
+     */
+    public function doRequestForGetSourceMessages(RequestInterface $request): MessageCollection;
+
+    /**
+     * Deserialize the responseData for getSourceMessages.
+     */
+    public function processResponseDataForGetSourceMessages(ResponseData $response): MessageCollection;
+
+    /**
      * Create the RequestInterface for getSourceStats.
      *
      * @param           $sourceId  Source ID
@@ -897,6 +1409,16 @@ interface EndpointsInterface
     public function getSourceStats($sourceId, DateRange $daterange, ?int $interval = null): DataSets;
 
     /**
+     * Do the request for getSourceStats.
+     */
+    public function doRequestForGetSourceStats(RequestInterface $request): DataSets;
+
+    /**
+     * Deserialize the responseData for getSourceStats.
+     */
+    public function processResponseDataForGetSourceStats(ResponseData $response): DataSets;
+
+    /**
      * Create the RequestInterface for getSourceUsers.
      *
      * @param $sourceId Source ID
@@ -909,6 +1431,16 @@ interface EndpointsInterface
     public function getSourceUsers($sourceId): CredentialsCollection;
 
     /**
+     * Do the request for getSourceUsers.
+     */
+    public function doRequestForGetSourceUsers(RequestInterface $request): CredentialsCollection;
+
+    /**
+     * Deserialize the responseData for getSourceUsers.
+     */
+    public function processResponseDataForGetSourceUsers(ResponseData $response): CredentialsCollection;
+
+    /**
      * Create the RequestInterface for createSourceUsers.
      *
      * @param $sourceId Source ID
@@ -919,6 +1451,16 @@ interface EndpointsInterface
      * Create credentials for a source.
      */
     public function createSourceUsers($sourceId, Credentials $credentials): Credentials;
+
+    /**
+     * Do the request for createSourceUsers.
+     */
+    public function doRequestForCreateSourceUsers(RequestInterface $request): Credentials;
+
+    /**
+     * Deserialize the responseData for createSourceUsers.
+     */
+    public function processResponseDataForCreateSourceUsers(ResponseData $response): Credentials;
 
     /**
      * Create the RequestInterface for deleteSourceUser.
@@ -934,6 +1476,11 @@ interface EndpointsInterface
     public function deleteSourceUser($sourceId, $userId);
 
     /**
+     * Do the request for deleteSourceUser.
+     */
+    public function doRequestForDeleteSourceUser(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for getSourceUser.
      *
      * @param $sourceId Source ID
@@ -944,6 +1491,16 @@ interface EndpointsInterface
      * Get credentials for a source.
      */
     public function getSourceUser($sourceId, $userId): Credentials;
+
+    /**
+     * Do the request for getSourceUser.
+     */
+    public function doRequestForGetSourceUser(RequestInterface $request): Credentials;
+
+    /**
+     * Deserialize the responseData for getSourceUser.
+     */
+    public function processResponseDataForGetSourceUser(ResponseData $response): Credentials;
 
     /**
      * Create the RequestInterface for updateSourceUser.
@@ -957,6 +1514,16 @@ interface EndpointsInterface
      * Update credentials for a source.
      */
     public function updateSourceUser($sourceId, $userId, Credentials $credentials): Credentials;
+
+    /**
+     * Do the request for updateSourceUser.
+     */
+    public function doRequestForUpdateSourceUser(RequestInterface $request): Credentials;
+
+    /**
+     * Deserialize the responseData for updateSourceUser.
+     */
+    public function processResponseDataForUpdateSourceUser(ResponseData $response): Credentials;
 
     /**
      * Create the RequestInterface for getTagMessages.
@@ -991,6 +1558,16 @@ interface EndpointsInterface
     ): MessageCollection;
 
     /**
+     * Do the request for getTagMessages.
+     */
+    public function doRequestForGetTagMessages(RequestInterface $request): MessageCollection;
+
+    /**
+     * Deserialize the responseData for getTagMessages.
+     */
+    public function processResponseDataForGetTagMessages(ResponseData $response): MessageCollection;
+
+    /**
      * Create the RequestInterface for getTemplates.
      */
     public function createRequestForGetTemplates(): RequestInterface;
@@ -999,6 +1576,16 @@ interface EndpointsInterface
      * List templates by account.
      */
     public function getTemplates(): TemplateCollection;
+
+    /**
+     * Do the request for getTemplates.
+     */
+    public function doRequestForGetTemplates(RequestInterface $request): TemplateCollection;
+
+    /**
+     * Deserialize the responseData for getTemplates.
+     */
+    public function processResponseDataForGetTemplates(ResponseData $response): TemplateCollection;
 
     /**
      * Create the RequestInterface for createTemplate.
@@ -1013,6 +1600,11 @@ interface EndpointsInterface
     public function createTemplate(Template $template);
 
     /**
+     * Do the request for createTemplate.
+     */
+    public function doRequestForCreateTemplate(RequestInterface $request);
+
+    /**
      * Create the RequestInterface for deleteTemplate.
      *
      * @param $templateId Template ID
@@ -1023,6 +1615,11 @@ interface EndpointsInterface
      * Delete template by id.
      */
     public function deleteTemplate($templateId);
+
+    /**
+     * Do the request for deleteTemplate.
+     */
+    public function doRequestForDeleteTemplate(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getTemplate.
@@ -1037,6 +1634,16 @@ interface EndpointsInterface
     public function getTemplate($templateId): Template;
 
     /**
+     * Do the request for getTemplate.
+     */
+    public function doRequestForGetTemplate(RequestInterface $request): Template;
+
+    /**
+     * Deserialize the responseData for getTemplate.
+     */
+    public function processResponseDataForGetTemplate(ResponseData $response): Template;
+
+    /**
      * Create the RequestInterface for updateTemplate.
      *
      * @param          $templateId Template ID
@@ -1048,6 +1655,11 @@ interface EndpointsInterface
      * Save template.
      */
     public function updateTemplate($templateId, Template $template);
+
+    /**
+     * Do the request for updateTemplate.
+     */
+    public function doRequestForUpdateTemplate(RequestInterface $request);
 
     /**
      * Create the RequestInterface for getUndeliveredMessages.
@@ -1084,11 +1696,34 @@ interface EndpointsInterface
     ): BouncedMessageCollection;
 
     /**
+     * Do the request for getUndeliveredMessages.
+     */
+    public function doRequestForGetUndeliveredMessages(RequestInterface $request): BouncedMessageCollection;
+
+    /**
+     * Deserialize the responseData for getUndeliveredMessages.
+     */
+    public function processResponseDataForGetUndeliveredMessages(ResponseData $response): BouncedMessageCollection;
+
+    /**
      * Create the RequestInterface for getUsers.
      */
     public function createRequestForGetUsers(): RequestInterface;
 
+    /**
+     * Get users.
+     */
     public function getUsers(): AccountUserCollection;
+
+    /**
+     * Do the request for getUsers.
+     */
+    public function doRequestForGetUsers(RequestInterface $request): AccountUserCollection;
+
+    /**
+     * Deserialize the responseData for getUsers.
+     */
+    public function processResponseDataForGetUsers(ResponseData $response): AccountUserCollection;
 
     /**
      * Create the RequestInterface for addUser.
@@ -1099,4 +1734,9 @@ interface EndpointsInterface
      * Create a user.
      */
     public function addUser(AccountUser $accountUser);
+
+    /**
+     * Do the request for addUser.
+     */
+    public function doRequestForAddUser(RequestInterface $request);
 }
