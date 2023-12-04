@@ -30,7 +30,7 @@ class Template implements ModelInterface, \Stringable
     /**
      * Template content.
      */
-    private string $data;
+    private ?string $data = null;
     /**
      * Decode Base64.
      *
@@ -97,14 +97,14 @@ class Template implements ModelInterface, \Stringable
         return $this->contentId;
     }
 
-    public function setData(string $data): self
+    public function setData(?string $data = null): self
     {
         $this->data = $data;
 
         return $this;
     }
 
-    public function getData(): string
+    public function getData(): ?string
     {
         return $this->data;
     }
