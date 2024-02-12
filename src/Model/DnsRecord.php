@@ -59,10 +59,6 @@ class DnsRecord implements ModelInterface
      * @var string[]|null
      */
     private ?array $warningMessages = null;
-
-    /**
-     * @var null
-     */
     private $warnings;
 
     public function setErrorMessages(?array $errorMessages = null): self

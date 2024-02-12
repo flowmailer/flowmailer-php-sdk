@@ -86,11 +86,7 @@ class MessageEvent implements ModelInterface
      */
     private ?string $subType = null;
 
-    /**
-     * Custom event type.
-     *
-     * @var null
-     */
+    /** Custom event type */
     private $tag;
 
     /**
