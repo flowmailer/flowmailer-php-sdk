@@ -129,11 +129,13 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         }
 
         $items = $this->serializer->deserialize($response, $type, 'json');
-        if ($response->getMeta('next-range') instanceof ReferenceRange && is_subclass_of($type, NextRangeHolderCollection::class)) {
-            $items->setNextRange($response->getMeta('next-range'));
-        }
-        if ($response->getMeta('content-range') instanceof ContentRange && is_subclass_of($type, NextRangeHolderCollection::class)) {
-            $items->setContentRange($response->getMeta('content-range'));
+        if ($response instanceof ResponseData && is_subclass_of($type, NextRangeHolderCollection::class)) {
+            if ($response->getMeta('next-range') instanceof ReferenceRange) {
+                $items->setNextRange($response->getMeta('next-range'));
+            }
+            if ($response->getMeta('content-range') instanceof ContentRange) {
+                $items->setContentRange($response->getMeta('content-range'));
+            }
         }
 
         return $items;
