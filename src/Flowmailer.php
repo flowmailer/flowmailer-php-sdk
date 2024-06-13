@@ -214,7 +214,9 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
 
     public function withAccountId(string $id): FlowmailerInterface
     {
-        return new Flowmailer(
+        $flowmailer = get_class($this);
+
+        return new $flowmailer(
             (clone $this->getOptions())->setAccountId($id),
             $this->logger,
             $this->cache,
