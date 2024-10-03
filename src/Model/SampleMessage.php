@@ -20,7 +20,7 @@ class SampleMessage implements ModelInterface
 
     private string $description;
 
-    private ?\stdClass $extraData = null;
+    private ?array $extraData = null;
 
     private ?string $fromAddress = null;
 
@@ -60,14 +60,14 @@ class SampleMessage implements ModelInterface
         return $this->description;
     }
 
-    public function setExtraData(?\stdClass $extraData = null): self
+    public function setExtraData(?array $extraData = null): self
     {
         $this->extraData = $extraData;
 
         return $this;
     }
 
-    public function getExtraData(): ?\stdClass
+    public function getExtraData(): ?array
     {
         return $this->extraData;
     }
