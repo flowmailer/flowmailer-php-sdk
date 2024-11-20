@@ -10,7 +10,11 @@ declare(strict_types=1);
 namespace Flowmailer\API\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Flowmailer\API\Model\Template;
 
+/**
+ * @extends ArrayCollection<int,Template>
+ */
 class TemplateCollection extends ArrayCollection
 {
 }

@@ -9,6 +9,12 @@ declare(strict_types=1);
 
 namespace Flowmailer\API\Collection;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Flowmailer\API\Model\Message;
+
+/**
+ * @extends ArrayCollection<int,Message>
+ */
 class MessageCollection extends NextRangeHolderCollection
 {
 }

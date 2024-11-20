@@ -10,8 +10,12 @@ declare(strict_types=1);
 namespace Flowmailer\API\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Flowmailer\API\Model\Role;
 
-class RoleCollection extends ArrayCollection implements \Stringable
+/**
+ * @extends ArrayCollection<int,Role>
+ */
+class RoleCollection extends ArrayCollection
 {
     public function __toString(): string
     {
