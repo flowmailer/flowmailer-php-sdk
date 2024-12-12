@@ -18,6 +18,8 @@ use Http\Promise\Promise;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\SimpleCache\CacheInterface;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 class AuthTokenPlugin implements Plugin
 {
@@ -32,7 +34,7 @@ class AuthTokenPlugin implements Plugin
         private readonly int $maxRetries = 3
     ) {
         $this->retriesLeft = $maxRetries;
-        $this->cache       = $cache ?? new ArrayCachePool();
+        $this->cache       = $cache ?? new Psr16Cache(new ArrayAdapter());
     }
 
     public function handleRequest(RequestInterface $request, callable $next, callable $first): Promise

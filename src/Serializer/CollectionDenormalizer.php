@@ -41,4 +41,12 @@ class CollectionDenormalizer implements DenormalizerInterface, DenormalizerAware
     {
         return is_subclass_of($type, ArrayCollection::class);
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => true,
+            ArrayCollection::class => true,
+        ];
+    }
 }
