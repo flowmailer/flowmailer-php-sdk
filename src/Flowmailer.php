@@ -18,6 +18,7 @@ use Flowmailer\API\Exception\NotFoundException;
 use Flowmailer\API\Exception\ServerException;
 use Flowmailer\API\Exception\UnauthorizedException;
 use Flowmailer\API\Logger\Journal;
+use Flowmailer\API\Model\Error;
 use Flowmailer\API\Model\Errors;
 use Flowmailer\API\Model\OAuthErrorResponse;
 use Flowmailer\API\Parameter\ContentRange;
@@ -259,8 +260,12 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
         $responseBody = $response->getBody()->getContents();
 
         if ($response->getStatusCode() == 400 || $response->getStatusCode() == 403 || $response->getStatusCode() == 404) {
-            /** @var Errors $errors */
-            $errors = $this->serializer->deserialize($responseBody, Errors::class, 'json');
+            try {
+                /** @var Errors $errors */
+                $errors = $this->serializer->deserialize($responseBody, Errors::class, 'json');
+            } catch (NotEncodableValueException) {
+                $errors = new Errors();
+            }
 
             $exception = null;
             if (is_null($errors->getAllErrors())) {
@@ -269,6 +274,7 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
                 $exception = new \Exception($responseBody);
                 $errors->setAllErrors(new ErrorCollection([]));
             }
+
             foreach ($errors->getAllErrors() as $error) {
                 $object  = (new UnicodeString($error->getObjectName() ?: ''))->trimPrefix('rest')->toString();
                 $field   = $error->getField() ?: '';
