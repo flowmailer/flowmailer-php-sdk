@@ -21,7 +21,7 @@ class Journal implements JournalInterface
     private readonly LoggerInterface $journalLogger;
 
     public function __construct(
-        ?LoggerInterface $journalLogger = null
+        ?LoggerInterface $journalLogger = null,
     ) {
         $this->journalLogger = $journalLogger ?? new NullLogger();
     }

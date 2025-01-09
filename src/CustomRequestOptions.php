@@ -31,7 +31,7 @@ class CustomRequestOptions
         $this->options = $this->resolver->resolve($options);
     }
 
-    public function getBody(): null|string|array|ModelInterface|Collection
+    public function getBody(): string|array|ModelInterface|Collection|null
     {
         return $this->options['body'];
     }

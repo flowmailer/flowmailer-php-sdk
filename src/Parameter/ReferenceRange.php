@@ -13,7 +13,7 @@ class ReferenceRange implements \Stringable
 {
     public function __construct(
         private int $count,
-        private ?string $reference = null
+        private ?string $reference = null,
     ) {
     }
 

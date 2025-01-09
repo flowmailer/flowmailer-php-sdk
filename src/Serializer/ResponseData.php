@@ -13,7 +13,7 @@ class ResponseData implements \Stringable
 {
     public function __construct(
         private readonly string $responseBody,
-        private readonly array $meta = []
+        private readonly array $meta = [],
     ) {
     }
 

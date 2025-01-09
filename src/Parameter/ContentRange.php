@@ -14,7 +14,7 @@ class ContentRange implements \Stringable
     public function __construct(
         private string $startReference,
         private string $endReference,
-        private null|int|string $total = null,
+        private int|string|null $total = null,
     ) {
     }
 

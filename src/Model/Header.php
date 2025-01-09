@@ -22,7 +22,7 @@ class Header implements ModelInterface
         /**
          * Header value.
          */
-        private ?string $value = null
+        private ?string $value = null,
     ) {
     }
 

@@ -22,7 +22,7 @@ class Address implements ModelInterface
         /**
          * Display name, only used for email messages.
          */
-        private ?string $name = null
+        private ?string $name = null,
     ) {
     }
 

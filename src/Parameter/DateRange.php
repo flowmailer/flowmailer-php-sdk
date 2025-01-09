@@ -16,7 +16,7 @@ class DateRange implements \Stringable
 {
     public function __construct(
         private \DateTimeInterface $startDate,
-        private \DateTimeInterface $endDate
+        private \DateTimeInterface $endDate,
     ) {
     }
 
