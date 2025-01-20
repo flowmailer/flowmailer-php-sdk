@@ -26,11 +26,9 @@ class Flow implements ModelInterface, \Stringable
     /**
      * Flow ID.
      */
-    private ?string $id = null;
-
+    private ?string $id                     = null;
     private ?MessageSummary $messageSummary = null;
-
-    private ?SampleCollection $statistics = null;
+    private ?SampleCollection $statistics   = null;
     /**
      * Flow steps that each message in this flow will be processed by.
      */

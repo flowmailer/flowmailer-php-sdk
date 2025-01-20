@@ -125,7 +125,7 @@ class Message implements ModelInterface
     /**
      * Message tags, only available for api calls with `addtags=true`.
      *
-     * @var string[]|null
+     * @var array<int,string>|null
      */
     private ?array $tags = null;
 

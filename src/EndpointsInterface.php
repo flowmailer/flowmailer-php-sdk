@@ -230,7 +230,9 @@ interface EndpointsInterface
     /**
      * Deserialize the responseData for getEventFlowRulesHierarchy.
      */
-    public function processResponseDataForGetEventFlowRulesHierarchy(ResponseData $response): FlowRuleHierarchyItemCollection;
+    public function processResponseDataForGetEventFlowRulesHierarchy(
+        ResponseData $response,
+    ): FlowRuleHierarchyItemCollection;
 
     /**
      * Create the RequestInterface for getEventFlows.
@@ -649,7 +651,11 @@ interface EndpointsInterface
      * @param DateRange $daterange Date range the messages were submitted in
      * @param int       $interval  Time difference between samples
      */
-    public function createRequestForGetFlowStats($flowId, DateRange $daterange, ?int $interval = null): RequestInterface;
+    public function createRequestForGetFlowStats(
+        $flowId,
+        DateRange $daterange,
+        ?int $interval = null,
+    ): RequestInterface;
 
     /**
      * Get time based message statistics for a message flow.

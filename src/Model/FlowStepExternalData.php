@@ -94,8 +94,9 @@ class FlowStepExternalData implements ModelInterface
         return $this->requestHeaders;
     }
 
-    public function setRequestMethod(string|FlowStepExternalDataRequestMethod|null $requestMethod = null): self
-    {
+    public function setRequestMethod(
+        string|FlowStepExternalDataRequestMethod|null $requestMethod = null,
+    ): self {
         $this->requestMethod = $requestMethod;
 
         return $this;

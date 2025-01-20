@@ -22,7 +22,7 @@ class AccountUser implements ModelInterface
     /**
      * The roles for the user.
      *
-     * @var string[]
+     * @var array<int,string>
      */
     private array $roles;
 

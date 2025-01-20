@@ -125,7 +125,7 @@ class SimulateMessage implements ModelInterface
     /**
      * Tags.
      *
-     * @var string[]|null
+     * @var array<int,string>|null
      */
     private ?array $tags = null;
 
@@ -158,8 +158,9 @@ class SimulateMessage implements ModelInterface
         return $this->data;
     }
 
-    public function setDeliveryNotificationType(string|DeliveryNotificationType|null $deliveryNotificationType = null): self
-    {
+    public function setDeliveryNotificationType(
+        string|DeliveryNotificationType|null $deliveryNotificationType = null,
+    ): self {
         $this->deliveryNotificationType = $deliveryNotificationType;
 
         return $this;

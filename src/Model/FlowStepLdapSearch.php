@@ -15,7 +15,7 @@ namespace Flowmailer\API\Model;
 class FlowStepLdapSearch implements ModelInterface
 {
     /**
-     * @var string[]|null
+     * @var array<int,string>|null
      */
     private ?array $attributes = null;
 

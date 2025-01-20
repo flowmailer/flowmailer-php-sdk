@@ -471,8 +471,9 @@ abstract class Endpoints
      *
      * @codeCoverageIgnore
      */
-    public function processResponseDataForGetEventFlowRulesHierarchy(ResponseData $response): FlowRuleHierarchyItemCollection
-    {
+    public function processResponseDataForGetEventFlowRulesHierarchy(
+        ResponseData $response,
+    ): FlowRuleHierarchyItemCollection {
         return $this->serializer->deserialize($response, FlowRuleHierarchyItemCollection::class, 'json');
     }
 
@@ -1353,8 +1354,11 @@ abstract class Endpoints
      *
      * @codeCoverageIgnore
      */
-    public function createRequestForGetFlowStats($flowId, DateRange $daterange, ?int $interval = null): RequestInterface
-    {
+    public function createRequestForGetFlowStats(
+        $flowId,
+        DateRange $daterange,
+        ?int $interval = null,
+    ): RequestInterface {
         $matrices = [
             'daterange' => $daterange,
             'interval'  => $interval,

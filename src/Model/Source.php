@@ -32,8 +32,7 @@ class Source implements ModelInterface, \Stringable
     /**
      * Disable sending DSN messages for this source.
      */
-    private ?bool $dsnDisable = null;
-
+    private ?bool $dsnDisable     = null;
     private ?\stdClass $extraData = null;
     /**
      * Email feedback loop messages will be sent to this address.
@@ -67,7 +66,6 @@ class Source implements ModelInterface, \Stringable
      * Message statistics for this source.
      */
     private ?SampleCollection $statistics = null;
-
     private bool $tlsRequired;
     /**
      * Source type: `API`, `SMTP`, `SMTP_RCPT`, `SMTP_DOMAIN` `SMPP`, or `FLOWMAILER`.

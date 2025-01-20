@@ -22,32 +22,26 @@ class Credentials implements ModelInterface, \Stringable
     /**
      * Allowed IP addresses that can connect to Flowmailer using these credentials.
      *
-     * @var string[]|null
+     * @var array<int,string>|null
      */
     private ?array $allowedAddresses = null;
     /**
-     * @var string[]|null
+     * @var array<int,string>|null
      */
     private ?array $allowedSenders = null;
-
-    private ?string $authSource = null;
-
-    private ?string $clientId = null;
-
-    private ?string $clientSecret = null;
+    private ?string $authSource    = null;
+    private ?string $clientId      = null;
+    private ?string $clientSecret  = null;
     /**
      * Contact info for these credentials.
      */
     private ?string $contactInfo = null;
-
     private ?string $description = null;
     /**
      * Source credentials ID.
      */
-    private ?string $id = null;
-
-    private ?string $inboundDomain = null;
-
+    private ?string $id                                    = null;
+    private ?string $inboundDomain                         = null;
     private ?InboundRecipientCollection $inboundRecipients = null;
     /**
      * Password.
@@ -62,8 +56,7 @@ class Credentials implements ModelInterface, \Stringable
      *
      *  Roles must contain exactly 1 role.
      */
-    private ?array $roles = null;
-
+    private ?array $roles     = null;
     private ?string $sourceId = null;
     /**
      * Username.

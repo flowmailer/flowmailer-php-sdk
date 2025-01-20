@@ -23,7 +23,7 @@ class DnsRecord implements ModelInterface
      *
      *  Only filled when DNS records are validated.
      *
-     * @var string[]|null
+     * @var array<int,string>|null
      */
     private ?array $errorMessages = null;
 
@@ -56,7 +56,7 @@ class DnsRecord implements ModelInterface
      *
      *  Only filled when DNS records are validated.
      *
-     * @var string[]|null
+     * @var array<int,string>|null
      */
     private ?array $warningMessages = null;
     private $warnings;

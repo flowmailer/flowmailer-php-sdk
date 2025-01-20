@@ -50,7 +50,7 @@ class MessageReturn implements ModelInterface
      *
      *  Only filled for the `GET /{account_id}/message_events` api call when the parameter `addmessagetags` is `true`
      *
-     * @var string[]|null
+     * @var array<int,string>|null
      */
     private ?array $messageTags = null;
 

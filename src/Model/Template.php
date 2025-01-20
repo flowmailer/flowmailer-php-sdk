@@ -68,7 +68,7 @@ class Template implements ModelInterface, \Stringable
      */
     private ?string $id = null;
     /**
-     * Supported mime types:.
+     * Supported mime types:
      *
      * - text/plain
      * - text/html
