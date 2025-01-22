@@ -28,7 +28,7 @@ class MessageEvent implements ModelInterface
     /**
      * Event data.
      *
-     * @var array<int,object>|null
+     * @var array<int,mixed>|null
      */
     private ?array $extraData = null;
 
