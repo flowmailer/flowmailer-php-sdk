@@ -88,8 +88,10 @@ class MessageEvent implements ModelInterface
      */
     private ?string $subType = null;
 
-    /** Custom event type */
-    private $tag;
+    /**
+     * Custom event type.
+     */
+    private ?string $tag = null;
 
     /**
      * Event type, must be `CUSTOM`.
@@ -310,14 +312,14 @@ class MessageEvent implements ModelInterface
         return $this->subType;
     }
 
-    public function setTag($tag = null): self
+    public function setTag(?string $tag = null): self
     {
         $this->tag = $tag;
 
         return $this;
     }
 
-    public function getTag()
+    public function getTag(): ?string
     {
         return $this->tag;
     }
