@@ -380,8 +380,8 @@ class Flowmailer extends Endpoints implements FlowmailerInterface
                         } else {
                             $guzzlePromise->reject($exception);
                         }
-                    } catch (\Exception $exception) {
-                        $guzzlePromise->reject($exception);
+                    } catch (\Exception $caughtError) {
+                        $guzzlePromise->reject($caughtError);
                     }
 
                     throw $exception;
